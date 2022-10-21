@@ -9,13 +9,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ServiceListController extends Navigator{
+public class ServiceMemRateView {
 
     protected Stage stage;
     protected Scene scene;
     protected Parent root;
-    public void onClickMemSerRate(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/serviceMemRateView.fxml"));
+    public void onClickBack(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/serviceListView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

@@ -9,12 +9,12 @@
 
 <AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: DFF6FF;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.LandingController">
    <children>
-      <Button fx:id="loginBtn" layoutX="296.0" layoutY="625.0" mnemonicParsing="false" onAction="#onLoginBtnClick" text="เข้าสู่ระบบ">
+      <Button fx:id="loginBtn" layoutX="291.0" layoutY="639.0" mnemonicParsing="false" onAction="#onLoginBtnClick" text="เข้าสู่ระบบ">
          <font>
             <Font size="31.0" />
          </font>
       </Button>
-      <Button fx:id="signupBtn" layoutX="804.0" layoutY="625.0" mnemonicParsing="false" onAction="#onSignupBtnClick" text="ลงทะเบียนร้าน">
+      <Button fx:id="signupBtn" layoutX="907.0" layoutY="639.0" mnemonicParsing="false" onAction="#onSignupBtnClick" text="ลงทะเบียนร้าน">
          <font>
             <Font size="31.0" />
          </font>
@@ -24,7 +24,7 @@
             <Font size="49.0" />
          </font>
       </Text>
-      <ImageView fitHeight="433.0" fitWidth="446.0" layoutX="434.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="494.0" fitWidth="496.0" layoutX="436.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/landingImg.png" />
          </image>

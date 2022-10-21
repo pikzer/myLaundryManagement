@@ -53,7 +53,7 @@ public class APICall {
         }
     }
 
-    public static void login(String email, String pwd) throws IOException {
+    public static boolean login(String email, String pwd) throws IOException {
         var urlParameters = "email="+email+"&"+"password="+pwd;
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         try {
@@ -69,8 +69,11 @@ public class APICall {
             String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
             JSONObject jsonObject = new JSONObject(j);
             token = jsonObject.getString("access_token");
+            System.out.println(token);
+            return true;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            return false ;
         }
     }
 }

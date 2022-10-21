@@ -1,4 +1,5 @@
 package th.ac.ku.mylaundry.controller;
 
-public class DeliListController {
+public class DeliListController extends Navigator {
+
 }

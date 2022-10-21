@@ -1,77 +1,322 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.HomeController">
+<AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.HomeController">
    <children>
-      <AnchorPane prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: B8E8FC; -fx-border-color: gray;">
+      <Text layoutX="266.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายการ">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Text>
+      <AnchorPane prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
          <children>
-            <ImageView fitHeight="69.0" fitWidth="79.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <VBox layoutX="1.0" layoutY="104.0" prefHeight="645.0" prefWidth="227.0">
+               <children>
+                  <Button contentDisplay="TOP" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="79.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="หน้าหลัก">
+                     <font>
+                        <Font name="System Bold" size="21.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="29.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/home.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickOrder" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="รายการ">
+                     <font>
+                        <Font name="System Bold" size="21.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="33.0" fitWidth="36.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/order_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickCus" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="ลูกค้า">
+                     <font>
+                        <Font name="System Bold" size="21.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="33.0" fitWidth="36.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/customer_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickDeli" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="รับส่งผ้า">
+                     <font>
+                        <Font name="System Bold" size="21.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="33.0" fitWidth="36.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/deliver_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickServiceRate" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="อัตราค่าบริการ">
+                     <font>
+                        <Font name="System Bold" size="21.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="33.0" fitWidth="36.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/service-rate_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickNoti" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="การแจ้งเตือน">
+                     <font>
+                        <Font name="System Bold" size="21.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="33.0" fitWidth="36.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/notification_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickReport" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="รายงาน">
+                     <font>
+                        <Font name="System Bold" size="21.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="33.0" fitWidth="36.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/report_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickManage" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="จัดการร้าน">
+                     <font>
+                        <Font name="System Bold" size="21.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="33.0" fitWidth="36.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/shop_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </VBox>
+            <ImageView fitHeight="69.0" fitWidth="79.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/main_icon_128px.png" />
                </image>
             </ImageView>
             <Text layoutX="101.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by My Laundry" />
-            <Text fx:id="shopNameText" layoutX="97.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%ShopName%">
+            <Text fx:id="shopNameText" layoutX="90.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%ShopName%">
                <font>
-                  <Font size="14.0" />
+                  <Font size="18.0" />
                </font>
             </Text>
-            <Separator layoutX="13.0" layoutY="97.0" prefWidth="200.0" style="-fx-background-color: black;" />
-            <Button layoutY="143.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="55.0" prefWidth="227.0" style="-fx-background-color: transparent; -fx-border-color: gray;" text="หน้าหลัก">
+            <Separator layoutX="14.0" layoutY="88.0" prefWidth="200.0" style="-fx-background-color: black;" />
+            <Button layoutX="53.0" layoutY="745.0" mnemonicParsing="false" onAction="#onClickLogout" prefHeight="15.0" prefWidth="114.0" style="-fx-background-color: transparent;" text="ออกจากระบบ" underline="true">
+               <effect>
+                  <Blend />
+               </effect>
                <font>
-                  <Font size="21.0" />
+                  <Font size="11.0" />
                </font>
             </Button>
-            <Button layoutY="198.0" mnemonicParsing="false" onAction="#onClickOrder" prefHeight="55.0" prefWidth="227.0" style="-fx-background-color: transparent; -fx-border-color: gray;" text="รายการ">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Button>
-            <Button layoutY="253.0" mnemonicParsing="false" onAction="#onClickCus" prefHeight="55.0" prefWidth="227.0" style="-fx-background-color: transparent; -fx-border-color: gray;" text="ลูกค้า">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Button>
-            <Button layoutY="308.0" mnemonicParsing="false" onAction="#onClickDeli" prefHeight="55.0" prefWidth="227.0" style="-fx-background-color: transparent; -fx-border-color: gray;" text="รับส่งผ้า">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Button>
-            <Button layoutY="363.0" mnemonicParsing="false" onAction="#onClickServiceRate" prefHeight="55.0" prefWidth="227.0" style="-fx-background-color: transparent; -fx-border-color: gray;" text="อัตราค่าบริการ">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Button>
-            <Button layoutY="418.0" mnemonicParsing="false" onAction="#onClickNoti" prefHeight="55.0" prefWidth="227.0" style="-fx-background-color: transparent; -fx-border-color: gray;" text="การแจ้งเตือน">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Button>
-            <Button layoutY="473.0" mnemonicParsing="false" onAction="#onClickReport" prefHeight="55.0" prefWidth="227.0" style="-fx-background-color: transparent; -fx-border-color: gray;" text="รายงาน">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Button>
-            <Button layoutY="528.0" mnemonicParsing="false" onAction="#onClickManage" prefHeight="55.0" prefWidth="227.0" style="-fx-background-color: transparent; -fx-border-color: gray;" text="จัดการร้าน">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Button>
-            <Text layoutX="86.0" layoutY="751.0" onMouseClicked="#onClickLogout" strokeType="OUTSIDE" strokeWidth="0.0" text="ออกจากระบบ" underline="true" />
          </children>
       </AnchorPane>
-      <Button layoutX="1097.0" layoutY="31.0" mnemonicParsing="false" onAction="#onClickNewOrder" prefHeight="62.0" prefWidth="237.0" text="+ เพิ่มรายการใหม่">
+      <TableView fx:id="orderTable" layoutX="265.0" layoutY="399.0" prefHeight="347.0" prefWidth="1058.0" style="-fx-background-color: lightCyan;">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+      <Button layoutX="1121.0" layoutY="20.0" mnemonicParsing="false" onAction="#onClickNewOrder" prefHeight="46.0" prefWidth="220.0" text="+ เพิ่มรายการใหม่">
          <font>
-            <Font size="23.0" />
+            <Font name="Thonburi" size="23.0" />
          </font>
       </Button>
+      <Pane layoutX="265.0" layoutY="114.0" prefHeight="102.0" prefWidth="239.0" style="-fx-background-color: BCCEF8; -fx-border-color: black; -fx-border-width: 2;">
+         <children>
+            <ImageView fitHeight="69.0" fitWidth="63.0" layoutX="14.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/todayorder_icon.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="108.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายการ">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Label fx:id="orderLabel" layoutX="108.0" layoutY="59.0" text="\%NoOrToday%" />
+         </children>
+      </Pane>
+      <Text layoutX="240.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
+         <font>
+            <Font name="System Bold" size="42.0" />
+         </font>
+      </Text>
+      <Button layoutX="1050.0" layoutY="20.0" mnemonicParsing="false" onAction="#onClickRefresh" prefHeight="48.0" prefWidth="51.0">
+         <graphic>
+            <ImageView fitHeight="29.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/refresh_icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Pane layoutX="534.0" layoutY="114.0" prefHeight="102.0" prefWidth="239.0" style="-fx-border-color: black; -fx-border-width: 2; -fx-background-color: lightblue;">
+         <children>
+            <ImageView fitHeight="69.0" fitWidth="63.0" layoutX="14.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/inprogress_icon.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="93.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="กำลังดำเนินการ">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Label fx:id="inprogressLabel" layoutX="93.0" layoutY="58.0" text="\%NoOrToday%" />
+         </children>
+      </Pane>
+      <Pane layoutX="265.0" layoutY="240.0" prefHeight="102.0" prefWidth="239.0" style="-fx-background-color: lightgreen; -fx-border-color: black; -fx-border-width: 2;">
+         <children>
+            <ImageView fitHeight="69.0" fitWidth="63.0" layoutX="14.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/finish_icon.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="108.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เสร็จสิ้น">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Label fx:id="finishLabel" layoutX="108.0" layoutY="59.0" text="\%NoOrToday%" />
+         </children>
+      </Pane>
+      <Pane layoutX="534.0" layoutY="240.0" prefHeight="102.0" prefWidth="239.0" style="-fx-background-color: coral; -fx-border-color: black; -fx-border-width: 2;">
+         <children>
+            <ImageView fitHeight="69.0" fitWidth="63.0" layoutX="14.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/notPay_icon.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="108.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ยังไม่ชำระเงิน">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Label fx:id="notPayLabel" layoutX="108.0" layoutY="60.0" text="\%NoOrToday%" textAlignment="CENTER" />
+         </children>
+      </Pane>
+      <Text layoutX="265.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="วันนี้">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Text>
+      <Separator layoutX="816.0" layoutY="127.0" orientation="VERTICAL" prefHeight="200.0" style="-fx-background-color: gray;" />
+      <Pane layoutX="849.0" layoutY="107.0" prefHeight="239.0" prefWidth="239.0" style="-fx-border-color: black; -fx-border-width: 2; -fx-background-color: mediumslateblue;">
+         <children>
+            <ImageView fitHeight="96.0" fitWidth="101.0" layoutX="71.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/income_icon.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="incomeLabel" contentDisplay="CENTER" layoutX="82.0" layoutY="179.0" text="\%NoOrToday%">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Text layoutX="90.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายได้">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane layoutX="1112.0" layoutY="110.0" prefHeight="110.0" prefWidth="239.0" style="-fx-border-color: black; -fx-border-width: 2; -fx-background-color: dodgerBlue;">
+         <children>
+            <Text layoutX="120.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ลูกค้าทั้งหมด">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="69.0" fitWidth="63.0" layoutX="27.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/customer_icon.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="allCusLabel" layoutX="118.0" layoutY="66.0" text="\%NoOrToday%">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="1112.0" layoutY="236.0" prefHeight="110.0" prefWidth="239.0" style="-fx-border-color: black; -fx-border-width: 2; -fx-background-color: aquamarine;">
+         <children>
+            <Text layoutX="120.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ลูกค้าสมาชิก">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="69.0" fitWidth="63.0" layoutX="34.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/memCus_icon.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="memberLabel" layoutX="117.0" layoutY="67.0" prefWidth="105.0" text="\%NoOrToday%">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

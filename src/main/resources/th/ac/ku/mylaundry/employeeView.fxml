@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.Image?>
@@ -15,10 +16,97 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.OrderListViewController">
+<AnchorPane prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.EmployeeController">
    <children>
-      <AnchorPane layoutY="1.0" prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
+      <TableView layoutX="283.0" layoutY="59.0" prefHeight="666.0" prefWidth="660.0">
+         <columns>
+            <TableColumn prefWidth="75.0" text="C1" />
+            <TableColumn prefWidth="75.0" text="C2" />
+         </columns>
+      </TableView>
+      <Text layoutX="312.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายการพนักงงาน">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Text>
+      <Text layoutX="1012.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ชื่อ">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <TextField layoutX="1039.0" layoutY="124.0" prefHeight="33.0" prefWidth="227.0" />
+      <Text layoutX="979.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เบอร์โทร">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <TextField layoutX="1039.0" layoutY="174.0" prefHeight="33.0" prefWidth="227.0" />
+      <TextField layoutX="1038.0" layoutY="271.0" prefHeight="33.0" prefWidth="227.0" />
+      <Text layoutX="991.0" layoutY="338.0" strokeType="OUTSIDE" strokeWidth="0.0" text="หน้าที่">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <TextArea layoutX="1034.0" layoutY="365.0" prefHeight="81.0" prefWidth="256.0" />
+      <Text layoutX="997.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ที่อยู่">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="995.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายละเอียดพนักงาน">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Text>
+      <ComboBox layoutX="1037.0" layoutY="316.0" prefHeight="33.0" prefWidth="148.0" />
+      <Text layoutX="989.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="994.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="หมายเลยบัตร">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <TextField layoutX="1091.0" layoutY="222.0" prefHeight="33.0" prefWidth="248.0" />
+      <Button layoutX="1008.0" layoutY="578.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="148.0" text="แก้ไข">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Button>
+      <Button layoutX="1204.0" layoutY="578.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="148.0" text="เพิ่ม">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Button>
+      <Text layoutX="984.0" layoutY="488.0" strokeType="OUTSIDE" strokeWidth="0.0" text="หมายเลยบัญชี">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <TextField layoutX="1088.0" layoutY="465.0" prefHeight="33.0" prefWidth="237.0" />
+      <Text layoutX="987.0" layoutY="536.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ข้อมูลธนาคาร">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <ComboBox layoutX="1086.0" layoutY="513.0" prefHeight="33.0" prefWidth="148.0" />
+      <Button layoutX="1112.0" layoutY="669.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="148.0" text="ลบ">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Button>
+      <Button fx:id="backBtn" layoutX="244.0" layoutY="9.0" mnemonicParsing="false" onAction="#onBackBtn" prefHeight="19.0" prefWidth="19.0">
+         <graphic>
+            <ImageView fitHeight="34.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/back-icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <AnchorPane layoutY="-1.0" prefHeight="768.0" prefWidth="228.0" style="-fx-background-color: lightskyblue;">
          <children>
             <VBox layoutX="1.0" layoutY="104.0" prefHeight="645.0" prefWidth="227.0">
                <children>
@@ -166,26 +254,5 @@
             </Button>
          </children>
       </AnchorPane>
-      <Text layoutX="244.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายการ">
-         <font>
-            <Font size="38.0" />
-         </font>
-      </Text>
-      <TableView layoutX="244.0" layoutY="139.0" prefHeight="598.0" prefWidth="1101.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
-      </TableView>
-      <TextField layoutX="1173.0" layoutY="109.0" prefHeight="25.0" prefWidth="172.0" promptText="ค้นหา (เบอร์โทร)" />
-      <ComboBox layoutX="288.0" layoutY="109.0" prefHeight="25.0" prefWidth="127.0" />
-      <Text layoutX="244.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="สถานะ" />
-      <Text layoutX="244.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ตัวกรอง">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Text>
-      <ComboBox layoutX="474.0" layoutY="109.0" prefHeight="25.0" prefWidth="127.0" />
-      <Text layoutX="430.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="บริการ" />
    </children>
 </AnchorPane>

@@ -35,7 +35,7 @@ public class RegisterShopController  {
     }
     @FXML
     public void onClickRegister(ActionEvent event){
-        // TODO
+
     }
 
     @FXML
