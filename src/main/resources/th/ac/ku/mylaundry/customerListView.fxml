@@ -18,8 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.CustomerListController">
+<AnchorPane onMouseClicked="#onClickAnchor" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.CustomerListController">
    <children>
       <AnchorPane prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
          <children>
@@ -169,11 +168,14 @@
             </Button>
          </children>
       </AnchorPane>
-      <TableView layoutX="241.0" layoutY="118.0" prefHeight="618.0" prefWidth="563.0">
+      <TableView fx:id="cusTable" layoutX="241.0" layoutY="118.0" prefHeight="618.0" prefWidth="563.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <Text layoutX="239.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายการลูกค้า">
          <font>
@@ -185,45 +187,45 @@
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField layoutX="983.0" layoutY="137.0" prefHeight="30.0" prefWidth="241.0" />
+      <TextField fx:id="nameField" layoutX="983.0" layoutY="137.0" prefHeight="30.0" prefWidth="241.0" />
       <Text layoutX="916.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เบอร์โทร">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField layoutX="983.0" layoutY="174.0" prefHeight="30.0" prefWidth="241.0" />
+      <TextField fx:id="telField" layoutX="983.0" layoutY="174.0" prefHeight="30.0" prefWidth="241.0" />
       <Text layoutX="951.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ที่อยู่">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <TextArea layoutX="983.0" layoutY="256.0" prefHeight="90.0" prefWidth="284.0" />
+      <TextArea fx:id="adsTextArea" layoutX="983.0" layoutY="256.0" prefHeight="90.0" prefWidth="284.0" />
       <Text layoutX="933.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField layoutX="983.0" layoutY="218.0" prefHeight="30.0" prefWidth="241.0" />
+      <TextField fx:id="emailField" layoutX="983.0" layoutY="218.0" prefHeight="30.0" prefWidth="241.0" />
       <Button layoutX="1041.0" layoutY="354.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="เพิ่ม/แก้ไข">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <TextField layoutX="618.0" layoutY="80.0" prefHeight="30.0" prefWidth="186.0" promptText="ค้นหา" />
+      <TextField fx:id="searchField" layoutX="618.0" layoutY="80.0" prefHeight="30.0" prefWidth="186.0" promptText="ค้นหา" />
       <Text layoutX="241.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ตัวกรอง">
          <font>
             <Font size="19.0" />
          </font>
       </Text>
-      <CheckBox layoutX="329.0" layoutY="86.0" mnemonicParsing="false" text="สมาชิก" />
-      <ComboBox layoutX="457.0" layoutY="80.0" prefHeight="30.0" prefWidth="150.0" />
+      <CheckBox fx:id="memCheck" layoutX="329.0" layoutY="86.0" mnemonicParsing="false" text="สมาชิก" />
+      <ComboBox fx:id="serviceTypeCombo" layoutX="457.0" layoutY="80.0" prefHeight="30.0" prefWidth="150.0" />
       <Text layoutX="406.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ประเภท" />
       <Text layoutX="833.0" layoutY="446.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เพิ่มและแก้ไขสมาชิก">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <ComboBox layoutX="1053.0" layoutY="477.0" prefHeight="30.0" prefWidth="186.0" />
+      <ComboBox fx:id="serviceAddCombo" layoutX="1053.0" layoutY="477.0" prefHeight="30.0" prefWidth="186.0" />
       <Text layoutX="941.0" layoutY="497.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ประเภทบริการ">
          <font>
             <Font size="16.0" />
@@ -240,7 +242,7 @@
             <Font size="16.0" />
          </font>
       </Text>
-      <ComboBox layoutX="1053.0" layoutY="542.0" prefHeight="30.0" prefWidth="150.0" />
+      <ComboBox fx:id="piecesCombo" layoutX="1053.0" layoutY="542.0" prefHeight="30.0" prefWidth="150.0" />
       <Text layoutX="965.0" layoutY="619.0" strokeType="OUTSIDE" strokeWidth="0.0" text="จำนวนเงิน">
          <font>
             <Font size="16.0" />

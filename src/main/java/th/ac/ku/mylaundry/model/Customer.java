@@ -1,20 +1,49 @@
 package th.ac.ku.mylaundry.model;
 
 public class Customer {
-    private long id;
-    private String name;
-    private String phone;
-    private String email;
+    Integer id ;
+    String name;
+    String phone;
+    String email;
+    Integer isMembership;
+    String memService;
+    Integer memCredit ;
 
-    public long getID() { return id; }
-    public void setID(long value) { this.id = value; }
+    public Customer(Integer id, String name, String phone, String email, Integer isMembership, String memService, Integer memCredit) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.isMembership = isMembership;
+        this.memService = memService;
+        this.memCredit = memCredit;
+    }
 
-    public String getName() { return name; }
-    public void setName(String value) { this.name = value; }
+    public Integer getId() {
+        return id;
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String value) { this.phone = value; }
+    public String getName() {
+        return name;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String value) { this.email = value; }
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Integer getIsMembership() {
+        return isMembership;
+    }
+
+    public String getMemService() {
+        return memService;
+    }
+
+    public Integer getMemCredit() {
+        return memCredit;
+    }
 }

@@ -10,8 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import th.ac.ku.mylaundry.LaundryPOS;
-import th.ac.ku.mylaundry.service.APICall;
 
 import java.io.IOException;
 import java.text.DecimalFormat;

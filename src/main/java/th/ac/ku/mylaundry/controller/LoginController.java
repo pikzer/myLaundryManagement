@@ -1,6 +1,5 @@
 package th.ac.ku.mylaundry.controller;
 
-import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,8 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import th.ac.ku.mylaundry.service.APICall;
+import th.ac.ku.mylaundry.service.ApiCall;
 
 import java.io.IOException;
 
@@ -56,14 +54,26 @@ public class LoginController {
             a.show();
         }
         else{
-            if(APICall.login(emailTextField.getText(),pwdField.getText())){
+            int login = ApiCall.login(emailTextField.getText(),pwdField.getText()) ;
+            if(login == 1){
                 System.out.println("Log in Complete");
                 root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/homeView.fxml"));
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-
                 scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
+            }
+            else if(login == 2){
+                Alert a = new Alert(Alert.AlertType.NONE);
+                a.setAlertType(Alert.AlertType.WARNING);
+                a.setContentText("ิลูกค้าไม่สามรถใช้งานได้");
+                a.show();
+            }
+            else if(login == 0){
+                Alert a = new Alert(Alert.AlertType.NONE);
+                a.setAlertType(Alert.AlertType.WARNING);
+                a.setContentText("อีเมลล์หรือรหัสไม่ถูกต้อง");
+                a.show();
             }
         }
     }
