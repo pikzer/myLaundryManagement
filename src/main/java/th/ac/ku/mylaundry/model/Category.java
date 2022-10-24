@@ -3,32 +3,48 @@ package th.ac.ku.mylaundry.model;
 import java.time.OffsetDateTime;
 
 public class Category {
-    private long id;
-    private long serviceRateID;
-    private String clothType;
-    private long addOnPrice;
-    private OffsetDateTime createdAt;
-    private OffsetDateTime updatedAt;
-    private Object deletedAt;
+    int id ;
+    int service_rate_id;
+    String clothType ;
+    double addOnPrice ;
 
-    public long getID() { return id; }
-    public void setID(long value) { this.id = value; }
+    public Category(int id, int service_rate_id, String clothType, double addOnPrice) {
+        this.id = id;
+        this.service_rate_id = service_rate_id;
+        this.clothType = clothType;
+        this.addOnPrice = addOnPrice;
+    }
 
-    public long getServiceRateID() { return serviceRateID; }
-    public void setServiceRateID(long value) { this.serviceRateID = value; }
+    public int getId() {
+        return id;
+    }
 
-    public String getClothType() { return clothType; }
-    public void setClothType(String value) { this.clothType = value; }
+    public int getService_rate_id() {
+        return service_rate_id;
+    }
 
-    public long getAddOnPrice() { return addOnPrice; }
-    public void setAddOnPrice(long value) { this.addOnPrice = value; }
+    public String getClothType() {
+        return clothType;
+    }
 
-    public OffsetDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(OffsetDateTime value) { this.createdAt = value; }
+    public double getAddOnPrice() {
+        return addOnPrice;
+    }
 
-    public OffsetDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(OffsetDateTime value) { this.updatedAt = value; }
+    public String getPostEmployee(){
+        return "service_rate_id="+getService_rate_id()+"&"
+                + "clothType="+getClothType() + "&"
+                + "addOnPrice="+getAddOnPrice();
 
-    public Object getDeletedAt() { return deletedAt; }
-    public void setDeletedAt(Object value) { this.deletedAt = value; }
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", service_rate_id=" + service_rate_id +
+                ", clothType='" + clothType + '\'' +
+                ", addOnPrice=" + addOnPrice +
+                '}';
+    }
 }

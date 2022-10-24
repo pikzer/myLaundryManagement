@@ -16,9 +16,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.EmployeeController">
+<AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.EmployeeController">
    <children>
-      <TableView layoutX="283.0" layoutY="59.0" prefHeight="666.0" prefWidth="660.0">
+      <TableView fx:id="employeeTable" layoutX="283.0" layoutY="59.0" prefHeight="666.0" prefWidth="660.0">
          <columns>
             <TableColumn prefWidth="75.0" text="C1" />
             <TableColumn prefWidth="75.0" text="C2" />
@@ -34,14 +34,14 @@
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField layoutX="1039.0" layoutY="124.0" prefHeight="33.0" prefWidth="227.0" />
+      <TextField fx:id="nameField" layoutX="1039.0" layoutY="124.0" prefHeight="33.0" prefWidth="227.0" />
       <Text layoutX="979.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เบอร์โทร">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField layoutX="1039.0" layoutY="174.0" prefHeight="33.0" prefWidth="227.0" />
-      <TextField layoutX="1038.0" layoutY="271.0" prefHeight="33.0" prefWidth="227.0" />
+      <TextField fx:id="phoneField" layoutX="1039.0" layoutY="174.0" prefHeight="33.0" prefWidth="227.0" />
+      <TextField fx:id="emailField" layoutX="1038.0" layoutY="271.0" prefHeight="33.0" prefWidth="227.0" />
       <Text layoutX="991.0" layoutY="338.0" strokeType="OUTSIDE" strokeWidth="0.0" text="หน้าที่">
          <font>
             <Font size="16.0" />
@@ -69,13 +69,8 @@
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField layoutX="1091.0" layoutY="222.0" prefHeight="33.0" prefWidth="248.0" />
-      <Button layoutX="1008.0" layoutY="578.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="148.0" text="แก้ไข">
-         <font>
-            <Font size="26.0" />
-         </font>
-      </Button>
-      <Button layoutX="1204.0" layoutY="578.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="148.0" text="เพิ่ม">
+      <TextField fx:id="idCardField" layoutX="1091.0" layoutY="222.0" prefHeight="33.0" prefWidth="248.0" />
+      <Button layoutX="1170.0" layoutY="596.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="148.0" text="แก้ไข/เพิ่ม">
          <font>
             <Font size="26.0" />
          </font>
@@ -85,14 +80,14 @@
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField layoutX="1088.0" layoutY="465.0" prefHeight="33.0" prefWidth="237.0" />
+      <TextField fx:id="bankNumField" layoutX="1088.0" layoutY="465.0" prefHeight="33.0" prefWidth="237.0" />
       <Text layoutX="987.0" layoutY="536.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ข้อมูลธนาคาร">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <ComboBox layoutX="1086.0" layoutY="513.0" prefHeight="33.0" prefWidth="148.0" />
-      <Button layoutX="1112.0" layoutY="669.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="148.0" text="ลบ">
+      <ComboBox fx:id="bankNameCombo" layoutX="1086.0" layoutY="513.0" prefHeight="33.0" prefWidth="148.0" />
+      <Button layoutX="987.0" layoutY="596.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="148.0" text="ลบ">
          <font>
             <Font size="26.0" />
          </font>

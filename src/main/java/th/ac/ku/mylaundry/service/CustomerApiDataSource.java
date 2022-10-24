@@ -34,7 +34,7 @@ public class CustomerApiDataSource extends ApiCall {
                 customerShows.add(new Customer(jsonArray.getJSONObject(i).getInt("id"),
                         jsonArray.getJSONObject(i).getString("name"),
                         jsonArray.getJSONObject(i).getString("phone"),
-                        jsonArray.getJSONObject(i).getString("email"),
+                        jsonArray.getJSONObject(i).get("email").toString(),
                         jsonArray.getJSONObject(i).getInt("isMembership"),
                         jsonArray.getJSONObject(i).getString("memService"),
                         jsonArray.getJSONObject(i).getInt("memCredit")
@@ -47,7 +47,7 @@ public class CustomerApiDataSource extends ApiCall {
         }
     }
 
-    public static void addNewCustomer(String name, String phone){
+    public static boolean addNewCustomer(String name, String phone){
         var urlParameters = "name="+name+"&"+"phone="+phone;
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         try {
@@ -64,13 +64,15 @@ public class CustomerApiDataSource extends ApiCall {
             String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
             JSONObject jsonObject = new JSONObject(j);
             System.out.println(jsonObject);
-
+            return true;
         } catch (Exception e) {
             System.out.println(e);
+            return false;
         }
     }
 
-    public static boolean updateCustomer(){
+    public static boolean updateCustomer(Customer customer){
+
         return false;
     }
 

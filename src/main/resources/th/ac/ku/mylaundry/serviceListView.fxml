@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.ServiceListController">
+<AnchorPane onMouseClicked="#onClickAnchor" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.ServiceListController">
    <children>
       <AnchorPane prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
          <children>
@@ -178,16 +178,19 @@
                   <Font size="25.0" />
                </font>
             </Text>
-            <TextField layoutX="137.0" layoutY="28.0" prefHeight="29.0" prefWidth="69.0" />
+            <TextField fx:id="cleanBPField" layoutX="137.0" layoutY="28.0" prefHeight="29.0" prefWidth="69.0" />
             <Text layoutX="87.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ราคาฐาน" />
-            <TableView layoutX="13.0" layoutY="59.0" prefHeight="276.0" prefWidth="372.0">
+            <TableView fx:id="cleanTable" layoutX="13.0" layoutY="59.0" prefHeight="276.0" prefWidth="372.0">
               <columns>
                 <TableColumn prefWidth="75.0" text="C1" />
                 <TableColumn prefWidth="75.0" text="C2" />
               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
-            <TextField layoutX="287.0" layoutY="28.0" prefHeight="29.0" prefWidth="98.0" promptText="ค้นหา" />
-            <Button layoutX="222.0" layoutY="30.0" mnemonicParsing="false" text="แก้ไข" />
+            <TextField fx:id="cleanSearchField" layoutX="287.0" layoutY="28.0" prefHeight="29.0" prefWidth="98.0" promptText="ค้นหา" />
+            <Button layoutX="222.0" layoutY="30.0" mnemonicParsing="false" onAction="#onClickEditClean" text="แก้ไข" />
          </children>
       </Pane>
       <Pane layoutX="635.0" layoutY="53.0" prefHeight="354.0" prefWidth="399.0" style="-fx-background-color: darkseagreen;">
@@ -197,16 +200,19 @@
                   <Font size="25.0" />
                </font>
             </Text>
-            <TextField layoutX="142.0" layoutY="27.0" prefHeight="29.0" prefWidth="69.0" />
+            <TextField fx:id="cleanIronBPField" layoutX="142.0" layoutY="27.0" prefHeight="29.0" prefWidth="69.0" />
             <Text layoutX="86.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ราคาฐาน" />
-            <TableView layoutX="13.0" layoutY="59.0" prefHeight="276.0" prefWidth="372.0">
+            <TableView fx:id="cleanIronTable" layoutX="13.0" layoutY="59.0" prefHeight="276.0" prefWidth="372.0">
                <columns>
                   <TableColumn prefWidth="75.0" text="C1" />
                   <TableColumn prefWidth="75.0" text="C2" />
                </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
-            <Button layoutX="224.0" layoutY="29.0" mnemonicParsing="false" text="แก้ไข" />
-            <TextField layoutX="287.0" layoutY="27.0" prefHeight="29.0" prefWidth="98.0" promptText="ค้นหา" />
+            <Button layoutX="224.0" layoutY="29.0" mnemonicParsing="false" onAction="#onClickEditCleanIronBP" text="แก้ไข" />
+            <TextField fx:id="cleanIronSearchField" layoutX="287.0" layoutY="27.0" prefHeight="29.0" prefWidth="98.0" promptText="ค้นหา" />
          </children>
       </Pane>
       <Pane layoutX="236.0" layoutY="407.0" prefHeight="354.0" prefWidth="399.0" style="-fx-background-color: lavender;">
@@ -216,16 +222,19 @@
                   <Font size="25.0" />
                </font>
             </Text>
-            <TextField layoutX="151.0" layoutY="29.0" prefHeight="29.0" prefWidth="69.0" />
+            <TextField fx:id="dryCleanBPField" layoutX="151.0" layoutY="29.0" prefHeight="29.0" prefWidth="69.0" />
             <Text layoutX="101.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ราคาฐาน" />
-            <TableView layoutX="13.0" layoutY="59.0" prefHeight="276.0" prefWidth="372.0">
+            <TableView fx:id="dryCleanTable" layoutX="13.0" layoutY="59.0" prefHeight="276.0" prefWidth="372.0">
                <columns>
                   <TableColumn prefWidth="75.0" text="C1" />
                   <TableColumn prefWidth="75.0" text="C2" />
                </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
-            <Button layoutX="233.0" layoutY="31.0" mnemonicParsing="false" text="แก้ไข" />
-            <TextField layoutX="286.0" layoutY="27.0" prefHeight="29.0" prefWidth="98.0" promptText="ค้นหา" />
+            <Button layoutX="233.0" layoutY="31.0" mnemonicParsing="false" onAction="#onClickEditDryCleanBP" text="แก้ไข" />
+            <TextField fx:id="dryCleanSearchField" layoutX="286.0" layoutY="27.0" prefHeight="29.0" prefWidth="98.0" promptText="ค้นหา" />
          </children>
       </Pane>
       <Pane layoutX="635.0" layoutY="407.0" prefHeight="354.0" prefWidth="399.0" style="-fx-background-color: crimson;">
@@ -235,16 +244,19 @@
                   <Font size="25.0" />
                </font>
             </Text>
-            <TextField layoutX="124.0" layoutY="28.0" prefHeight="29.0" prefWidth="69.0" />
+            <TextField fx:id="ironBPField" layoutX="124.0" layoutY="28.0" prefHeight="29.0" prefWidth="69.0" />
             <Text layoutX="68.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ราคาฐาน" />
-            <TableView layoutX="13.0" layoutY="59.0" prefHeight="276.0" prefWidth="359.0">
+            <TableView fx:id="ironTable" layoutX="13.0" layoutY="59.0" prefHeight="276.0" prefWidth="359.0">
                <columns>
                   <TableColumn prefWidth="75.0" text="C1" />
                   <TableColumn prefWidth="75.0" text="C2" />
                </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
-            <Button layoutX="200.0" layoutY="30.0" mnemonicParsing="false" text="แก้ไข" />
-            <TextField layoutX="274.0" layoutY="28.0" prefHeight="29.0" prefWidth="98.0" promptText="ค้นหา" />
+            <Button layoutX="200.0" layoutY="30.0" mnemonicParsing="false" onAction="#onClickEditIronBP" text="แก้ไข" />
+            <TextField fx:id="ironSearchField" layoutX="274.0" layoutY="28.0" prefHeight="29.0" prefWidth="98.0" promptText="ค้นหา" />
          </children>
       </Pane>
       <Text layoutX="1142.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เพิ่มแก้ไข">
@@ -257,20 +269,20 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <ComboBox layoutX="1147.0" layoutY="252.0" prefHeight="41.0" prefWidth="161.0" />
+      <ComboBox fx:id="serviceCombo" layoutX="1147.0" layoutY="252.0" prefHeight="41.0" prefWidth="161.0" />
       <Text layoutX="1060.0" layoutY="351.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ประเภทผ้า">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <TextField layoutX="1147.0" layoutY="323.0" prefHeight="41.0" prefWidth="161.0" />
+      <TextField fx:id="categoryField" layoutX="1147.0" layoutY="323.0" prefHeight="41.0" prefWidth="161.0" />
       <Text layoutX="1071.0" layoutY="409.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ราคา/ชิ้น">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <TextField layoutX="1147.0" layoutY="381.0" prefHeight="41.0" prefWidth="161.0" />
-      <Button layoutX="1166.0" layoutY="466.0" mnemonicParsing="false" text="ยืนยัน">
+      <TextField fx:id="priceField" layoutX="1147.0" layoutY="381.0" prefHeight="41.0" prefWidth="161.0" />
+      <Button fx:id="confirmBtn" layoutX="1232.0" layoutY="467.0" mnemonicParsing="false" onAction="#onClickConfirm" text="ยืนยัน">
          <font>
             <Font size="22.0" />
          </font>
@@ -282,5 +294,10 @@
          </font>
       </Button>
       <Separator layoutX="1071.0" layoutY="712.0" prefHeight="3.0" prefWidth="270.0" style="-fx-background-color: black;" />
+      <Button fx:id="delBtn" layoutX="1103.0" layoutY="467.0" mnemonicParsing="false" onAction="#onClickDel" prefHeight="42.0" prefWidth="85.0" text="ลบ">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

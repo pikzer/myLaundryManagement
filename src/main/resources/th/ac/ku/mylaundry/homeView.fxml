@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -153,12 +154,7 @@
                   <Image url="@images/main_icon_128px.png" />
                </image>
             </ImageView>
-            <Text layoutX="101.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by My Laundry" />
-            <Text fx:id="shopNameText" layoutX="90.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%ShopName%">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
+            <Text layoutX="114.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by My Laundry" />
             <Separator layoutX="14.0" layoutY="88.0" prefWidth="200.0" style="-fx-background-color: black;" />
             <Button layoutX="53.0" layoutY="745.0" mnemonicParsing="false" onAction="#onClickLogout" prefHeight="15.0" prefWidth="114.0" style="-fx-background-color: transparent;" text="ออกจากระบบ" underline="true">
                <effect>
@@ -168,6 +164,11 @@
                   <Font size="11.0" />
                </font>
             </Button>
+            <Label fx:id="shopNameLabel" layoutX="94.0" layoutY="30.0" text="\%shopNameLabel%">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <TableView fx:id="orderTable" layoutX="265.0" layoutY="399.0" prefHeight="347.0" prefWidth="1058.0" style="-fx-background-color: lightCyan;">
@@ -318,5 +319,11 @@
             </Label>
          </children>
       </Pane>
+      <Text layoutX="737.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="สถานะร้าน">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="shopStatusCombo" layoutX="839.0" layoutY="25.0" prefHeight="39.0" prefWidth="167.0" />
    </children>
 </AnchorPane>

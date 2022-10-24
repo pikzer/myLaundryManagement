@@ -6,10 +6,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import th.ac.ku.mylaundry.service.LaundryApiDataSource;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -21,13 +23,21 @@ public class HomeController extends Navigator {
     protected Parent root;
 
     @FXML
+    Label shopNameLabel;
+
+    @FXML
     Text shopNameText ;
     @FXML
     Label orderLabel, inprogressLabel, finishLabel, notPayLabel, incomeLabel, allCusLabel, memberLabel ;
     @FXML
     TableView orderTable ;
 
-    Integer order = 0, inprogress = 0, finish = 0, notpay = 0, allCus = 0, member = 0 ;
+    @FXML
+    ComboBox shopStatusCombo;
+
+    String status[] = {"ปิด", "เปิด"} ;
+
+    public Integer order = 0, inprogress = 0, finish = 0, notpay = 0, allCus = 0, member = 0 ;
     Double income = 0.00 ;
 
     @FXML
@@ -44,6 +54,24 @@ public class HomeController extends Navigator {
         incomeLabel.setText("฿"+df.format(income));
         allCusLabel.setText(allCus.toString());
         memberLabel.setText(member.toString());
+        shopStatusCombo.getItems().addAll(status);
+        shopStatusCombo.getSelectionModel().select(LaundryApiDataSource.getStatusShop());
+        shopStatusCombo.setOnAction(event -> {
+            if(shopStatusCombo.getSelectionModel().getSelectedItem().equals("เปิด")){
+                try {
+                    LaundryApiDataSource.openShop();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else if(shopStatusCombo.getSelectionModel().getSelectedItem().equals("ปิด")){
+                try {
+                    LaundryApiDataSource.closeShop();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     public void onClickRefresh(ActionEvent event) throws IOException {

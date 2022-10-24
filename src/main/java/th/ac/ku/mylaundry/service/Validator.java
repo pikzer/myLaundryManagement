@@ -26,5 +26,16 @@ public class Validator {
         return matcher.matches();
     }
 
+    public static boolean isDoubleAndPositive(String ddouble){
+        String regex = "^(-?)(0|([1-9][0-9]*))(\\.[0-9]+)?$" ;
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(ddouble);
+        if(matcher.matches() && Double.parseDouble(ddouble) > 0){
+            return true ;
+        }
+        else{
+            return false ;
+        }
+    }
 
 }

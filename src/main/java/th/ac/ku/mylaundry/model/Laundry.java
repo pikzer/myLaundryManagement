@@ -3,7 +3,7 @@ package th.ac.ku.mylaundry.model;
 import java.time.OffsetDateTime;
 
 public class Laundry {
-    private Long id;
+    private Integer id;
     private String name;
     private String phone;
     private String owner;
@@ -13,11 +13,12 @@ public class Laundry {
     private String workDay;
     private String opentime;
     private String closetime;
-    private Long numOfWork;
-    private OffsetDateTime createdAt;
-    private OffsetDateTime updatedAt;
+    private Integer numOfWork;
+
+    private String status;
 
     public Laundry(String name, String phone, String email, String address, String lineID, String workDay, String opentime, String closetime) {
+
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -28,44 +29,64 @@ public class Laundry {
         this.closetime = closetime;
     }
 
-    public Long getID() { return id; }
-    public void setID(Long value) { this.id = value; }
+    public Laundry(Integer id, String name, String phone, String owner, String email, String address, String lineID, String workDay, String opentime, String closetime, Integer numOfWork, String status) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.owner = owner;
+        this.email = email;
+        this.address = address;
+        this.lineID = lineID;
+        this.workDay = workDay;
+        this.opentime = opentime;
+        this.closetime = closetime;
+        this.numOfWork = numOfWork;
+        this.status = status ;
+    }
 
-    public String getName() { return name; }
-    public void setName(String value) { this.name = value; }
+    public Integer getId() {
+        return id;
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String value) { this.phone = value; }
+    public String getName() {
+        return name;
+    }
 
-    public String getOwner() { return owner; }
-    public void setOwner(String value) { this.owner = value; }
+    public String getPhone() {
+        return phone;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String value) { this.email = value; }
+    public String getOwner() {
+        return owner;
+    }
 
-    public String getAddress() { return address; }
-    public void setAddress(String value) { this.address = value; }
+    public String getEmail() {
+        return email;
+    }
 
-    public String getLineID() { return lineID; }
-    public void setLineID(String value) { this.lineID = value; }
+    public String getAddress() {
+        return address;
+    }
 
-    public String getWorkDay() { return workDay; }
-    public void setWorkDay(String value) { this.workDay = value; }
+    public String getLineID() {
+        return lineID;
+    }
 
-    public String getOpentime() { return opentime; }
-    public void setOpentime(String value) { this.opentime = value; }
+    public String getWorkDay() {
+        return workDay;
+    }
 
-    public String getClosetime() { return closetime; }
-    public void setClosetime(String value) { this.closetime = value; }
+    public String getOpentime() {
+        return opentime;
+    }
 
-    public Long getNumOfWork() { return numOfWork; }
-    public void setNumOfWork(Long value) { this.numOfWork = value; }
+    public String getClosetime() {
+        return closetime;
+    }
 
-    public OffsetDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(OffsetDateTime value) { this.createdAt = value; }
-
-    public OffsetDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(OffsetDateTime value) { this.updatedAt = value; }
+    public Integer getNumOfWork() {
+        return numOfWork;
+    }
 
     public String getPostLaundry(){
         return "shopName="+getName()+"&"
