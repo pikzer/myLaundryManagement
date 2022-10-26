@@ -137,7 +137,6 @@ public class ServiceRateApiDataSource extends  ApiCall {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 }

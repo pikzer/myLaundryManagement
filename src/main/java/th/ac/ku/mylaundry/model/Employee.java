@@ -39,6 +39,33 @@ public class Employee {
         this.bankName = bankName;
     }
 
+    public Employee(String name, String phone, String email, String role, String password, Double salary, String address, String idCard, String bankAccountNumber, String bankName) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.role = role;
+        this.password = password;
+        this.salary = salary;
+        this.address = address;
+        this.idCard = idCard;
+        this.bankAccountNumber = bankAccountNumber;
+        this.bankName = bankName;
+    }
+
+    public Employee(Integer id, String name, String phone, String email, String role, String password, Double salary, String address, String idCard, String bankAccountNumber, String bankName) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.role = role;
+        this.password = password;
+        this.salary = salary;
+        this.address = address;
+        this.idCard = idCard;
+        this.bankAccountNumber = bankAccountNumber;
+        this.bankName = bankName;
+    }
+
     public int getId() {
         return id;
     }

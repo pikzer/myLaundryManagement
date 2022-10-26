@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ServiceMemRateView {
+public class ServiceMemRateController {
 
     protected Stage stage;
     protected Scene scene;

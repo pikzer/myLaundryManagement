@@ -3,6 +3,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -16,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.EmployeeController">
+<AnchorPane onMouseClicked="#onClickAnchor" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.EmployeeController">
    <children>
       <TableView fx:id="employeeTable" layoutX="283.0" layoutY="59.0" prefHeight="666.0" prefWidth="660.0">
          <columns>
@@ -29,65 +30,65 @@
             <Font size="28.0" />
          </font>
       </Text>
-      <Text layoutX="1012.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ชื่อ">
+      <Text layoutX="1010.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ชื่อ">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="nameField" layoutX="1039.0" layoutY="124.0" prefHeight="33.0" prefWidth="227.0" />
-      <Text layoutX="979.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เบอร์โทร">
+      <TextField fx:id="nameField" layoutX="1037.0" layoutY="66.0" prefHeight="33.0" prefWidth="227.0" />
+      <Text layoutX="977.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เบอร์โทร">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="phoneField" layoutX="1039.0" layoutY="174.0" prefHeight="33.0" prefWidth="227.0" />
-      <TextField fx:id="emailField" layoutX="1038.0" layoutY="271.0" prefHeight="33.0" prefWidth="227.0" />
-      <Text layoutX="991.0" layoutY="338.0" strokeType="OUTSIDE" strokeWidth="0.0" text="หน้าที่">
+      <TextField fx:id="phoneField" layoutX="1037.0" layoutY="116.0" prefHeight="33.0" prefWidth="227.0" />
+      <TextField fx:id="emailField" layoutX="1036.0" layoutY="213.0" prefHeight="33.0" prefWidth="227.0" />
+      <Text layoutX="989.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="หน้าที่">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <TextArea layoutX="1034.0" layoutY="365.0" prefHeight="81.0" prefWidth="256.0" />
-      <Text layoutX="997.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ที่อยู่">
+      <TextArea fx:id="adsTextArea" layoutX="1032.0" layoutY="307.0" prefHeight="81.0" prefWidth="256.0" />
+      <Text layoutX="995.0" layoutY="322.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ที่อยู่">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <Text layoutX="995.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายละเอียดพนักงาน">
+      <Text layoutX="994.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายละเอียดพนักงาน">
          <font>
             <Font size="28.0" />
          </font>
       </Text>
-      <ComboBox layoutX="1037.0" layoutY="316.0" prefHeight="33.0" prefWidth="148.0" />
-      <Text layoutX="989.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์">
+      <ComboBox fx:id="roleCombo" layoutX="1035.0" layoutY="258.0" prefHeight="33.0" prefWidth="148.0" />
+      <Text layoutX="987.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <Text layoutX="994.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="หมายเลยบัตร">
+      <Text layoutX="992.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="หมายเลยบัตร">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="idCardField" layoutX="1091.0" layoutY="222.0" prefHeight="33.0" prefWidth="248.0" />
-      <Button layoutX="1170.0" layoutY="596.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="148.0" text="แก้ไข/เพิ่ม">
+      <TextField fx:id="idCardField" layoutX="1089.0" layoutY="164.0" prefHeight="33.0" prefWidth="248.0" />
+      <Button layoutX="1177.0" layoutY="656.0" mnemonicParsing="false" onAction="#onClickAddOrEdit" prefHeight="69.0" prefWidth="148.0" text="แก้ไข/เพิ่ม">
          <font>
             <Font size="26.0" />
          </font>
       </Button>
-      <Text layoutX="984.0" layoutY="488.0" strokeType="OUTSIDE" strokeWidth="0.0" text="หมายเลยบัญชี">
+      <Text layoutX="982.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="หมายเลยบัญชี">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="bankNumField" layoutX="1088.0" layoutY="465.0" prefHeight="33.0" prefWidth="237.0" />
-      <Text layoutX="987.0" layoutY="536.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ข้อมูลธนาคาร">
+      <TextField fx:id="bankNumField" layoutX="1086.0" layoutY="407.0" prefHeight="33.0" prefWidth="237.0" />
+      <Text layoutX="985.0" layoutY="478.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ข้อมูลธนาคาร">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <ComboBox fx:id="bankNameCombo" layoutX="1086.0" layoutY="513.0" prefHeight="33.0" prefWidth="148.0" />
-      <Button layoutX="987.0" layoutY="596.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="148.0" text="ลบ">
+      <ComboBox fx:id="bankNameCombo" editable="true" layoutX="1086.0" layoutY="455.0" prefHeight="33.0" prefWidth="148.0" />
+      <Button fx:id="delBtn" layoutX="991.0" layoutY="656.0" mnemonicParsing="false" onAction="#onClickDel" prefHeight="69.0" prefWidth="148.0" text="ลบ">
          <font>
             <Font size="26.0" />
          </font>
@@ -249,5 +250,23 @@
             </Button>
          </children>
       </AnchorPane>
+      <Text layoutX="1031.0" layoutY="569.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รหัสผ่าน">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <PasswordField fx:id="pwdField" layoutX="1093.0" layoutY="547.0" prefHeight="33.0" prefWidth="237.0" />
+      <Text layoutX="991.0" layoutY="609.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ยืนยันรหัสผ่าน">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <PasswordField fx:id="conPwdField" layoutX="1093.0" layoutY="586.0" prefHeight="33.0" prefWidth="237.0" />
+      <Text layoutX="1029.0" layoutY="520.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เงินเดือน" wrappingWidth="58.275001525878906">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <TextField fx:id="salaryField" layoutX="1093.0" layoutY="498.0" prefHeight="33.0" prefWidth="237.0" />
    </children>
 </AnchorPane>
