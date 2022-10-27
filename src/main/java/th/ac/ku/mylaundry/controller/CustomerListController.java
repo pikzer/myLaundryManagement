@@ -16,12 +16,11 @@ import javafx.stage.Stage;
 import th.ac.ku.mylaundry.model.Customer;
 import th.ac.ku.mylaundry.model.MemberPackage;
 import th.ac.ku.mylaundry.service.CustomerApiDataSource;
-import th.ac.ku.mylaundry.service.MemberPackageDataSource;
+import th.ac.ku.mylaundry.service.MemberPackageApiDataSource;
 import th.ac.ku.mylaundry.service.Validator;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CustomerListController extends Navigator {
 
@@ -62,7 +61,7 @@ public class CustomerListController extends Navigator {
     @FXML
     public void initialize() throws IOException {
         customerArrayList = CustomerApiDataSource.getCustomers();
-        memberPackageArrayList = MemberPackageDataSource.getMemberPackage();
+        memberPackageArrayList = MemberPackageApiDataSource.getMemberPackage();
 
         totalLabel.setText("0.00");
         piecesCombo.setDisable(true);

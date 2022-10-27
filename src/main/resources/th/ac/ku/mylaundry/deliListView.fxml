@@ -16,21 +16,20 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.DeliListController">
+<AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.DeliListController">
    <children>
       <Text layoutX="235.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายการรับส่ง">
          <font>
             <Font size="38.0" />
          </font>
       </Text>
-      <TableView layoutX="235.0" layoutY="121.0" prefHeight="598.0" prefWidth="1101.0">
+      <TableView fx:id="deliTable" layoutX="235.0" layoutY="121.0" prefHeight="598.0" prefWidth="1101.0">
          <columns>
             <TableColumn prefWidth="75.0" text="C1" />
             <TableColumn prefWidth="75.0" text="C2" />
          </columns>
       </TableView>
-      <TextField layoutX="1164.0" layoutY="91.0" prefHeight="25.0" prefWidth="172.0" promptText="ค้นหา (เบอร์โทร)" />
+      <TextField fx:id="searchField" layoutX="1164.0" layoutY="91.0" prefHeight="25.0" prefWidth="172.0" promptText="ค้นหา (เบอร์โทร)" />
       <Text layoutX="243.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="วันที่:">
          <font>
             <Font size="18.0" />
@@ -189,13 +188,13 @@
             </Button>
          </children>
       </AnchorPane>
-      <DatePicker layoutX="285.0" layoutY="93.0" prefHeight="25.0" prefWidth="161.0" />
+      <DatePicker fx:id="datePicker" layoutX="285.0" layoutY="93.0" prefHeight="25.0" prefWidth="161.0" />
       <Text layoutX="480.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="งาน:">
          <font>
             <Font size="18.0" />
          </font>
       </Text>
-      <CheckBox layoutX="525.0" layoutY="97.0" mnemonicParsing="false" text="รับผ้า" />
-      <CheckBox layoutX="603.0" layoutY="97.0" mnemonicParsing="false" text="ส่งผ้า" />
+      <CheckBox fx:id="pickCheck" layoutX="525.0" layoutY="97.0" mnemonicParsing="false" text="รับผ้า" />
+      <CheckBox fx:id="deliCheck" layoutX="603.0" layoutY="97.0" mnemonicParsing="false" text="ส่งผ้า" />
    </children>
 </AnchorPane>

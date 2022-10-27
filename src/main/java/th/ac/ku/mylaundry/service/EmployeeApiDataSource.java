@@ -70,6 +70,7 @@ public class EmployeeApiDataSource extends ApiCall {
                     + "email="+employee.getEmail()+"&"+"role="+employee.getRole()+"&"+"password="+"password"
                     +"&"+"salary="+employee.getSalary()+"&"+"address="+employee.getAddress()+"&"+"ID_Card="+employee.getIdCard()
                     + "&"+"bank_account_number="+employee.getBankAccountNumber()+"&"+"bank_name="+employee.getBankName();
+//            var urlParameters = "" + employee.getPostEmployee();
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
             URL url = new URL(baseURL+"employees");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -84,9 +85,10 @@ public class EmployeeApiDataSource extends ApiCall {
             System.out.println(j);
             JSONObject jsonObject = new JSONObject(j);
             return true ;
-        } catch (IOException | JSONException e) {
-            System.out.println(e);
-            return false ;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

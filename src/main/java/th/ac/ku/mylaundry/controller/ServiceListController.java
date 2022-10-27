@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 import th.ac.ku.mylaundry.model.Category;
 import th.ac.ku.mylaundry.model.Customer;
 import th.ac.ku.mylaundry.model.ServiceRate;
-import th.ac.ku.mylaundry.service.ApiCall;
 import th.ac.ku.mylaundry.service.ServiceRateApiDataSource;
 import th.ac.ku.mylaundry.service.Validator;
 
@@ -363,7 +362,7 @@ public class ServiceListController extends Navigator{
             }
     }
         public void onClickMemSerRate(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/serviceMemRateView.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/memberPackageView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

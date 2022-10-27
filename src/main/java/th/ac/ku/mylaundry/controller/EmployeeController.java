@@ -85,6 +85,7 @@ public class EmployeeController extends Navigator{
                 }
             }
         });
+        devOnly();
     }
 
 
@@ -109,6 +110,7 @@ public class EmployeeController extends Navigator{
         salaryCol.setCellValueFactory(new PropertyValueFactory<Employee,String>("salary"));
         employeeTable.getColumns().addAll(idCol,nameCol,roleCol,telCol,emailCol,addressCol,salaryCol) ;
         employeeTable.setItems(employeeObservableList);
+
     }
 
     public void showSelectedEmployee(Employee employee){
@@ -137,6 +139,7 @@ public class EmployeeController extends Navigator{
     }
 
     public void onClickAnchor() throws IOException {
+        selectedEmployee = null ;
         employeeTable.getSelectionModel().clearSelection();
         delBtn.setDisable(true);
         nameField.clear();
@@ -210,38 +213,8 @@ public class EmployeeController extends Navigator{
             }
         }
         else{
-            if(nameField.getText().isEmpty() || phoneField.getText().isEmpty() || idCardField.getText().isEmpty()
-                    || emailField.getText().isEmpty() || roleCombo.getSelectionModel().isEmpty()
-                    || adsTextArea.getText().isEmpty() || bankNumField.getText().isEmpty()
-                    || bankNameCombo.getSelectionModel().isEmpty() ) {
-                pushAlertWarning("กรุณากรอกข้อมูลให้ครบถ้วน");
-            }
-            else if(!Validator.isPhoneNumber(phoneField.getText())){
-                pushAlertWarning("หมายเลขโทรศัพท์ไม่ถูกต้อง");
-            }
-            else if(!Validator.isEmail(emailField.getText())){
-                pushAlertWarning("อีเมลล์ไม่ถูกต้อง");
-            }
-            if(!pwdField.getText().isEmpty()){
-                if(pwdField.getText().length() <= 8 && pwdField.getText().length() >= 32){
-                    pushAlertWarning("รหัสจะต้องมีความยาว 8 ตัวอักษรขึ้นไป");
-                }
-                else if(pwdField.getText().length() >= 32){
-                    pushAlertWarning("รหัสมีความมากกว่า 32 ตัวอักษร");
-                }
-                else if(!pwdField.getText().equals(conPwdField.getText())){
-                    pushAlertWarning("รหัสยืนยันไม่ถูกต้อง");
-                }
-            }
-            // other Validation
-            else if(bankNumField.getText().length() < 10 || bankNumField.getText().length() > 15){
-                pushAlertWarning("หมายเลขบัญชีไม่ถูกต้อง");
-            }
-            else if(!Validator.isDoubleAndPositive(salaryField.getText())){
-                pushAlertWarning("กรุณากรอกเงินเดือนให้ถูกต้อง");
-            }
-            else{
-                Employee employee = new Employee(selectedEmployee.getId(),nameField.getText(),phoneField.getText(),emailField.getText(), roleCombo.getSelectionModel().getSelectedItem().toString(),
+            // TODO
+            Employee employee = new Employee(selectedEmployee.getId(),nameField.getText(),phoneField.getText(),emailField.getText(), roleCombo.getSelectionModel().getSelectedItem().toString(),
                         pwdField.getText(),Double.parseDouble(salaryField.getText()),adsTextArea.getText(), idCardField.getText(),bankNumField.getText(),
                         bankNameCombo.getSelectionModel().getSelectedItem().toString()) ;
                 if(EmployeeApiDataSource.patchEmployee(employee)){
@@ -257,7 +230,54 @@ public class EmployeeController extends Navigator{
                     a.setContentText("แก้ไขไม่สำเร็จ");
                     a.show();
                 }
-            }
+//            if(nameField.getText().isEmpty() || phoneField.getText().isEmpty() || idCardField.getText().isEmpty()
+//                    || emailField.getText().isEmpty() || roleCombo.getSelectionModel().isEmpty()
+//                    || adsTextArea.getText().isEmpty() || bankNumField.getText().isEmpty()
+//                    || bankNameCombo.getSelectionModel().isEmpty() ) {
+//                pushAlertWarning("กรุณากรอกข้อมูลให้ครบถ้วน");
+//            }
+//            else if(!Validator.isPhoneNumber(phoneField.getText())){
+//                pushAlertWarning("หมายเลขโทรศัพท์ไม่ถูกต้อง");
+//            }
+//            else if(!Validator.isEmail(emailField.getText())){
+//                pushAlertWarning("อีเมลล์ไม่ถูกต้อง");
+//            }
+//            if(!pwdField.getText().isEmpty()){
+//                if(pwdField.getText().length() <= 8 && pwdField.getText().length() >= 32){
+//                    pushAlertWarning("รหัสจะต้องมีความยาว 8 ตัวอักษรขึ้นไป");
+//                }
+//                else if(pwdField.getText().length() >= 32){
+//                    pushAlertWarning("รหัสมีความมากกว่า 32 ตัวอักษร");
+//                }
+//                else if(!pwdField.getText().equals(conPwdField.getText())){
+//                    pushAlertWarning("รหัสยืนยันไม่ถูกต้อง");
+//                }
+//            }
+//            // other Validation
+//            else if(bankNumField.getText().length() < 10 || bankNumField.getText().length() > 15){
+//                pushAlertWarning("หมายเลขบัญชีไม่ถูกต้อง");
+//            }
+//            else if(!Validator.isDoubleAndPositive(salaryField.getText())){
+//                pushAlertWarning("กรุณากรอกเงินเดือนให้ถูกต้อง");
+//            }
+//            else{
+//                Employee employee = new Employee(selectedEmployee.getId(),nameField.getText(),phoneField.getText(),emailField.getText(), roleCombo.getSelectionModel().getSelectedItem().toString(),
+//                        pwdField.getText(),Double.parseDouble(salaryField.getText()),adsTextArea.getText(), idCardField.getText(),bankNumField.getText(),
+//                        bankNameCombo.getSelectionModel().getSelectedItem().toString()) ;
+//                if(EmployeeApiDataSource.patchEmployee(employee)){
+//                    Alert a = new Alert(Alert.AlertType.NONE);
+//                    a.setAlertType(Alert.AlertType.INFORMATION);
+//                    a.setContentText("แก้ไขสำเร็จ");
+//                    a.show();
+//                    onClickAnchor();
+//                }
+//                else{
+//                    Alert a = new Alert(Alert.AlertType.NONE);
+//                    a.setAlertType(Alert.AlertType.INFORMATION);
+//                    a.setContentText("แก้ไขไม่สำเร็จ");
+//                    a.show();
+//                }
+//            }
         }
     }
     @FXML

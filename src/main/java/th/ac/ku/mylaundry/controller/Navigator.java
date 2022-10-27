@@ -29,7 +29,7 @@ public class Navigator {
     }
 
     public void onClickOrder(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/newOrderView.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/orderListView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

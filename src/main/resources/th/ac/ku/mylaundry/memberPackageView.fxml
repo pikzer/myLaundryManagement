@@ -12,8 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.ServiceMemRateController">
+<AnchorPane onMouseClicked="#onClickClear" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.MemberPackageController">
    <children>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="48.0" prefWidth="51.0">
          <graphic>
@@ -24,7 +23,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <TableView layoutX="29.0" layoutY="141.0" prefHeight="404.0" prefWidth="415.0">
+      <TableView fx:id="packageTable" layoutX="29.0" layoutY="141.0" prefHeight="404.0" prefWidth="415.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
@@ -40,7 +39,7 @@
             <Font size="15.0" />
          </font>
       </Text>
-      <ComboBox layoutX="582.0" layoutY="192.0" prefHeight="37.0" prefWidth="150.0" />
+      <ComboBox fx:id="serviceCombo" layoutX="582.0" layoutY="192.0" prefHeight="37.0" prefWidth="150.0" />
       <Text layoutX="479.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายละเอียด">
          <font>
             <Font size="25.0" />
@@ -51,20 +50,25 @@
             <Font size="15.0" />
          </font>
       </Text>
-      <TextField layoutX="582.0" layoutY="254.0" prefHeight="37.0" prefWidth="150.0" />
+      <TextField fx:id="numOfClothField" layoutX="582.0" layoutY="254.0" prefHeight="37.0" prefWidth="150.0" />
       <Text layoutX="529.0" layoutY="334.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ราคา">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <TextField layoutX="582.0" layoutY="310.0" prefHeight="37.0" prefWidth="150.0" />
+      <TextField fx:id="priceField" layoutX="582.0" layoutY="310.0" prefHeight="37.0" prefWidth="150.0" />
       <Text layoutX="495.0" layoutY="387.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ราคาต่อชิ้น">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <Label layoutX="583.0" layoutY="373.0" text="Label" />
-      <Button layoutX="582.0" layoutY="461.0" mnemonicParsing="false" text="เพิ่มแก้ไข">
+      <Label fx:id="pricePerPieceLabel" layoutX="583.0" layoutY="373.0" />
+      <Button fx:id="addEditBtn" layoutX="639.0" layoutY="462.0" mnemonicParsing="false" onAction="#onClickAddEdit" text="เพิ่มแก้ไข">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="delBtn" layoutX="521.0" layoutY="462.0" mnemonicParsing="false" onAction="#onClickDel" text="ลบ">
          <font>
             <Font size="18.0" />
          </font>
