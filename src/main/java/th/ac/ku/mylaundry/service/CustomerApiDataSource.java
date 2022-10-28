@@ -8,6 +8,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -76,8 +78,41 @@ public class CustomerApiDataSource extends ApiCall {
         return false;
     }
 
-    public static boolean addMembership(String phone){
+    // TODO Add Membership
+    public static boolean addMembership(int id,String memService, Integer memCredit) throws IOException {
+        URL url = new URL(baseURL+"customers"+"/"+id+"/"+"addMemberService");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestProperty("Authorization","Bearer "+ token);
+        conn.setRequestProperty("Content-Type","application/json");
+        conn.setRequestMethod("PUT");
+        String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
         return false ;
     }
 
+    public static Customer searchCustomer(String phone){
+
+        try {
+            URL url = new URL(baseURL+"customers"+"/"+"search?q="+phone);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestProperty("Content-Type","application/json");
+            conn.setRequestMethod("GET");
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+//            JSONObject jsonObject = new JSONObject(j);
+//            j = j.substring(8,j.length()-1);
+            JSONArray jsonArray = new JSONArray(j) ;
+//            System.out.println(jsonArray);
+//            System.out.println(jsonArray.getJSONObject(0));
+            return new Customer(jsonArray.getJSONObject(0).getInt("id"),
+                    jsonArray.getJSONObject(0).getString("name"),
+                    jsonArray.getJSONObject(0).getString("phone"),
+                    jsonArray.getJSONObject(0).getString("email"),
+                    jsonArray.getJSONObject(0).getInt("isMembership"),
+                    jsonArray.getJSONObject(0).getString("memService"),
+                    jsonArray.getJSONObject(0).getInt("memCredit")
+                    );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
