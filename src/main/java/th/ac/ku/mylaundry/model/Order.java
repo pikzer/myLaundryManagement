@@ -20,72 +20,22 @@ public class Order {
     Double deliSerCharge ;
     Double total;
     String status ;
-    Boolean isMemOrder ;
+    Integer isMemOrder ;
 
 
-    public Order(String service, String name, String responder, Boolean payStatus, String payMethod, Double total, String status, Boolean isMemOrder) {
+    public Order(String service, String payMethod, String status, Integer isMemOrder) {
         this.service = service;
-        this.name = name;
-        this.responder = responder;
-        this.payStatus = payStatus;
         this.payMethod = payMethod;
-        this.total = total;
         this.status = status;
         this.isMemOrder = isMemOrder;
     }
 
-    public Order(String service, String name, String deliDate, String deliTime, String address, String responder, String deliver, Boolean payStatus, String payMethod, Double deliSerCharge, Double total, String status, Boolean isMemOrder) {
+    public Order(String service, String deliDate, String address, Boolean payStatus, String payMethod, Integer isMemOrder) {
         this.service = service;
-        this.name = name;
         this.deliDate = deliDate;
-        this.deliTime = deliTime;
         this.address = address;
-        this.responder = responder;
-        this.deliver = deliver;
         this.payStatus = payStatus;
         this.payMethod = payMethod;
-        this.deliSerCharge = deliSerCharge;
-        this.total = total;
-        this.status = status;
-        this.isMemOrder = isMemOrder;
-    }
-
-    public Order(String service, String name, String pickDate, String pickTime, String deliDate, String deliTime, String address, String responder, String deliver, Boolean payStatus, String payMethod, Double pickSerCharge, Double deliSerCharge, Double total, String status, Boolean isMemOrder) {
-        this.service = service;
-        this.name = name;
-        this.pickDate = pickDate;
-        this.pickTime = pickTime;
-        this.deliDate = deliDate;
-        this.deliTime = deliTime;
-        this.address = address;
-        this.responder = responder;
-        this.deliver = deliver;
-        this.payStatus = payStatus;
-        this.payMethod = payMethod;
-        this.pickSerCharge = pickSerCharge;
-        this.deliSerCharge = deliSerCharge;
-        this.total = total;
-        this.status = status;
-        this.isMemOrder = isMemOrder;
-    }
-
-    public Order(Integer id, String service, String name, String pickDate, String pickTime, String deliDate, String deliTime, String address, String responder, String deliver, Boolean payStatus, String payMethod, Double pickSerCharge, Double deliSerCharge, Double total, String status, Boolean isMemOrder) {
-        this.id = id;
-        this.service = service;
-        this.name = name;
-        this.pickDate = pickDate;
-        this.pickTime = pickTime;
-        this.deliDate = deliDate;
-        this.deliTime = deliTime;
-        this.address = address;
-        this.responder = responder;
-        this.deliver = deliver;
-        this.payStatus = payStatus;
-        this.payMethod = payMethod;
-        this.pickSerCharge = pickSerCharge;
-        this.deliSerCharge = deliSerCharge;
-        this.total = total;
-        this.status = status;
         this.isMemOrder = isMemOrder;
     }
 
@@ -217,11 +167,11 @@ public class Order {
         this.status = status;
     }
 
-    public Boolean getMemOrder() {
+    public Integer getMemOrder() {
         return isMemOrder;
     }
 
-    public void setMemOrder(Boolean memOrder) {
+    public void setMemOrder(Integer memOrder) {
         isMemOrder = memOrder;
     }
 }

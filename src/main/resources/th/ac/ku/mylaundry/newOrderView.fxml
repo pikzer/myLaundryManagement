@@ -380,5 +380,6 @@
             <Button fx:id="showQrBtn" layoutX="521.0" layoutY="142.0" mnemonicParsing="false" onAction="#showQr" prefHeight="28.0" prefWidth="160.0" text="แสดง QR Promptpay" />
          </children>
       </Pane>
+      <Button layoutX="862.0" layoutY="19.0" mnemonicParsing="false" onAction="#onReset" text="รีเซต" />
    </children>
 </AnchorPane>

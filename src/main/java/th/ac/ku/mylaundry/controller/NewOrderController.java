@@ -9,19 +9,36 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import th.ac.ku.mylaundry.model.*;
 import th.ac.ku.mylaundry.service.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+
+
 
 public class NewOrderController extends Navigator {
 
@@ -87,9 +104,13 @@ public class NewOrderController extends Navigator {
         deliDatePicker.setDisable(true);
         addCateBtn.setDisable(true);
         delCateBtn.setDisable(true);
+        makeInvBtn.setDisable(true);
+        showQrBtn.setDisable(true);
+        makeReceiptBtn.setDisable(true);
+        makeTagBtn.setDisable(true);
+        makePayBtn.setDisable(true);
         quantitySpinner.setDisable(true);
         payCombo.getItems().addAll(payMethodList);
-        payCombo.getSelectionModel().select(0);
         initClothList();
         ObservableList<String> customers = FXCollections.observableList(getCusPhone());
         FilteredList<String> filteredItems = new FilteredList<String>(customers);
@@ -159,7 +180,6 @@ public class NewOrderController extends Navigator {
             }
             else if(payCombo.getSelectionModel().getSelectedItem().toString().equals("สมาขิก")){
                 selectPayMethod = "สมาชิก" ;
-                showQrBtn.setDisable(true);
                 cartClothList = new ArrayList<>();
                 total = 0;
                 updateClothListTable();
@@ -290,11 +310,17 @@ public class NewOrderController extends Navigator {
             memBalanceLabel.setText("-");
             payCombo.getItems().clear();
             payCombo.getItems().addAll(payMethodList);
+            if(CustomerApiDataSource.getCustomerAddress(customer.getId()) != null){
+                adsArea.setText(CustomerApiDataSource.getCustomerAddress(customer.getId()).getuCode());
+            }
         }
         else{
             payCombo.getItems().add("สมาขิก") ;
             serviceTypeLabel.setText(customer.getMemService());
             memBalanceLabel.setText(customer.getMemCredit().toString());
+            if(CustomerApiDataSource.getCustomerAddress(customer.getId()) != null){
+                adsArea.setText(CustomerApiDataSource.getCustomerAddress(customer.getId()).getuCode());
+            }
         }
     }
     public ArrayList<String> getOrderId(){
@@ -592,6 +618,7 @@ public class NewOrderController extends Navigator {
         return q;
     }
 
+
     public void clearCategorySelect(){
         categoryTable.getSelectionModel().clearSelection();
         quantitySpinner.setDisable(true);
@@ -602,8 +629,18 @@ public class NewOrderController extends Navigator {
         updateSpinnerValue(0);
     }
 
-    public void showQr(){
 
+    public void showQr(ActionEvent event){
+        StackPane secondaryLayout = new StackPane();
+        Scene secondScene = new Scene(secondaryLayout, 500, 500);
+        Stage newWindow = new Stage();
+
+//        ThaiQRPromptPay qr = new ThaiQRPromptPay.Builder().dynamicQR().creditTransfer().mobileNumber("0812345678").amount(new BigDecimal("100.00")).build();
+
+        newWindow.setTitle("Second Stage");
+        newWindow.setScene(secondScene);
+
+        newWindow.show();
     }
 
     public void newCustomer(ActionEvent event) throws IOException {
@@ -626,12 +663,84 @@ public class NewOrderController extends Navigator {
         serviceLabel.setText(clothList.getService());
         pricePerUnitLabel.setText(f.format(clothList.getPricePerUnit()));
     }
+    
+    public String getMostService(){
+        if(selectCustomer != null){
+            List<String> service = new ArrayList<>();
+            for (ClothList c:cartClothList) {
+                service.add(c.getService());
+            }
+            String mostRepeatedWord
+                    = service.stream()
+                    .collect(Collectors.groupingBy(w -> w, Collectors.counting()))
+                    .entrySet()
+                    .stream()
+                    .max(Comparator.comparing(Map.Entry::getValue))
+                    .get()
+                    .getKey();
+            return mostRepeatedWord;
+        }
+        return null;
+    }
 
     public void makeOrder(){
-        if(selectPayMethod.equals("สมาชิก")){
-            if(showCartQuantity() > selectCustomer.getMemCredit()){
-                pushAlertWarning("ไม่สามารถทำรายการได้ เพราะจำนวนผ้ามีมากกว่าต้ามสมาชิก", Alert.AlertType.ERROR);
+        if(cartClothList.size() <= 0){
+            pushAlertWarning("กรุณาเพิ่มรายการผ้า", Alert.AlertType.WARNING);
+        }
+        else {
+            String mainService = getMostService() ;
+            // Order With Member Ship
+            if(selectPayMethod.equals("สมาชิก")){
+                if(showCartQuantity() > selectCustomer.getMemCredit()){
+                    pushAlertWarning("ไม่สามารถทำรายการได้ เพราะจำนวนผ้ามีมากกว่าต้ามสมาชิก", Alert.AlertType.ERROR);
+                }
             }
+            // Order no MemberShip
+            else{
+                // if deli
+                if(!deliCheck.isSelected()){
+                    if(OrderApiDataSource.addOrderWithNoDeli(selectCustomer.getPhone(),new Order(mainService,selectPayMethod,
+                            "order in",0), cartClothList)){
+                        pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
+                        onMakeOrderComplete();
+                    }
+                    else{
+                        pushAlertWarning("ทำรายการไม่สำเร็จ", Alert.AlertType.ERROR);
+                    }
+                }
+                else{
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    if(adsArea.getText() != null && deliDatePicker.getValue() != null){
+                        if(OrderApiDataSource.addOrderWithDeli(selectCustomer.getPhone(),new Order(mainService,
+                                deliDatePicker.getValue().format(formatter),
+                                adsArea.getText(),false,payCombo.getSelectionModel().getSelectedItem().toString(),
+                                0),cartClothList)){
+                            pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
+                            onMakeOrderComplete();
+                        }
+                        else{
+                            pushAlertWarning("ทำรายการไม่สำเร็จ", Alert.AlertType.ERROR);
+                        }
+                    }
+                    else{
+                        pushAlertWarning("กรุณากรอกข้อมูลให้ครบถ้วน", Alert.AlertType.WARNING);
+                    }
+                }
+            }
+        }
+
+    }
+
+    public void onMakeOrderComplete(){
+        makePayBtn.setDisable(false);
+        makeTagBtn.setDisable(false);
+        makeInvBtn.setDisable(false);
+        makeReceiptBtn.setDisable(false);
+        makeOrderBtn.setDisable(true);
+        categoryTable.setDisable(true);
+        addCateBtn.setDisable(true);
+        if(payCombo.getSelectionModel().getSelectedItem().toString().equals("QR")){
+            showQrBtn.setDisable(false);
         }
     }
 
@@ -648,7 +757,15 @@ public class NewOrderController extends Navigator {
     }
 
     public void payMoney(){
-        OrderApiDataSource.payMoney();
+
+    }
+
+    public void onReset(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/newOrderView.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void pushAlertWarning(String message, Alert.AlertType alertType){

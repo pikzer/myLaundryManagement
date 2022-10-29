@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane onMouseClicked="#onClickAnchor" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.CustomerListController">
+<AnchorPane onMouseClicked="#onClickAnchor" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.CustomerListController">
    <children>
       <AnchorPane prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
          <children>
@@ -250,7 +250,7 @@
             <Font size="19.0" />
          </font>
       </Label>
-      <Button fx:id="addMemBtn" layoutX="1178.0" layoutY="655.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="130.0" text="เพิ่ม">
+      <Button fx:id="addMemBtn" layoutX="1178.0" layoutY="655.0" mnemonicParsing="false" onAction="#onClickAddMem" prefHeight="44.0" prefWidth="130.0" text="เพิ่ม">
          <font>
             <Font size="16.0" />
          </font>

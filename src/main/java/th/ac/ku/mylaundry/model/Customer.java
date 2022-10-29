@@ -19,6 +19,14 @@ public class Customer {
         this.memCredit = memCredit;
     }
 
+    public void setMemService(String memService) {
+        this.memService = memService;
+    }
+
+    public void setMemCredit(Integer memCredit) {
+        this.memCredit = memCredit;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -2,6 +2,7 @@ package th.ac.ku.mylaundry.service;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import th.ac.ku.mylaundry.model.Address;
 import th.ac.ku.mylaundry.model.Customer;
 
 import java.io.DataOutputStream;
@@ -49,11 +50,50 @@ public class CustomerApiDataSource extends ApiCall {
         }
     }
 
-    public static boolean addNewCustomer(String name, String phone){
+    public static boolean addNewCustomer(String name, String phone, String ucode){
         var urlParameters = "name="+name+"&"+"phone="+phone;
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         try {
             URL url = new URL(baseURL+"customers");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            JSONObject jsonObject = new JSONObject(j);
+
+            urlParameters = "u_code="+ucode+"&"+"cus_phone="+phone;
+            postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+            url = new URL(baseURL+"address");
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+
+    }
+
+    public static boolean updateCustomer(int id,String name, String phone, String email){
+        var urlParameters = "name="+name+"&"+"phone="+phone+"email="+email;
+        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+        try {
+            URL url = new URL(baseURL+"customers"+"/"+id);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
@@ -73,19 +113,22 @@ public class CustomerApiDataSource extends ApiCall {
         }
     }
 
-    public static boolean updateCustomer(Customer customer){
-
-        return false;
-    }
-
     // TODO Add Membership
     public static boolean addMembership(int id,String memService, Integer memCredit) throws IOException {
+        var urlParameters = "memService="+memService+"&"+"memCredit="+memCredit;
+        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         URL url = new URL(baseURL+"customers"+"/"+id+"/"+"addMemberService");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestProperty("Authorization","Bearer "+ token);
-        conn.setRequestProperty("Content-Type","application/json");
+        conn.setRequestProperty("User-Agent", "Java client");
+        conn.setDoOutput(true);
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         conn.setRequestMethod("PUT");
+        try (var wr = new DataOutputStream(conn.getOutputStream())) {
+            wr.write(postData);
+        }
         String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+        System.out.println(j);
         return false ;
     }
 
@@ -106,7 +149,7 @@ public class CustomerApiDataSource extends ApiCall {
             return new Customer(jsonArray.getJSONObject(0).getInt("id"),
                     jsonArray.getJSONObject(0).getString("name"),
                     jsonArray.getJSONObject(0).getString("phone"),
-                    jsonArray.getJSONObject(0).getString("email"),
+                    jsonArray.getJSONObject(0).get("email").toString(),
                     jsonArray.getJSONObject(0).getInt("isMembership"),
                     jsonArray.getJSONObject(0).getString("memService"),
                     jsonArray.getJSONObject(0).getInt("memCredit")
@@ -114,5 +157,27 @@ public class CustomerApiDataSource extends ApiCall {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Address getCustomerAddress(int id){
+        try {
+            URL url = new URL(baseURL+"customers"+"/"+id+"/"+"getCustomerAddress");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestProperty("Content-Type","application/json");
+            conn.setRequestMethod("GET");
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            if(j.equals("[]")){
+                return null;
+            }
+            JSONArray jsonArray = new JSONArray(j) ;
+            return new Address(jsonArray.getJSONObject(0).getInt("id"),jsonArray.getJSONObject(0).getString("u_code"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateAddress(Address address){
+
     }
 }

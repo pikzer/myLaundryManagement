@@ -21,6 +21,7 @@ import th.ac.ku.mylaundry.service.Validator;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class CustomerListController extends Navigator {
 
@@ -197,9 +198,13 @@ public class CustomerListController extends Navigator {
     }
 
     public void showOnSelect(Customer newValue){
+        adsTextArea.clear();
         nameField.setText(newValue.getName());
         telField.setText(newValue.getPhone());
         emailField.setText(newValue.getEmail());
+        if(CustomerApiDataSource.getCustomerAddress(newValue.getId()) != null){
+            adsTextArea.setText(CustomerApiDataSource.getCustomerAddress(newValue.getId()).getuCode());
+        }
         piecesCombo.setDisable(false);
         serviceAddCombo.setDisable(false);
         addMemBtn.setDisable(false);
@@ -208,24 +213,50 @@ public class CustomerListController extends Navigator {
     }
 
     public void onClickAddEditCus(ActionEvent event) throws IOException {
-        if(cusTable.getSelectionModel().isEmpty()){
+        if (cusTable.getSelectionModel().isEmpty()) {
             // ADD
-            if(!nameField.getText().isEmpty() && Validator.isPhoneNumber(telField.getText())){
-                if(CustomerApiDataSource.addNewCustomer(nameField.getText(),telField.getText())){
+            if (!nameField.getText().isEmpty() && Validator.isPhoneNumber(telField.getText()) && !adsTextArea.getText().isEmpty()) {
+                if (CustomerApiDataSource.addNewCustomer(nameField.getText(), telField.getText(), adsTextArea.getText())) {
                     pushAlert("เพิ่มลูกค้าสำเร็จ", Alert.AlertType.INFORMATION);
                     clearAll();
-                }
-                else{
+                } else {
                     pushAlert("เพิ่มลูกค้าไม่สำเร็จ", Alert.AlertType.ERROR);
                     clearAll();
                 }
             }
-            // UPDATE
-            else{
-                CustomerApiDataSource.updateCustomer(selectedCus);
+        }
+        else{
+            if(!nameField.getText().isEmpty() && !telField.getText().isEmpty()){
+                if(emailField.getText().isEmpty()){
+                    if(!Validator.isPhoneNumber(telField.getText())){
+                        if(CustomerApiDataSource.updateCustomer(selectedCus.getId(),nameField.getText(),
+                                telField.getText(),null)){
+                            pushAlert("แก้ไขข้อมูลลูกค้าสำเร็จ", Alert.AlertType.INFORMATION);
+                            cusTable.refresh();
+                            onClickAnchor();
+                        }
+                        else{
+                            pushAlert("แก้ไขข้อมูลลูกค้าไม่สำเร็จ", Alert.AlertType.ERROR);
+                        }
+                    }
+                }
+                else{
+                    if(!Validator.isPhoneNumber(telField.getText()) && !Validator.isEmail(emailField.getText())){
+                        if(CustomerApiDataSource.updateCustomer(selectedCus.getId(),nameField.getText(),
+                                telField.getText(),null)){
+                            pushAlert("แก้ไขข้อมูลลูกค้าสำเร็จ", Alert.AlertType.INFORMATION);
+                            cusTable.refresh();
+                            onClickAnchor();
+                        }
+                        else{
+                            pushAlert("แก้ไขข้อมูลลูกค้าไม่สำเร็จ", Alert.AlertType.ERROR);
+                        }
+                    }
+                }
             }
         }
     }
+
     public void onClickAnchor() throws IOException {
         clearAll();
     }
@@ -237,6 +268,7 @@ public class CustomerListController extends Navigator {
         nameField.clear();
         telField.clear();
         emailField.clear();
+        adsTextArea.clear();
         initialize();
     }
 
@@ -259,6 +291,46 @@ public class CustomerListController extends Navigator {
             }
         }
         return arr.toArray(new Integer[0]);
+    }
+
+    public void onClickAddMem() throws IOException {
+        if(serviceAddCombo.getSelectionModel().getSelectedItem() != null && piecesCombo.getSelectionModel().getSelectedItem() != null){
+            if(selectedCus.getMemCredit() == 0){
+                selectedCus.setMemCredit(piecesCombo.getSelectionModel().getSelectedItem());
+                selectedCus.setMemService(serviceAddCombo.getSelectionModel().getSelectedItem());
+                CustomerApiDataSource.addMembership(selectedCus.getId(),selectedCus.getMemService(),selectedCus.getMemCredit());
+                cusTable.refresh();
+                pushAlert("เพิ่มสมาชิกสำเร็จ", Alert.AlertType.INFORMATION);
+            }
+            else if(selectedCus.getMemCredit() != 0){
+                if(selectedCus.getMemService().equals(serviceAddCombo.getSelectionModel().getSelectedItem())){
+                    selectedCus.setMemCredit(selectedCus.getMemCredit()+piecesCombo.getSelectionModel().getSelectedItem());
+                    CustomerApiDataSource.addMembership(selectedCus.getId(),selectedCus.getMemService(),selectedCus.getMemCredit());
+                    pushAlert("เพิ่มสมาชิกสำเร็จ", Alert.AlertType.INFORMATION);
+                    cusTable.refresh();
+                    onClickAnchor();
+                }
+                else{
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Replace member package");
+                    alert.setHeaderText("Are you sure want to replace package?");
+                    Optional<ButtonType> option = alert.showAndWait();
+                    if(option.get() == null){
+
+                    }
+                    else if (option.get() == ButtonType.OK) {
+                        selectedCus.setMemCredit(piecesCombo.getSelectionModel().getSelectedItem());
+                        selectedCus.setMemService(serviceAddCombo.getSelectionModel().getSelectedItem());
+                        CustomerApiDataSource.addMembership(selectedCus.getId(),selectedCus.getMemService(),selectedCus.getMemCredit());
+                        pushAlert("เพิ่มสมาชิกสำเร็จ", Alert.AlertType.INFORMATION);
+                        cusTable.refresh();
+//                        onClickAnchor();
+                    } else if (option.get() == ButtonType.CANCEL) {
+                    } else {
+                    }
+                }
+            }
+        }
     }
 
     public void pushAlert(String message,Alert.AlertType alertType){
