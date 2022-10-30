@@ -180,4 +180,25 @@ public class CustomerApiDataSource extends ApiCall {
     public void updateAddress(Address address){
 
     }
+
+//    public static Integer getNumOfCus() throws IOException {
+//        URL url = new URL(baseURL + "customers"+"/getNumOfCustomer");
+//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//        conn.setRequestProperty("Authorization", "Bearer " + token);
+//        conn.setRequestProperty("Content-Type", "application/json");
+//        conn.setRequestMethod("GET");
+//        String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+//        JSONObject jsonObject = new JSONObject(j);
+//        return jsonObject.getInt("numOfCus");
+//    }
+//    public static Integer getNumOfMem() throws IOException {
+//        URL url = new URL(baseURL + "customers"+"/getNumOfMember");
+//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//        conn.setRequestProperty("Authorization", "Bearer " + token);
+//        conn.setRequestProperty("Content-Type", "application/json");
+//        conn.setRequestMethod("GET");
+//        String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+//        JSONObject jsonObject = new JSONObject(j);
+//        return jsonObject.getInt("numOfMem");
+//    }
 }

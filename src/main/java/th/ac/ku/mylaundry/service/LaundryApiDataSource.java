@@ -100,4 +100,15 @@ public class LaundryApiDataSource extends ApiCall {
         }
     }
 
+    public static String getLaundryName(int id) throws IOException {
+        URL url = new URL(baseURL + "laundry/"+id+"/getName");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestProperty("Authorization", "Bearer " + token);
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestMethod("GET");
+        String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+        JSONObject jsonObject = new JSONObject(j);
+        return jsonObject.getString("name");
+    }
+
 }

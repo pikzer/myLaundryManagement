@@ -7,6 +7,7 @@ public class Order {
     Integer id;
     String service ;
     String name ;
+    String cus_phone;
     String pickDate ;
     String pickTime ;
     String deliDate ;
@@ -14,7 +15,7 @@ public class Order {
     String address ;
     String responder ;
     String deliver ;
-    Boolean payStatus ;
+    Integer payStatus ;
     String payMethod ;
     Double pickSerCharge ;
     Double deliSerCharge ;
@@ -30,12 +31,50 @@ public class Order {
         this.isMemOrder = isMemOrder;
     }
 
-    public Order(String service, String deliDate, String address, Boolean payStatus, String payMethod, Integer isMemOrder) {
+    public Order(String service, String deliDate, String deliTime, String address, Integer payStatus, String payMethod, Integer isMemOrder) {
         this.service = service;
         this.deliDate = deliDate;
+        this.deliTime = deliTime ;
         this.address = address;
         this.payStatus = payStatus;
         this.payMethod = payMethod;
+        this.isMemOrder = isMemOrder;
+    }
+
+    public Order(Integer id,String cus_phone, String service, String name, String pickDate, String pickTime, String deliDate, String deliTime, String address, String responder, String deliver, Integer payStatus, String payMethod, Double pickSerCharge, Double deliSerCharge, Double total, String status, Integer isMemOrder) {
+        this.id = id;
+        this.cus_phone = cus_phone;
+        this.service = service;
+        this.name = name;
+        this.pickDate = pickDate;
+        this.pickTime = pickTime;
+        this.deliDate = deliDate;
+        this.deliTime = deliTime;
+        this.address = address;
+        this.responder = responder;
+        this.deliver = deliver;
+        this.payStatus = payStatus;
+        this.payMethod = payMethod;
+        this.pickSerCharge = pickSerCharge;
+        this.deliSerCharge = deliSerCharge;
+        this.total = total;
+        this.status = status;
+        this.isMemOrder = isMemOrder;
+    }
+
+    public String getCus_phone() {
+        return cus_phone;
+    }
+
+    public void setCus_phone(String cus_phone) {
+        this.cus_phone = cus_phone;
+    }
+
+    public Integer getIsMemOrder() {
+        return isMemOrder;
+    }
+
+    public void setIsMemOrder(Integer isMemOrder) {
         this.isMemOrder = isMemOrder;
     }
 
@@ -119,11 +158,11 @@ public class Order {
         this.deliver = deliver;
     }
 
-    public Boolean getPayStatus() {
+    public Integer getPayStatus() {
         return payStatus;
     }
 
-    public void setPayStatus(Boolean payStatus) {
+    public void setPayStatus(Integer payStatus) {
         this.payStatus = payStatus;
     }
 

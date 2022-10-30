@@ -29,12 +29,10 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -52,11 +50,11 @@ public class NewOrderController extends Navigator {
     @FXML
     TableView categoryTable, clothListTable;
     @FXML
-    ComboBox telCombo, orderCombo, payCombo;
+    ComboBox telCombo, payCombo, timeCombo;
     @FXML
     TextField cateSearchField, subTotalField, deliveryPriceField, taxField, totalField ;
     @FXML
-    Label serviceLabel, cateLabel, pricePerUnitLabel, priceCateLabel, serviceTypeLabel, memBalanceLabel, quantityLabel ;
+    Label serviceLabel, cateLabel, pricePerUnitLabel, priceCateLabel, serviceTypeLabel, memBalanceLabel, quantityLabel, nameLabel ;
     @FXML
     Spinner quantitySpinner ;
     @FXML
@@ -64,13 +62,14 @@ public class NewOrderController extends Navigator {
     @FXML
     TextArea adsArea;
     @FXML
-    DatePicker receiveDatePicker, deliDatePicker;
+    DatePicker  deliDatePicker;
     @FXML
     Pane pane;
 
     double total ;
     double vat ;
     double deliCharge ;
+    int orderId ;
 
     ArrayList<Cloth> onShowClothList ;
     ArrayList<ClothList> cartClothList ;
@@ -84,14 +83,18 @@ public class NewOrderController extends Navigator {
     Customer selectCustomer ;
     String selectPayMethod ;
     ClothList selectClothList ;
+    boolean makeOrder ;
 
-    String payMethodList[] = {"เงินสด","QR"};
+    String payMethodList[] = {"เงินสด","พร้อมเพย์"};
+    String timeList[] =  {"ช่วงเช้า","ช่วงบ่าย","ช่วงเย็น"} ;
 
     public void initialize() throws IOException {
         serviceRatesData = ServiceRateApiDataSource.getServiceRate();
         total = 0 ;
+        orderId = 0 ;
         deliCharge = 0;
         vat = 0;
+        makeOrder = false ;
         cartClothList = new ArrayList<>();
         showCleanBtn.setDisable(true);
         showCleanService();
@@ -99,13 +102,14 @@ public class NewOrderController extends Navigator {
         quantitySpinner.setDisable(true);
         showQrBtn.setDisable(true);
         initSpinner();
+        timeCombo.getItems().addAll(timeList);
         adsArea.setDisable(true);
-        receiveDatePicker.setDisable(true);
         deliDatePicker.setDisable(true);
         addCateBtn.setDisable(true);
         delCateBtn.setDisable(true);
         makeInvBtn.setDisable(true);
         showQrBtn.setDisable(true);
+        timeCombo.setDisable(true);
         makeReceiptBtn.setDisable(true);
         makeTagBtn.setDisable(true);
         makePayBtn.setDisable(true);
@@ -116,10 +120,17 @@ public class NewOrderController extends Navigator {
         FilteredList<String> filteredItems = new FilteredList<String>(customers);
         telCombo.getEditor().textProperty().addListener(new InputFilter(telCombo,filteredItems,false));
         telCombo.setItems(filteredItems);
-        ObservableList<String> orderId = FXCollections.observableList(getOrderId());
-        FilteredList<String> filteredItemsId = new FilteredList<String>(orderId);
-        orderCombo.getEditor().textProperty().addListener(new InputFilter(orderCombo,filteredItemsId,false));
-        orderCombo.setItems(filteredItemsId);
+        deliDatePicker.setValue(LocalDate.now().plusDays(1));
+        deliDatePicker.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+
+                setDisable(empty || date.compareTo(today.plusDays(1)) < 0 );
+            }
+        });
+
+
 
         deliCheck.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -128,14 +139,14 @@ public class NewOrderController extends Navigator {
                     addDeliCharge();
                     updatePrice();
                     adsArea.setDisable(false);
-                    receiveDatePicker.setDisable(false);
                     deliDatePicker.setDisable(false);
+                    timeCombo.setDisable(false);
                 }
                 else{
                     removeDelCharge();
                     updatePrice();
                     adsArea.setDisable(true);
-                    receiveDatePicker.setDisable(true);
+                    timeCombo.setDisable(true);
                     deliDatePicker.setDisable(true);
                 }
             }
@@ -162,10 +173,9 @@ public class NewOrderController extends Navigator {
         }));
         telCombo.setOnAction(event -> {
             if(telCombo.getSelectionModel().isEmpty()){
-                orderCombo.setDisable(false);
+
             }
             if(!telCombo.getSelectionModel().isEmpty()){
-                orderCombo.setDisable(true);
                 if(Validator.isPhoneNumber(telCombo.getSelectionModel().getSelectedItem().toString())){
                     selectCustomer = CustomerApiDataSource.searchCustomer(telCombo.getSelectionModel().getSelectedItem().toString());
                     if(selectCustomer != null){
@@ -222,8 +232,8 @@ public class NewOrderController extends Navigator {
                 showCleanService();
 
             }
-            else if(payCombo.getSelectionModel().getSelectedItem().toString().equals("QR")){
-                selectPayMethod = "QR" ;
+            else if(payCombo.getSelectionModel().getSelectedItem().toString().equals("พร้อมเพย์")){
+                selectPayMethod = "พร้อมเพย์" ;
                 showCleanBtn.setDisable(false);
                 showDryCleanBtn.setDisable(false);
                 showCleanIronBtn.setDisable(false);
@@ -237,14 +247,17 @@ public class NewOrderController extends Navigator {
 
     public void addDeliCharge(){
         int n = showCartQuantity();
-        if(n < 15){
+        if(n <= 15){
             deliCharge = 15 ;
         }
-        else if(n > 15 && n < 50){
+        else if(n > 15 && n <= 30){
             deliCharge = 25 ;
         }
+        else if(n > 30 && n <= 50){
+            deliCharge = 30  ;
+        }
         else if(n > 50){
-            deliCharge = 0 ;
+           deliCharge = 0 ;
         }
     }
     public void removeDelCharge(){
@@ -305,6 +318,7 @@ public class NewOrderController extends Navigator {
     }
 
     public void showCustomerData(Customer customer){
+        nameLabel.setText(customer.getName());
         if(customer.getIsMembership() == 0){
             serviceTypeLabel.setText("-");
             memBalanceLabel.setText("-");
@@ -323,16 +337,7 @@ public class NewOrderController extends Navigator {
             }
         }
     }
-    public ArrayList<String> getOrderId(){
-        ArrayList<String> orderId = new ArrayList<>();
-        ArrayList<Order> orderArrayList = OrderApiDataSource.getOrderList() ;
-        for (Order or:orderArrayList) {
-            if(or.getStatus().equals("pick up")){
-                orderId.add(or.getName());
-            }
-        }
-        return orderId;
-    }
+
 
 
 
@@ -377,7 +382,7 @@ public class NewOrderController extends Navigator {
 
 
     public void showCleanService(){
-        if(selectPayMethod == null || selectPayMethod.equals("เงินสด") || selectPayMethod.equals("QR")){
+        if(selectPayMethod == null || selectPayMethod.equals("เงินสด") || selectPayMethod.equals("พร้อมเพย์")){
             showCleanBtn.setDisable(true);
             showCleanIronBtn.setDisable(false);
             showDryCleanBtn.setDisable(false);
@@ -412,7 +417,7 @@ public class NewOrderController extends Navigator {
 
 
     public void showCleanIronService(){
-        if(selectPayMethod == null || selectPayMethod.equals("เงินสด") || selectPayMethod.equals("QR")){
+        if(selectPayMethod == null || selectPayMethod.equals("เงินสด") || selectPayMethod.equals("พร้อมเพย์")){
             showCleanBtn.setDisable(false);
             showCleanIronBtn.setDisable(true);
             showDryCleanBtn.setDisable(false);
@@ -652,16 +657,22 @@ public class NewOrderController extends Navigator {
     }
 
     public void showSelectClothList(ClothList clothList){
-        selectCloth = null ;
-        selectClothList = clothList ;
-        delCateBtn.setDisable(false);
-        addCateBtn.setDisable(false);
-        categoryTable.getSelectionModel().clearSelection();
-        quantitySpinner.setDisable(false);
-        updateSpinnerValue(clothList.getQuantity());
-        cateLabel.setText(clothList.getCategory());
-        serviceLabel.setText(clothList.getService());
-        pricePerUnitLabel.setText(f.format(clothList.getPricePerUnit()));
+        if(makeOrder == true){
+
+        }
+        else{
+            selectCloth = null ;
+            selectClothList = clothList ;
+            delCateBtn.setDisable(false);
+            addCateBtn.setDisable(false);
+            categoryTable.getSelectionModel().clearSelection();
+            quantitySpinner.setDisable(false);
+            updateSpinnerValue(clothList.getQuantity());
+            cateLabel.setText(clothList.getCategory());
+            serviceLabel.setText(clothList.getService());
+            pricePerUnitLabel.setText(f.format(clothList.getPricePerUnit()));
+        }
+
     }
     
     public String getMostService(){
@@ -694,29 +705,67 @@ public class NewOrderController extends Navigator {
                 if(showCartQuantity() > selectCustomer.getMemCredit()){
                     pushAlertWarning("ไม่สามารถทำรายการได้ เพราะจำนวนผ้ามีมากกว่าต้ามสมาชิก", Alert.AlertType.ERROR);
                 }
+                else{
+                    if(!deliCheck.isSelected()){
+                        orderId = OrderApiDataSource.addOrderWithNoDeli(selectCustomer.getPhone(),new Order(mainService,selectPayMethod,
+                                "order in",1), cartClothList);
+                        if(orderId != 0){
+                            pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
+                            onMakeOrderComplete();
+                            makeOrder = true ;
+                        }
+                        else{
+                            pushAlertWarning("ทำรายการไม่สำเร็จ", Alert.AlertType.ERROR);
+                        }
+                    }
+                    else{
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        if(adsArea.getText() != null && deliDatePicker.getValue() != null && timeCombo.getSelectionModel() != null){
+                            orderId = OrderApiDataSource.addOrderWithDeli(selectCustomer.getPhone(),new Order(mainService,
+                                    deliDatePicker.getValue().format(formatter),timeCombo.getSelectionModel().getSelectedItem().toString(),
+                                    adsArea.getText(),0,payCombo.getSelectionModel().getSelectedItem().toString(),
+                                    1),cartClothList);
+                            if(orderId != 0){
+                                pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
+                                onMakeOrderComplete();
+                                makeOrder = true ;
+                            }
+                            else{
+                                pushAlertWarning("ทำรายการไม่สำเร็จ", Alert.AlertType.ERROR);
+                            }
+                        }
+                        else{
+                            pushAlertWarning("กรุณากรอกข้อมูลให้ครบถ้วน", Alert.AlertType.WARNING);
+                        }
+                    }
+                }
             }
             // Order no MemberShip
             else{
                 // if deli
                 if(!deliCheck.isSelected()){
-                    if(OrderApiDataSource.addOrderWithNoDeli(selectCustomer.getPhone(),new Order(mainService,selectPayMethod,
-                            "order in",0), cartClothList)){
+                    orderId = OrderApiDataSource.addOrderWithNoDeli(selectCustomer.getPhone(),new Order(mainService,selectPayMethod,
+                            "order in",0), cartClothList);
+                    if(orderId != 0){
                         pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
                         onMakeOrderComplete();
+                        makeOrder = true ;
                     }
                     else{
                         pushAlertWarning("ทำรายการไม่สำเร็จ", Alert.AlertType.ERROR);
                     }
                 }
                 else{
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    if(adsArea.getText() != null && deliDatePicker.getValue() != null){
-                        if(OrderApiDataSource.addOrderWithDeli(selectCustomer.getPhone(),new Order(mainService,
-                                deliDatePicker.getValue().format(formatter),
-                                adsArea.getText(),false,payCombo.getSelectionModel().getSelectedItem().toString(),
-                                0),cartClothList)){
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    if(adsArea.getText() != null && deliDatePicker.getValue() != null && timeCombo.getSelectionModel().getSelectedItem() != null){
+                        orderId = OrderApiDataSource.addOrderWithDeli(selectCustomer.getPhone(),new Order(mainService,
+                                deliDatePicker.getValue().format(formatter),timeCombo.getSelectionModel().getSelectedItem().toString(),
+                                adsArea.getText(),0,payCombo.getSelectionModel().getSelectedItem().toString(),
+                                0),cartClothList);
+                        if(orderId != 0){
                             pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
                             onMakeOrderComplete();
+                            makeOrder = true ;
                         }
                         else{
                             pushAlertWarning("ทำรายการไม่สำเร็จ", Alert.AlertType.ERROR);
@@ -736,10 +785,15 @@ public class NewOrderController extends Navigator {
         makeTagBtn.setDisable(false);
         makeInvBtn.setDisable(false);
         makeReceiptBtn.setDisable(false);
+        telCombo.setDisable(true);
+        payCombo.setDisable(true);
+        deliCheck.setDisable(true);
+        deliDatePicker.setDisable(true);
+        timeCombo.setDisable(true);
         makeOrderBtn.setDisable(true);
         categoryTable.setDisable(true);
         addCateBtn.setDisable(true);
-        if(payCombo.getSelectionModel().getSelectedItem().toString().equals("QR")){
+        if(payCombo.getSelectionModel().getSelectedItem().toString().equals("พร้อมเพย์")){
             showQrBtn.setDisable(false);
         }
     }
@@ -757,8 +811,26 @@ public class NewOrderController extends Navigator {
     }
 
     public void payMoney(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("ยืนยันการชำระเงิน");
+        alert.setHeaderText("คุณต้องการชำระเงินเลยหรือไม่");
+        Optional<ButtonType> option = alert.showAndWait();
+        if(option.get() == null){
 
+        }
+        else if (option.get() == ButtonType.OK) {
+            if(OrderApiDataSource.payMoney(orderId)){
+                pushAlertWarning("ชำระเงินสำเร็จ", Alert.AlertType.INFORMATION);
+            }
+            else{
+                pushAlertWarning("ชำระเงินไม่สำเร็จ", Alert.AlertType.ERROR);
+            }
+        }
+        else {
+
+        }
     }
+
 
     public void onReset(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/newOrderView.fxml"));

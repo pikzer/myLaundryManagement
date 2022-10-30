@@ -13,6 +13,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import static th.ac.ku.mylaundry.service.ApiUtil.decodeRespond;
 
@@ -98,6 +100,25 @@ public class ApiCall {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+        public static ArrayList<String> getDashboardData() throws IOException {
+        ArrayList<String> s = new ArrayList<>();
+        DecimalFormat f = new DecimalFormat("#0.00");
+        URL url = new URL(baseURL + "orders"+"/getDashboardData");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestProperty("Authorization", "Bearer " + token);
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestMethod("GET");
+        String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+        JSONObject jsonObject = new JSONObject(j);
+        s.add(String.valueOf(jsonObject.getInt("inprogress")));
+        s.add(String.valueOf(jsonObject.getInt("completeOrder")));
+        s.add(String.valueOf(jsonObject.getInt("notPay")));
+        s.add(f.format(jsonObject.getDouble("income")));
+        s.add(String.valueOf(jsonObject.getInt("numOfCus")));
+        s.add(String.valueOf(jsonObject.getInt("numOfMem")));
+            return s;
     }
 
 

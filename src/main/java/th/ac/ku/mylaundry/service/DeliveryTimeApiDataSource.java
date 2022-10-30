@@ -23,11 +23,13 @@ public class DeliveryTimeApiDataSource extends ApiCall{
             String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
             JSONArray jsonArray = new JSONArray(j) ;
             for(int i = 0 ; i < jsonArray.length();i++){
-                // TODO
-//                serviceRates.add(new ServiceRate(jsonArray.getJSONObject(i).getInt("id"),
-//                        jsonArray.getJSONObject(i).getString("service"),
-//                        jsonArray.getJSONObject(i).getDouble("basePrice")
-//                ));
+                deliveryTimes.add(new DeliveryTime(jsonArray.getJSONObject(i).getInt("id"),
+                        jsonArray.getJSONObject(i).getString("date"),
+                        jsonArray.getJSONObject(i).getString("time"),
+                        jsonArray.getJSONObject(i).getString("orderName"),
+                        jsonArray.getJSONObject(i).getString("deliver"),
+                        jsonArray.getJSONObject(i).getString("job")
+                        ));
             }
             return deliveryTimes ;
         } catch (Exception e) {

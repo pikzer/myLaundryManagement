@@ -1,5 +1,6 @@
 package th.ac.ku.mylaundry.controller;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -9,29 +10,41 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
+import th.ac.ku.mylaundry.model.ClothList;
 import th.ac.ku.mylaundry.model.Customer;
 import th.ac.ku.mylaundry.model.Employee;
 import th.ac.ku.mylaundry.model.Order;
 import th.ac.ku.mylaundry.service.OrderApiDataSource;
 
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class OrderListViewController extends Navigator {
     @FXML
-    TableView orderTable ;
+    TableView orderTable, clothListTable ;
     @FXML
-    ComboBox statusCombo, serviceCombo, deliverCombo;
+    ComboBox statusCombo, serviceCombo, orderTypeCombo;
     @FXML
-    TextField searchField;
+    TextField searchField, subTotalField, deliField, vatField, totalField;
     @FXML
-    CheckBox onsiteCheck, appCheck;
+    TextArea adsArea ;
     @FXML
-    Button updateBtn, acceptBtn, cancelBtn, showQrBtn, invBtn, receiptBtn, tagBtn, makePayBtn;
+    CheckBox memCheck ;
+    @FXML
+    Label nameLabel, phoneLabel, serviceLabel, statusLabel, payMethodLabel, payStatusLabel;
+    @FXML
+    Button updateBtn, acceptBtn, cancelBtn, showQrBtn, invBtn, receiptBtn, tagBtn, makePayBtn,makePaperBtn;
 
 
-    String statusList[] = {"order in", "order add", "order-confirm" , "waiting for pick up", "pick up", "in progress",
+    String statusList[] = {"ทั้งหมด","order in", "order add", "order-confirm" , "waiting for pick up", "pick up", "in progress",
             "finish laundry", "go out delivery", "delivery complete", "complete"};
-    String serviceList[] = {"ซักอบ","ซักรีด","ซักแห้ง","รีด"};
+    String serviceList[] = {"ทั้งหมด","ซักอบ","ซักรีด","ซักแห้ง","รีด"};
+    String serviceTypeList [] = {"ทั้งหมด","หน้าร้าน","แอป"} ;
+    DecimalFormat f = new DecimalFormat("#0.00");
+
+
     ArrayList<Order> orderArrayList ;
     ObservableList<Order> orderObservableList;
 
@@ -41,6 +54,12 @@ public class OrderListViewController extends Navigator {
         orderArrayList = OrderApiDataSource.getOrderList();
         serviceCombo.getItems().addAll(serviceList);
         statusCombo.getItems().addAll(statusList);
+        orderTypeCombo.getItems().addAll(serviceTypeList);
+        serviceCombo.getSelectionModel().select(0);
+        statusCombo.getSelectionModel().select(0);
+        orderTypeCombo.getSelectionModel().select(0);
+
+
 
         orderObservableList = FXCollections.observableList(orderArrayList) ;
         FilteredList<Order> filteredList  = new FilteredList<>(orderObservableList, p-> true) ;
@@ -48,29 +67,34 @@ public class OrderListViewController extends Navigator {
         orderTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
                 onSelectedOrder((Order) newValue);
+                try {
+                    showClothListTable((Order) newValue);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         searchField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
-//                filteredList.setPredicate(order -> {
-//                    if(newValue == null || newValue.isEmpty()|| oldValue == null || oldValue.isEmpty()){
-//                        return true ;
-//                    }
-////                    String lower = newValue.toLowerCase() ;
-//                    if(order.getP){
-//                        return true;
-//                    }
-//                    if(customer.getName().contains(lower))
-//                        return true ;
-//                    return false ;
-//                });
+                filteredList.setPredicate(order -> {
+                    if(newValue == null || newValue.isEmpty()|| oldValue == null || oldValue.isEmpty()){
+                        return true ;
+                    }
+                    String lower = newValue.toLowerCase() ;
+                    if(order.getCus_phone().contains(newValue)){
+                        return true;
+                    }
+                    if(order.getName().contains(lower))
+                        return true ;
+                    return false ;
+                });
             }
         });
 
         serviceCombo.setOnAction(event -> {
             filteredList.setPredicate(order -> {
-                if(serviceCombo.getSelectionModel().getSelectedItem() == null){
+                if(serviceCombo.getSelectionModel().getSelectedItem().toString().equals("ทั้งหมด")){
                     return true;
                 }
                 else if(order.getService().equals(serviceCombo.getSelectionModel().getSelectedItem().toString())){
@@ -82,7 +106,7 @@ public class OrderListViewController extends Navigator {
 
        statusCombo.setOnAction(event -> {
             filteredList.setPredicate(order -> {
-                if(statusCombo.getSelectionModel().getSelectedItem() == null){
+                if(statusCombo.getSelectionModel().getSelectedItem().toString().equals("ทั้งหมด")){
                     return true;
                 }
                 else if(order.getStatus().equals(statusCombo.getSelectionModel().getSelectedItem().toString())){
@@ -92,32 +116,51 @@ public class OrderListViewController extends Navigator {
             });
         });
 
-        onsiteCheck.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        orderTypeCombo.setOnAction(event -> {
+            filteredList.setPredicate(order -> {
+                if(orderTypeCombo.getSelectionModel().getSelectedItem().toString().equals("ทั้งหมด")){
+                    return true;
+                }
+                else if(orderTypeCombo.getSelectionModel().getSelectedItem().toString().equals("หน้าร้าน")){
+                    if(order.getName().contains("ORS")){
+                        return true ;
+                    }
+                }
+                else if(orderTypeCombo.getSelectionModel().getSelectedItem().toString().equals("แอป")){
+                    if(order.getName().contains("ORA")){
+                        return true ;
+                    }
+                }
+                return false ;
+            });
+        });
+
+        memCheck.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
                 filteredList.setPredicate(order -> {
                     if(newValue){
-                        if(order.getName().contains("ORS")){
+                        if(order.getIsMemOrder() == 1){
                             return true;
                         }
+                        else{
+                            return false;
+                        }
                     }
-                    return false;
+                    else if(!newValue){
+                        if(order.getIsMemOrder() == 0){
+                            return true;
+                        }
+                        else{
+                            return false;
+                        }
+                    }
+                    return false ;
                 });
             }
         });
-        appCheck.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
-                filteredList.setPredicate(order -> {
-                    if(newValue){
-                        if(order.getName().contains("ORA")){
-                            return true;
-                        }
-                    }
-                    return false;
-                });
-            }
-        });
+
+
 
         SortedList<Order> orderSortedList =new SortedList<>(filteredList) ;
         orderSortedList.comparatorProperty().bind(orderTable.comparatorProperty());
@@ -166,10 +209,68 @@ public class OrderListViewController extends Navigator {
         orderTable.getColumns().addAll(idCol,nameCol,serviceCol,statusCol,pickDateCol,pickTimeCol,deliDateCol,deliTimeCol,
                 addressCol,responderCol,deliverCol,payMethodCol,payStatusCol,pickSerChargeCol,deliSerChargeCol,isMemCol,totalCol
         );
+        orderTable.setItems(orderSortedList);
+    }
+
+    public void showClothListTable(Order order) throws IOException {
+        clothListTable.getColumns().clear();
+        ObservableList<ClothList> clothLists  = FXCollections.observableList(OrderApiDataSource.getOrderClothList(order.getId()));
+        TableColumn numberCol = new TableColumn("#");
+        numberCol.setMinWidth(20);
+        numberCol.setMaxWidth(30);
+        numberCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ClothList, ClothList>, ObservableValue<ClothList>>() {
+            @Override
+            public ObservableValue call(TableColumn.CellDataFeatures<ClothList, ClothList> p) {
+                return new ReadOnlyObjectWrapper(p.getValue());
+            }
+        });
+
+        numberCol.setCellFactory(new Callback<TableColumn<ClothList, ClothList>, TableCell<ClothList, ClothList>>() {
+            @Override public TableCell<ClothList, ClothList> call(TableColumn<ClothList, ClothList> param) {
+                return new TableCell<ClothList, ClothList>() {
+                    @Override protected void updateItem(ClothList item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (this.getTableRow() != null && item != null) {
+                            setText(this.getTableRow().getIndex()+1+"");
+                        } else {
+                            setText("");
+                        }
+                    }
+                };
+            }
+        });
+        numberCol.setSortable(false);
+        TableColumn<ClothList, String> serviceCol = new TableColumn<>("บริการ");
+        TableColumn<ClothList, String> cateCol = new TableColumn<ClothList, String>("ประเภทผ้า");
+        TableColumn<ClothList, Integer> quantityCol = new TableColumn<ClothList, Integer>("จำนวน");
+        cateCol.setCellValueFactory(new PropertyValueFactory<ClothList,String>("category"));
+        quantityCol.setCellValueFactory(new PropertyValueFactory<ClothList,Integer>("quantity"));
+        serviceCol.setCellValueFactory(new PropertyValueFactory<ClothList,String >("service"));
+
+        clothListTable.getColumns().addAll(numberCol,serviceCol,cateCol, quantityCol) ;
+        clothListTable.setItems(clothLists);
     }
 
     public void onSelectedOrder(Order order){
         selectedOrder = order ;
+        nameLabel.setText(order.getName());
+        phoneLabel.setText(order.getCus_phone());
+        adsArea.setText(order.getAddress().toString());
+        serviceLabel.setText(order.getService());
+        statusLabel.setText(order.getService());
+        payMethodLabel.setText(order.getPayMethod());
+        if(order.getPayStatus() == 0){
+            payMethodLabel.setText("ยังไม่ชำระ");
+        }
+        else{
+            payMethodLabel.setText("ชำระแล้ว");
+        }
+        double tax = order.getTotal() * 0.07 ;
+        vatField.setText(f.format(tax));
+        subTotalField.setText(f.format(order.getTotal()-tax-order.getDeliSerCharge()-order.getPickSerCharge()));
+        totalField.setText(f.format(order.getTotal()));
+        deliField.setText(f.format(order.getDeliSerCharge()+order.getPickSerCharge()));
     }
 
     public void onClickAnchor(){
@@ -218,6 +319,14 @@ public class OrderListViewController extends Navigator {
     }
 
     public void onClickTag(){
+
+    }
+
+    public void onClickPaper(){
+
+    }
+
+    public void onClickAddDeliver(){
 
     }
 

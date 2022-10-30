@@ -126,10 +126,8 @@
                   <Font size="21.0" />
                </font>
             </Text>
-            <Text layoutX="14.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เบอร์โทร" />
-            <ComboBox fx:id="telCombo" editable="true" layoutX="67.0" layoutY="58.0" prefHeight="30.0" prefWidth="149.0" />
-            <Text layoutX="14.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ออร์เดอร์" />
-            <ComboBox fx:id="orderCombo" editable="true" layoutX="67.0" layoutY="103.0" prefHeight="30.0" prefWidth="149.0" />
+            <Text layoutX="15.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เบอร์โทร" />
+            <ComboBox fx:id="telCombo" editable="true" layoutX="68.0" layoutY="51.0" prefHeight="30.0" prefWidth="149.0" />
             <Button layoutX="261.0" layoutY="11.0" mnemonicParsing="false" onAction="#newCustomer" prefHeight="25.0" prefWidth="138.0" text="ลูกค้าใหม่">
                <font>
                   <Font size="16.0" />
@@ -155,10 +153,10 @@
                   <CheckBox fx:id="deliCheck" layoutX="11.0" layoutY="14.0" mnemonicParsing="false" text="ส่งผ้า" />
                   <TextArea fx:id="adsArea" layoutX="58.0" layoutY="35.0" prefHeight="58.0" prefWidth="307.0" />
                   <Text layoutX="14.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ที่อยู่" />
-                  <Text layoutX="14.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="วันที่รับ" />
-                  <DatePicker fx:id="receiveDatePicker" layoutX="58.0" layoutY="97.0" prefHeight="25.0" prefWidth="138.0" />
-                  <Text layoutX="201.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="วันที่ส่ง" />
-                  <DatePicker fx:id="deliDatePicker" layoutX="245.0" layoutY="97.0" prefHeight="25.0" prefWidth="138.0" />
+                  <Text layoutX="14.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="วันที่ส่ง" />
+                  <DatePicker fx:id="deliDatePicker" layoutX="58.0" layoutY="101.0" prefHeight="25.0" prefWidth="138.0" />
+                  <ComboBox fx:id="timeCombo" layoutX="255.0" layoutY="101.0" prefHeight="25.0" prefWidth="120.0" />
+                  <Text layoutX="203.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ช่วงเวลา" />
                </children>
             </Pane>
             <Text layoutX="14.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รูปแบบการชำระเงิน" />
@@ -202,6 +200,8 @@
             <Text layoutX="26.0" layoutY="696.0" strokeType="OUTSIDE" strokeWidth="0.0" text="จำนวนรายการ" />
             <Label fx:id="quantityLabel" layoutX="117.0" layoutY="683.0" text="0" />
             <Text layoutX="166.0" layoutY="696.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ชิ้น" />
+            <Text layoutX="31.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ชื่อ" />
+            <Label fx:id="nameLabel" layoutX="66.0" layoutY="102.0" text="-" />
          </children></Pane>
       <AnchorPane layoutX="-8.0" prefHeight="768.0" prefWidth="226.0" style="-fx-background-color: lightskyblue;">
          <children>
