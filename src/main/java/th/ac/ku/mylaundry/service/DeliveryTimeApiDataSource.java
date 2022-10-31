@@ -1,12 +1,17 @@
 package th.ac.ku.mylaundry.service;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import th.ac.ku.mylaundry.model.DeliveryTime;
 import th.ac.ku.mylaundry.model.ServiceRate;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static th.ac.ku.mylaundry.service.ApiUtil.decodeRespond;
@@ -37,4 +42,69 @@ public class DeliveryTimeApiDataSource extends ApiCall{
         }
         return deliveryTimes ;
     }
+
+    public static ArrayList<Boolean> getAvailableInDateTime(String date){
+        ArrayList<Boolean> avTime = new ArrayList<>();
+        try {
+            URL url = new URL(baseURL + "delivery-time/getAvailableInDateTime" );
+            var urlParameters = "deli_date="+date;
+            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestMethod("PUT");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            JSONObject jsonObject = new JSONObject(j);
+            avTime.add(jsonObject.getBoolean("morning"));
+            avTime.add(jsonObject.getBoolean("after"));
+            avTime.add(jsonObject.getBoolean("even"));
+            return avTime;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return avTime;
+    }
+
+    public static boolean addDeliveryTime(DeliveryTime deliveryTime){
+        try {
+            // TODO Password NOT Real
+            var urlParameters = "date="+deliveryTime.getDate()+"&"+"time="+deliveryTime.getTime()+"&"
+                    + "deliver="+deliveryTime.getDeliver()+"&"+"job="+deliveryTime.getJob();
+//            var urlParameters = "" + employee.getPostEmployee();
+            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+            URL url = new URL(baseURL+"employees");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            System.out.println(j);
+            JSONObject jsonObject = new JSONObject(j);
+            return true ;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void delDeliveryTime(String orderName, int deliID){
+        // add new
+
+    }
+
+    public static void addResponer(String orderName,int id){
+
+    }
+
+
 }

@@ -102,7 +102,7 @@ public class NewOrderController extends Navigator {
         quantitySpinner.setDisable(true);
         showQrBtn.setDisable(true);
         initSpinner();
-        timeCombo.getItems().addAll(timeList);
+//        timeCombo.getItems().addAll(timeList);
         adsArea.setDisable(true);
         deliDatePicker.setDisable(true);
         addCateBtn.setDisable(true);
@@ -120,13 +120,25 @@ public class NewOrderController extends Navigator {
         FilteredList<String> filteredItems = new FilteredList<String>(customers);
         telCombo.getEditor().textProperty().addListener(new InputFilter(telCombo,filteredItems,false));
         telCombo.setItems(filteredItems);
-        deliDatePicker.setValue(LocalDate.now().plusDays(1));
         deliDatePicker.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 LocalDate today = LocalDate.now();
-
                 setDisable(empty || date.compareTo(today.plusDays(1)) < 0 );
+            }
+        });
+        deliDatePicker.setOnAction(event -> {
+            ArrayList<Boolean> art = DeliveryTimeApiDataSource.getAvailableInDateTime(deliDatePicker.getValue().toString());
+            timeCombo.getItems().clear();
+            if(art.get(0)){
+                timeCombo.getItems().add("ช่วงเช้า");
+            }
+            if(art.get(1)){
+                timeCombo.getItems().add("ช่วงบ่าย");
+
+            }
+            if(art.get(2)){
+                timeCombo.getItems().add("ช่วงเย็น");
             }
         });
 
@@ -820,6 +832,7 @@ public class NewOrderController extends Navigator {
         }
         else if (option.get() == ButtonType.OK) {
             if(OrderApiDataSource.payMoney(orderId)){
+                makePayBtn.setDisable(true);
                 pushAlertWarning("ชำระเงินสำเร็จ", Alert.AlertType.INFORMATION);
             }
             else{

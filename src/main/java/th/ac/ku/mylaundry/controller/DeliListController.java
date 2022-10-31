@@ -7,20 +7,25 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import th.ac.ku.mylaundry.model.Category;
-import th.ac.ku.mylaundry.model.Customer;
-import th.ac.ku.mylaundry.model.DeliveryTime;
+import th.ac.ku.mylaundry.model.*;
+import th.ac.ku.mylaundry.service.CustomerApiDataSource;
 import th.ac.ku.mylaundry.service.DeliveryTimeApiDataSource;
+import th.ac.ku.mylaundry.service.EmployeeApiDataSource;
+import th.ac.ku.mylaundry.service.InputFilter;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class DeliListController extends Navigator {
     @FXML
-    DatePicker datePicker, pickDatePicker, deliDatePicker;
+    DatePicker datePicker, deliDatePicker;
     @FXML
-    ComboBox jobCombo,pickTimeCombo,deliTimeCombo, deliverCombo;
+    ComboBox jobCombo, deliverCombo, timeCombo;
+    @FXML
+    Label orderNameLabel ;
     @FXML
     TextField searchField ;
     @FXML
@@ -29,15 +34,14 @@ public class DeliListController extends Navigator {
     ArrayList<DeliveryTime> deliveryTimes ;
     String jobList[] = {"ทั้งหมด","ส่งผ้า","รับผ้า"} ;
     String timeList[] = {"ช่่วงเช้า","ช่วงบ่าย","ช่วงเย็น"} ;
+    DeliveryTime selectDeliveryTime ;
 
-    public void initialize(){
+    public void initialize() throws IOException {
         deliveryTimes = DeliveryTimeApiDataSource.getDeliveryTime() ;
         ObservableList<DeliveryTime> observableList = FXCollections.observableList(deliveryTimes);
         FilteredList<DeliveryTime> deliveryTimes = new FilteredList<>(observableList);
         jobCombo.getItems().addAll(jobList);
         jobCombo.getSelectionModel().select(0);
-        pickTimeCombo.getItems().addAll(timeList);
-        deliTimeCombo.getItems().addAll(timeList);
         datePicker.setValue(LocalDate.now());
         searchField.textProperty().addListener((observableValue, newValue, oldValue) ->{
             deliveryTimes.setPredicate(deliveryTime -> {
@@ -62,12 +66,50 @@ public class DeliListController extends Navigator {
                 return false ;
             });
         });
-
-
-
         SortedList<DeliveryTime> sortedList = new SortedList<>(deliveryTimes);
         sortedList.comparatorProperty().bind(deliTable.comparatorProperty());
         showDeliTable(sortedList);
+        deliDatePicker.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0 );
+            }
+        });
+        deliDatePicker.setOnAction(event -> {
+            ArrayList<Boolean> art = DeliveryTimeApiDataSource.getAvailableInDateTime(deliDatePicker.getValue().toString());
+            timeCombo.getItems().clear();
+            if(art.get(0)){
+                timeCombo.getItems().add("ช่วงเช้า");
+            }
+            if(art.get(1)){
+                timeCombo.getItems().add("ช่วงบ่าย");
+
+            }
+            if(art.get(2)){
+                timeCombo.getItems().add("ช่วงเย็น");
+            }
+        });
+
+        ObservableList<String> customers = FXCollections.observableList(getEmployeeNeme());
+        FilteredList<String> filteredItems = new FilteredList<String>(customers);
+        deliverCombo.getEditor().textProperty().addListener(new InputFilter(deliverCombo,filteredItems,false));
+        deliverCombo.setItems(filteredItems);
+
+        deliTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null){
+                showSelectedDeliveryTime((DeliveryTime) newValue) ;
+            }
+        });
+    }
+
+    public ArrayList<String> getEmployeeNeme() throws IOException {
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<Employee> customers = EmployeeApiDataSource.getEmployees();
+        for (Employee c:customers) {
+            names.add(c.getName());
+        }
+        return names;
     }
 
     public void showDeliTable(SortedList sortedList){
@@ -88,6 +130,11 @@ public class DeliListController extends Navigator {
 
         deliTable.getColumns().addAll(idCol,dateCol,timeCol,deliverCol,orderCol,jobCol) ;
         deliTable.setItems(sortedList);
+    }
+
+    public void showSelectedDeliveryTime(DeliveryTime deliveryTime){
+        selectDeliveryTime = deliveryTime ;
+        orderNameLabel.setText(deliveryTime.getOrderName());
     }
 
     public void onClickEdit(){
