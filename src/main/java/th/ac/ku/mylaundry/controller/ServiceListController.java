@@ -168,6 +168,7 @@ public class ServiceListController extends Navigator{
     public void showSelectedCategory(Category category){
         selectedCat = category ;
         delBtn.setDisable(false);
+        serviceCombo.setDisable(true);
         categoryField.setText(category.getClothType());
         priceField.setText(String.valueOf(category.getAddOnPrice() +
                 serviceRates.get(category.getService_rate_id()-1).getBasePrice()));
@@ -183,6 +184,7 @@ public class ServiceListController extends Navigator{
         categoryField.clear();
         priceField.clear();
         delBtn.setDisable(true);
+        serviceCombo.setDisable(false);
         serviceCombo.getSelectionModel().clearSelection();
     }
 

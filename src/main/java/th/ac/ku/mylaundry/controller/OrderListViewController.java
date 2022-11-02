@@ -7,7 +7,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,14 +18,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import th.ac.ku.mylaundry.model.ClothList;
-import th.ac.ku.mylaundry.model.Customer;
-import th.ac.ku.mylaundry.model.Employee;
 import th.ac.ku.mylaundry.model.Order;
+import th.ac.ku.mylaundry.service.DeliveryTimeApiDataSource;
 import th.ac.ku.mylaundry.service.OrderApiDataSource;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class OrderListViewController extends Navigator {
 
@@ -458,16 +461,51 @@ public class OrderListViewController extends Navigator {
         orderTable.getSelectionModel().clearSelection();
     }
 
-    public void onClickUpdate(){
+    public void onClickUpdate(ActionEvent event) throws IOException {
         if(selectedOrder != null){
-            OrderApiDataSource.updateOrderStatus(selectedOrder.getId());
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("เปลี่ยนแปลงสถานะ");
+            alert.setHeaderText("คุณแน่จะที่จะทำการเปลี่ยนแปลงสถานะรายการหรือไม่");
+            ButtonType cancel = new ButtonType("ยกเลิก");
+            alert.getButtonTypes().add(cancel);
+            Optional<ButtonType> option = alert.showAndWait();
+            if(option.get() == null){
+
+            }
+            else if (option.get() == ButtonType.OK) {
+                OrderApiDataSource.updateOrderStatus(selectedOrder.getId());
+                root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/OrderListView.fxml"));
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } else if (option.get() == cancel) {
+
+            } else {
+            }
         }
     }
 
     public void onClickAccept(){
         if(selectedOrder != null){
             if(selectedOrder.getStatus().equals("order in")){
-                OrderApiDataSource.updateOrderStatus(selectedOrder.getId());
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("ยืนยันรายการ");
+                alert.setHeaderText("คุณต้องการยืนยันรายการหรือไม่");
+                alert.getButtonTypes().add(ButtonType.CANCEL);
+                Optional<ButtonType> option = alert.showAndWait();
+                if(option.get() == null){
+
+                }
+                else if (option.get() == ButtonType.OK){
+                    OrderApiDataSource.updateOrderStatus(selectedOrder.getId());
+                }
+                else if (option.get() == ButtonType.CANCEL){
+
+                }
+                else{
+
+                }
             }
             else{
                 // some alert
@@ -477,12 +515,8 @@ public class OrderListViewController extends Navigator {
 
     public void onClickCancel(){
         if(selectedOrder != null){
-            if(selectedOrder.getStatus().equals("order in")){
-                // TODO confirm alert
-                OrderApiDataSource.updateOrderStatus(selectedOrder.getId());
-            }
-            else{
-                // some alert
+            if(selectedOrder.getStatus().equals("order add")){
+                if(OrderApiDataSource.cancelOrder(selectedOrder.getId()));
             }
         }
     }
@@ -507,13 +541,36 @@ public class OrderListViewController extends Navigator {
 
     }
 
-    public void onClickAddDeliver(){
-
+    public void onClickAddDeliver(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/deliListView.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
-    public void onClickMakePay(){
+    public void onClickMakePay(ActionEvent event) throws IOException {
         if(selectedOrder != null){
-            OrderApiDataSource.payMoney(selectedOrder.getId());
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("ชำระเงิน");
+            alert.setHeaderText("คุณแน่จะที่จะทำการยืนยันการชำระเงินหรือไม่");
+            ButtonType cancel = new ButtonType("ยกเลิก");
+            alert.getButtonTypes().add(cancel);
+            Optional<ButtonType> option = alert.showAndWait();
+            if(option.get() == null){
+
+            }
+            else if (option.get() == ButtonType.OK) {
+                OrderApiDataSource.payMoney(selectedOrder.getId());
+                root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/OrderListView.fxml"));
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } else if (option.get() == cancel) {
+
+            } else {
+            }
         }
     }
 }

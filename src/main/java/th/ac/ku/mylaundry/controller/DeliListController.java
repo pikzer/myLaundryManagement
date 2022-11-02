@@ -8,16 +8,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import th.ac.ku.mylaundry.model.*;
-import th.ac.ku.mylaundry.service.CustomerApiDataSource;
-import th.ac.ku.mylaundry.service.DeliveryTimeApiDataSource;
-import th.ac.ku.mylaundry.service.EmployeeApiDataSource;
-import th.ac.ku.mylaundry.service.InputFilter;
+import th.ac.ku.mylaundry.service.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.Optional;
 
 public class DeliListController extends Navigator {
     @FXML
@@ -30,6 +27,11 @@ public class DeliListController extends Navigator {
     TextField searchField ;
     @FXML
     TableView deliTable ;
+    @FXML
+    Button editBtn, assignBtn;
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 
     ArrayList<DeliveryTime> deliveryTimes ;
     String jobList[] = {"ทั้งหมด","ส่งผ้า","รับผ้า"} ;
@@ -40,9 +42,22 @@ public class DeliListController extends Navigator {
         deliveryTimes = DeliveryTimeApiDataSource.getDeliveryTime() ;
         ObservableList<DeliveryTime> observableList = FXCollections.observableList(deliveryTimes);
         FilteredList<DeliveryTime> deliveryTimes = new FilteredList<>(observableList);
+        editBtn.setDisable(true);
+        assignBtn.setDisable(true);
         jobCombo.getItems().addAll(jobList);
         jobCombo.getSelectionModel().select(0);
-        datePicker.setValue(LocalDate.now());
+
+        datePicker.setOnAction(event -> {
+            deliveryTimes.setPredicate(deliveryTime -> {
+                if(datePicker.getValue() != null){
+                    if(datePicker.getValue().format(formatter).equals(deliveryTime.getDate())){
+                        return true;
+                    }
+                }
+                return false;
+            });
+        });
+
         searchField.textProperty().addListener((observableValue, newValue, oldValue) ->{
             deliveryTimes.setPredicate(deliveryTime -> {
                 if(newValue == null || newValue.isEmpty() || oldValue == null || oldValue.isEmpty()){
@@ -77,7 +92,7 @@ public class DeliListController extends Navigator {
             }
         });
         deliDatePicker.setOnAction(event -> {
-            ArrayList<Boolean> art = DeliveryTimeApiDataSource.getAvailableInDateTime(deliDatePicker.getValue().toString());
+            ArrayList<Boolean> art = DeliveryTimeApiDataSource.getAvailableInDateTime(deliDatePicker.getValue().format(formatter));
             timeCombo.getItems().clear();
             if(art.get(0)){
                 timeCombo.getItems().add("ช่วงเช้า");
@@ -101,6 +116,7 @@ public class DeliListController extends Navigator {
                 showSelectedDeliveryTime((DeliveryTime) newValue) ;
             }
         });
+
     }
 
     public ArrayList<String> getEmployeeNeme() throws IOException {
@@ -135,13 +151,87 @@ public class DeliListController extends Navigator {
     public void showSelectedDeliveryTime(DeliveryTime deliveryTime){
         selectDeliveryTime = deliveryTime ;
         orderNameLabel.setText(deliveryTime.getOrderName());
+        if(selectDeliveryTime.getJob().equals("cancel")){
+            editBtn.setDisable(true);
+            assignBtn.setDisable(true);
+        }
+        else{
+            editBtn.setDisable(false);
+        }
+        if(selectDeliveryTime.getDeliver().equals("ยังไม่ลงทะเบียน")){
+            assignBtn.setDisable(false);
+        }
     }
 
-    public void onClickEdit(){
-
+    public void onClickEdit() throws IOException {
+        if(selectDeliveryTime != null && datePicker.getValue() != null && !timeCombo.getSelectionModel().isEmpty()){
+            if(DeliveryTimeApiDataSource.addDeliveryTime(new DeliveryTime(deliDatePicker.getValue().format(formatter),
+                    timeCombo.getSelectionModel().getSelectedItem().toString(),selectDeliveryTime.getOrderName(),
+                    selectDeliveryTime.getJob()))){
+                DeliveryTimeApiDataSource.cancelDelivery(selectDeliveryTime.getId());
+                pushAlertWarning("แก้ไขเวลารับส่งสำเร็จ", Alert.AlertType.ERROR);
+                onClear();
+            }
+            else {
+                pushAlertWarning("แก้ไขเวลารับส่งไม่สำเร็จ", Alert.AlertType.ERROR);
+                onClear();
+            }
+        }
     }
 
-    public void onClickAssign(){
+    public void onClickAssign() throws IOException {
+        if(!deliverCombo.getSelectionModel().isEmpty()){
+            if(DeliveryTimeApiDataSource.addDeliver(selectDeliveryTime.getId(),deliverCombo.getSelectionModel().getSelectedItem().toString())){
+                pushAlertWarning("เพิ่มผู้รับส่งสำเร็จ", Alert.AlertType.INFORMATION);
+                onClear();
+            }
+            else{
+                pushAlertWarning("เพิ่มผู้รับส่งไม่สำเร็จสำเร็จ", Alert.AlertType.ERROR);
+                onClear();
+            }
+        }
+    }
 
+    public void onClear() throws IOException {
+        selectDeliveryTime = null ;
+        deliTable.getSelectionModel().clearSelection();
+        deliTable.refresh();
+        datePicker.getEditor().clear();
+        deliDatePicker.getEditor().clear();
+        deliverCombo.getSelectionModel().clearSelection();
+        timeCombo.getSelectionModel().clearSelection();
+        orderNameLabel.setText("-");
+        initialize();
+    }
+
+    public void onClickAnchor() throws IOException {
+        onClear();
+    }
+
+    public void onClickCancel(){
+//        DeliveryTimeApiDataSource.cancelDelivery(selectDeliveryTime.getId());
+
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("ยกเลิกรายการ");
+        alert.setHeaderText("คุณแน่จะที่จะทำการยกเลิกรายการหรือไม่");
+        ButtonType cancel = new ButtonType("ยกเลิก");
+        alert.getButtonTypes().add(cancel);
+        Optional<ButtonType> option = alert.showAndWait();
+        if(option.get() == null){
+
+        }
+        else if (option.get() == ButtonType.OK) {
+            DeliveryTimeApiDataSource.cancelDelivery(selectDeliveryTime.getId());
+        } else if (option.get() == cancel) {
+
+        } else {
+        }
+    }
+
+    public void pushAlertWarning(String message, Alert.AlertType alertType){
+        Alert a = new Alert(Alert.AlertType.NONE);
+        a.setAlertType(alertType);
+        a.setContentText(message);
+        a.show();
     }
 }

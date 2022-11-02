@@ -3,7 +3,6 @@ package th.ac.ku.mylaundry.service;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import th.ac.ku.mylaundry.model.DeliveryTime;
-import th.ac.ku.mylaundry.model.ServiceRate;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -72,12 +71,10 @@ public class DeliveryTimeApiDataSource extends ApiCall{
 
     public static boolean addDeliveryTime(DeliveryTime deliveryTime){
         try {
-            // TODO Password NOT Real
             var urlParameters = "date="+deliveryTime.getDate()+"&"+"time="+deliveryTime.getTime()+"&"
-                    + "deliver="+deliveryTime.getDeliver()+"&"+"job="+deliveryTime.getJob();
-//            var urlParameters = "" + employee.getPostEmployee();
+                    + "orderName="+deliveryTime.getOrderName()+"&"+"job="+deliveryTime.getJob();
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-            URL url = new URL(baseURL+"employees");
+            URL url = new URL(baseURL+"delivery-time");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setRequestProperty("User-Agent", "Java client");
@@ -97,13 +94,43 @@ public class DeliveryTimeApiDataSource extends ApiCall{
         }
     }
 
-    public static void delDeliveryTime(String orderName, int deliID){
-        // add new
-
+    public static boolean cancelDelivery(int id){
+        try {
+            URL url = new URL(baseURL + "delivery-time"+"/"+id+"/"+"cancelDelivery");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestMethod("PUT");
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
     }
 
-    public static void addResponer(String orderName,int id){
 
+    public static boolean addDeliver (int id, String deliver) throws IOException {
+        try {
+            var urlParameters = "deliver="+deliver;
+            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+            URL url = new URL(baseURL+"delivery-time"+"/"+id+"/"+"addDeliver");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestMethod("PUT");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            System.out.println(j);
+            return true;
+        } catch (IOException e) {
+            System.out.println(e);
+            return false ;
+        }
     }
 
 

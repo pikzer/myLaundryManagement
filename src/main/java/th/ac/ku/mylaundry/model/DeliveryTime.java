@@ -19,6 +19,13 @@ public class DeliveryTime {
         this.job = job;
     }
 
+    public DeliveryTime(String date, String time, String orderName, String job) {
+        this.date = date;
+        this.time = time;
+        this.orderName = orderName;
+        this.job = job;
+    }
+
     public String getDeliver() {
         return deliver;
     }
@@ -41,5 +48,17 @@ public class DeliveryTime {
 
     public String getJob() {
         return job;
+    }
+
+    @Override
+    public String toString() {
+        return "DeliveryTime{" +
+                "id=" + id +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                ", orderName='" + orderName + '\'' +
+                ", deliver='" + deliver + '\'' +
+                ", job='" + job + '\'' +
+                '}';
     }
 }

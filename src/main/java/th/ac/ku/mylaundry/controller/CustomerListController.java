@@ -315,6 +315,8 @@ public class CustomerListController extends Navigator {
                     alert.setTitle("Replace member package");
                     alert.setHeaderText("Are you sure want to replace package?");
                     Optional<ButtonType> option = alert.showAndWait();
+                    ButtonType cancel = new ButtonType("ยกเลิก");
+                    alert.getButtonTypes().add(cancel);
                     if(option.get() == null){
 
                     }

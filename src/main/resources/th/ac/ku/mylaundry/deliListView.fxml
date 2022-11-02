@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.DeliListController">
+<AnchorPane onMouseClicked="#onClickAnchor" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.DeliListController">
    <children>
       <Text layoutX="235.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายการรับส่ง">
          <font>
@@ -230,10 +230,11 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="editBtn" layoutX="1072.0" layoutY="376.0" mnemonicParsing="false" onAction="#onClickEdit" prefHeight="45.0" prefWidth="146.0" text="แก้ไข">
+      <Button fx:id="editBtn" layoutX="1172.0" layoutY="387.0" mnemonicParsing="false" onAction="#onClickEdit" prefHeight="45.0" prefWidth="146.0" text="แก้ไข">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
+      <Button fx:id="cancelBtn" layoutX="998.0" layoutY="387.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="45.0" prefWidth="130.0" text="ยกเลิก" />
    </children>
 </AnchorPane>

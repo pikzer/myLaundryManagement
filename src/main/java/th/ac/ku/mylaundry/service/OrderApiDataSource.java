@@ -345,6 +345,21 @@ public class OrderApiDataSource extends ApiCall {
         }
     }
 
+    public static boolean cancelOrder(int id){
+        try {
+            URL url = new URL(baseURL + "orders"+"/"+id+"/"+"cancelOrder");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestMethod("PUT");
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            return true ;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
     public static void updateOrderStatus(int id){
         try {
             URL url = new URL(baseURL + "orders"+"/"+id+"/"+"nextStatus");
