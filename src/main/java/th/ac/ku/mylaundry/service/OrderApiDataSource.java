@@ -200,11 +200,10 @@ public class OrderApiDataSource extends ApiCall {
 
     public static Integer addOrderWithNoDeli(String phone, Order order, ArrayList<ClothList> clothLists) {
         try {
-
             // TEMP
             var urlParameters = "service="+order.getService()+"&"+"pay_method="+order.getPayMethod()
                     +"&"+"status="+order.getStatus()+"&"+"is_membership_or="+order.getMemOrder()+"&"+"cus_phone="+phone
-                    +"&"+"responder="+getEmployeeName();
+                    +"&"+"responder="+getEmployeeName()+"&"+"pay_status="+order.getPayStatus();
 
             // REAL-
 //            var urlParameters = "service="+order.getService()+"&"+"pay_method="+order.getPayMethod()
@@ -251,7 +250,7 @@ public class OrderApiDataSource extends ApiCall {
             var urlParameters = "service="+order.getService()+"&"+"pay_method="+order.getPayMethod()
                     +"&"+"status="+order.getStatus()+"&"+"is_membership_or="+order.getMemOrder()+"&"+"cus_phone="+phone
                     +"&"+"responder="+getEmployeeName()+"&"+"deli_date="+order.getDeliDate()+"&"+"deli_time="+order.getDeliTime()
-                    +"&"+"address="+order.getAddress();
+                    +"&"+"address="+order.getAddress()+"&"+"pay_status="+order.getPayStatus();
 
             // REAL-
 //            var urlParameters = "service="+order.getService()+"&"+"pay_method="+order.getPayMethod()
@@ -410,49 +409,86 @@ public class OrderApiDataSource extends ApiCall {
         return orderArrayList;
     }
 
-//    public static Double getTodayIncome() throws IOException {
-//        URL url = new URL(baseURL + "orders"+"/getIncomeToday");
-//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//        conn.setRequestProperty("Authorization", "Bearer " + token);
-//        conn.setRequestProperty("Content-Type", "application/json");
-//        conn.setRequestMethod("GET");
-//        String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
-//        JSONObject jsonObject = new JSONObject(j);
-//        return jsonObject.getDouble("income");
-//    }
+    public static boolean payMember(int cusId,int quantity) throws IOException {
+        try {
+            var urlParameters = "pay="+quantity ;
+            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+            URL url = new URL(baseURL+"customers"+"/"+cusId+"/"+"payMember");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestMethod("PUT");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            System.out.println(j);
+            return true;
+        } catch (IOException e) {
+            System.out.println(e);
+            return false ;
+        }
+    }
 
-//    public static Integer getNumOfCompleteOrder() throws IOException {
-//        URL url = new URL(baseURL + "orders"+"/getNumOfCompleteOrder");
-//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//        conn.setRequestProperty("Authorization", "Bearer " + token);
-//        conn.setRequestProperty("Content-Type", "application/json");
-//        conn.setRequestMethod("GET");
-//        String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
-//        JSONObject jsonObject = new JSONObject(j);
-//        return jsonObject.getInt("completeOrder");
-//    }
-//
-//    public static Integer getNumOfInprogressOrder() throws IOException {
-//        URL url = new URL(baseURL + "orders"+"/getNumOfInprogressOrder");
-//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//        conn.setRequestProperty("Authorization", "Bearer " + token);
-//        conn.setRequestProperty("Content-Type", "application/json");
-//        conn.setRequestMethod("GET");
-//        String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
-//        JSONObject jsonObject = new JSONObject(j);
-//        return jsonObject.getInt("inprogress");
-//    }
-//
-//    public static Integer getNumOfNotPayOrder() throws IOException {
-//        URL url = new URL(baseURL + "orders"+"/getNumOfNotPayOrder");
-//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//        conn.setRequestProperty("Authorization", "Bearer " + token);
-//        conn.setRequestProperty("Content-Type", "application/json");
-//        conn.setRequestMethod("GET");
-//        String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
-//        JSONObject jsonObject = new JSONObject(j);
-//        return jsonObject.getInt("notPay");
-//    }
+    public static boolean confirmOrder(int id){
+        try {
+            URL url = new URL(baseURL + "orders"+"/"+id+"/"+"acceptOrderForEmployee");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestMethod("PUT");
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean addClothListApp(Order order, ArrayList<ClothList> clothLists,String date, String time) throws IOException {
+        if(addClothList(order.getId(),clothLists)){
+            updateOrderStatus(order.getId());
+            if(order.getIsMemOrder()==0){
+                URL url = new URL(baseURL + "orders"+"/"+order.getId()+"/"+"calDeliApp");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Authorization", "Bearer " + token);
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestMethod("PUT");
+                String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+                updateAppOrder(order.getId(),date,time);
+                return true;
+            }
+            else{
+                updateAppOrder(order.getId(),date,time);
+                return true;
+            }
+        }
+        else{
+            return  false ;
+        }
+    }
+
+    public static void updateAppOrder(int id,String date, String time) throws IOException {
+        var urlParameters = "deli_date="+date+"&"+"deli_time="+time;
+        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+        URL url = new URL(baseURL+"orders"+"/"+id+"/"+"updateAppOrder");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestProperty("Authorization","Bearer "+ token);
+        conn.setRequestProperty("User-Agent", "Java client");
+        conn.setDoOutput(true);
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        conn.setRequestMethod("PUT");
+        try (var wr = new DataOutputStream(conn.getOutputStream())) {
+            wr.write(postData);
+        }
+        String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+        System.out.println(j);
+    }
+
+
+
+
 
 
 }

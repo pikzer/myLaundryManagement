@@ -10,6 +10,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,9 +24,11 @@ import th.ac.ku.mylaundry.service.DeliveryTimeApiDataSource;
 import th.ac.ku.mylaundry.service.OrderApiDataSource;
 
 import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class OrderListViewController extends Navigator {
 
@@ -226,7 +229,11 @@ public class OrderListViewController extends Navigator {
 
         orderTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
-                onSelectedOrder((Order) newValue);
+                try {
+                    onSelectedOrder((Order) newValue);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 try {
                     showClothListTable((Order) newValue);
                 } catch (IOException e) {
@@ -406,7 +413,7 @@ public class OrderListViewController extends Navigator {
         clothListTable.setItems(clothLists);
     }
 
-    public void onSelectedOrder(Order order){
+    public void onSelectedOrder(Order order) throws IOException {
         selectedOrder = order ;
         nameLabel.setText(order.getName());
         phoneLabel.setText(order.getCus_phone());
@@ -416,7 +423,15 @@ public class OrderListViewController extends Navigator {
         payMethodLabel.setText(order.getPayMethod());
         tagBtn.setDisable(false);
         makePaperBtn.setDisable(false);
-        if(order.getPayStatus()==0){
+
+        if(order.getIsMemOrder()==1){
+            makePayBtn.setDisable(true);
+            invBtn.setDisable(true);
+            receiptBtn.setDisable(true);
+        }
+
+        // finace
+        else if(order.getPayStatus()==0){
             payStatusLabel.setText("ยังไม่ชำระ");
             makePayBtn.setDisable(false);
             invBtn.setDisable(false);
@@ -428,28 +443,68 @@ public class OrderListViewController extends Navigator {
             makePayBtn.setDisable(true);
             invBtn.setDisable(true);
         }
-        if(order.getStatus().equals("order add") || order.getStatus().equals("complete")){
+        //order
+        if(order.getResponder().equals("ยังไม่ลงทะเบียน") && order.getStatus().equals("order add")){
             updateBtn.setDisable(true);
-            if(order.getStatus().equals("order add")){
-                acceptBtn.setDisable(false);
-                cancelBtn.setDisable(false);
-            }
+            addDeliverBtn.setDisable(true);
+            acceptBtn.setDisable(false);
+            cancelBtn.setDisable(false);
+            makePayBtn.setDisable(true);
+            makePaperBtn.setDisable(true);
+            tagBtn.setDisable(true);
+            invBtn.setDisable(true);
         }
-        if(order.getStatus().equals("pick up")){
+        else if(order.getStatus().equals("order-confirm")){
+            updateBtn.setDisable(false);
+            addDeliverBtn.setDisable(true);
+            acceptBtn.setDisable(true);
+            cancelBtn.setDisable(true);
+            makePayBtn.setDisable(true);
+            makePaperBtn.setDisable(true);
+            tagBtn.setDisable(true);
+            invBtn.setDisable(true);
+        }
+        else if(order.getStatus().equals("pick up")){
+            updateBtn.setDisable(true);
+            addDeliverBtn.setDisable(true);
+            acceptBtn.setDisable(true);
+            cancelBtn.setDisable(true);
             addClothListBtn.setDisable(false);
+            makePayBtn.setDisable(true);
+            makePaperBtn.setDisable(true);
+            tagBtn.setDisable(true);
+            invBtn.setDisable(true);
+        }
+        else if(order.getStatus().equals("complete")){
+            updateBtn.setDisable(true);
+            addDeliverBtn.setDisable(true);
+            acceptBtn.setDisable(true);
+            cancelBtn.setDisable(true);
+            addClothListBtn.setDisable(true);
+            makePayBtn.setDisable(true);
+            makePaperBtn.setDisable(true);
+            tagBtn.setDisable(true);
+            invBtn.setDisable(true);
+            receiptBtn.setDisable(false);
+            makePayBtn.setDisable(true);
         }
         else{
             updateBtn.setDisable(false);
-            addClothListBtn.setDisable(true);
+            if(order.getDeliver().equals("ยังไม่ลงทะเบียน")){
+                addDeliverBtn.setDisable(false);
+            }
+            else{
+                addDeliverBtn.setDisable(true);
+            }
             acceptBtn.setDisable(true);
             cancelBtn.setDisable(true);
+            addClothListBtn.setDisable(true);
+            makePaperBtn.setDisable(false);
+            tagBtn.setDisable(false);
         }
-        if(order.getAddress().equals("null") && order.getResponder().equals("ยังไม่ลงทะเบียน")){
-            addDeliverBtn.setDisable(true);
-        }
-        else{
-            addDeliverBtn.setDisable(false);
-        }
+
+
+
         double tax = order.getTotal() * 0.07 ;
         vatField.setText(f.format(tax));
         subTotalField.setText(f.format(order.getTotal()-tax-order.getDeliSerCharge()-order.getPickSerCharge()));
@@ -486,29 +541,18 @@ public class OrderListViewController extends Navigator {
         }
     }
 
-    public void onClickAccept(){
+    public void onClickAccept(ActionEvent event) throws IOException {
         if(selectedOrder != null){
-            if(selectedOrder.getStatus().equals("order in")){
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("ยืนยันรายการ");
-                alert.setHeaderText("คุณต้องการยืนยันรายการหรือไม่");
-                alert.getButtonTypes().add(ButtonType.CANCEL);
-                Optional<ButtonType> option = alert.showAndWait();
-                if(option.get() == null){
-
-                }
-                else if (option.get() == ButtonType.OK){
-                    OrderApiDataSource.updateOrderStatus(selectedOrder.getId());
-                }
-                else if (option.get() == ButtonType.CANCEL){
-
-                }
-                else{
-
-                }
+            if(OrderApiDataSource.confirmOrder(selectedOrder.getId())){
+                pushAlertWarning("ยืนยันรายการสำเร็จ", Alert.AlertType.INFORMATION);
+                root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/OrderListView.fxml"));
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
             }
             else{
-                // some alert
+                pushAlertWarning("ยืนยันรายการไม่สำเร็จ", Alert.AlertType.INFORMATION);
             }
         }
     }
@@ -538,6 +582,23 @@ public class OrderListViewController extends Navigator {
     }
 
     public void onClickPaper(){
+
+    }
+
+    public void addClothList(ActionEvent event) throws IOException {
+        if(selectedOrder == null){
+        }
+
+        else{
+            Button b = (Button) event.getSource();
+            Stage stage = (Stage) b.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/th/ac/ku/mylaundry/AddClothListAppView.fxml"));
+            stage.setScene(new Scene(loader.load(), 1366, 768));
+            AddClothListAppController addClothListAppController = loader.getController();
+            addClothListAppController.setOrder(selectedOrder);
+            stage.show();
+        }
+
 
     }
 
@@ -573,4 +634,13 @@ public class OrderListViewController extends Navigator {
             }
         }
     }
+
+
+    public void pushAlertWarning(String message, Alert.AlertType alertType){
+        Alert a = new Alert(Alert.AlertType.NONE);
+        a.setAlertType(alertType);
+        a.setContentText(message);
+        a.show();
+    }
+
 }

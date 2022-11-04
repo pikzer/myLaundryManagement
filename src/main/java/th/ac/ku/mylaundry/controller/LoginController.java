@@ -80,11 +80,12 @@ public class LoginController {
 
     @FXML
     public void onClickForgetPwd(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/forgetPasswordView.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/forgetPwdView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+
 
 }

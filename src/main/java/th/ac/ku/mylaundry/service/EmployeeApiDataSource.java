@@ -65,12 +65,10 @@ public class EmployeeApiDataSource extends ApiCall {
 
     public static boolean addEmployee(Employee employee){
         try {
-            // TODO Password NOT Real
             var urlParameters = "name="+employee.getName()+"&"+"phone="+employee.getPhone()+"&"
-                    + "email="+employee.getEmail()+"&"+"role="+employee.getRole()+"&"+"password="+"password"
+                    + "email="+employee.getEmail()+"&"+"role="+employee.getRole()+"&"+"password="+"12345678"
                     +"&"+"salary="+employee.getSalary()+"&"+"address="+employee.getAddress()+"&"+"ID_Card="+employee.getIdCard()
                     + "&"+"bank_account_number="+employee.getBankAccountNumber()+"&"+"bank_name="+employee.getBankName();
-//            var urlParameters = "" + employee.getPostEmployee();
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
             URL url = new URL(baseURL+"employees");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -94,7 +92,7 @@ public class EmployeeApiDataSource extends ApiCall {
 
     public static boolean patchEmployee(Employee employee){
         var urlParameters = "name="+employee.getName()+"&"+"phone="+employee.getPhone()+"&"
-                + "email="+employee.getEmail()+"&"+"role="+employee.getRole()+"&"+"password="+employee.getPassword()
+                + "email="+employee.getEmail()+"&"+"role="+employee.getRole()
                 +"&"+"salary="+employee.getSalary()+"&"+"address="+employee.getAddress()+"&"+"ID_Card="+employee.getIdCard()
                 + "&"+"bank_account_number="+employee.getBankAccountNumber()+"&"+"bank_name="+employee.getBankName();
         System.out.println(urlParameters);
@@ -123,5 +121,29 @@ public class EmployeeApiDataSource extends ApiCall {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static boolean changePassword(String password,String idCard) throws IOException {
+        try{
+            var urlParameters = "ID_Card="+idCard+"&"+"password="+password;
+            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+            URL url = new URL(baseURL+"employees"+"/"+"changePassword");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestMethod("PUT");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            System.out.println(j);
+            return true;
+        } catch (IOException e) {
+            System.out.println(e);
+            return false;
+        }
+
     }
 }

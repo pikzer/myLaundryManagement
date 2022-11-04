@@ -63,7 +63,6 @@ public class CustomerListController extends Navigator {
     public void initialize() throws IOException {
         customerArrayList = CustomerApiDataSource.getCustomers();
         memberPackageArrayList = MemberPackageApiDataSource.getMemberPackage();
-
         totalLabel.setText("0.00");
         piecesCombo.setDisable(true);
         serviceAddCombo.setDisable(true);
@@ -80,6 +79,7 @@ public class CustomerListController extends Navigator {
         cusTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
                 showOnSelect((Customer) newValue) ;
+
                 selectedCus = (Customer) newValue;
             }
         });
@@ -199,9 +199,12 @@ public class CustomerListController extends Navigator {
 
     public void showOnSelect(Customer newValue){
         adsTextArea.clear();
+        emailField.clear();
         nameField.setText(newValue.getName());
         telField.setText(newValue.getPhone());
-        emailField.setText(newValue.getEmail());
+        if(!newValue.getEmail().equals("null")){
+            emailField.setText(newValue.getEmail());
+        }
         if(CustomerApiDataSource.getCustomerAddress(newValue.getId()) != null){
             adsTextArea.setText(CustomerApiDataSource.getCustomerAddress(newValue.getId()).getuCode());
         }
@@ -215,7 +218,7 @@ public class CustomerListController extends Navigator {
     public void onClickAddEditCus(ActionEvent event) throws IOException {
         if (cusTable.getSelectionModel().isEmpty()) {
             // ADD
-            if (!nameField.getText().isEmpty() && Validator.isPhoneNumber(telField.getText()) && !adsTextArea.getText().isEmpty()) {
+            if (!nameField.getText().isEmpty() && Validator.isPhoneNumber(telField.getText()) && !adsTextArea.getText().isEmpty() && emailField.getText().isEmpty()) {
                 if (CustomerApiDataSource.addNewCustomer(nameField.getText(), telField.getText(), adsTextArea.getText())) {
                     pushAlert("เพิ่มลูกค้าสำเร็จ", Alert.AlertType.INFORMATION);
                     clearAll();
@@ -224,35 +227,55 @@ public class CustomerListController extends Navigator {
                     clearAll();
                 }
             }
+            else{
+                if (CustomerApiDataSource.addNewCustomer(nameField.getText(), telField.getText(), adsTextArea.getText(), emailField.getText())) {
+                    pushAlert("เพิ่มลูกค้าสำเร็จ", Alert.AlertType.INFORMATION);
+                    clearAll();
+                } else {
+                    pushAlert("เพิ่มลูกค้าไม่สำเร็จ", Alert.AlertType.ERROR);
+                    clearAll();
+                }
+            }
         }
-        else{
-            if(!nameField.getText().isEmpty() && !telField.getText().isEmpty()){
+        // EDIT
+        else {
+            if(!nameField.getText().isEmpty() && !telField.getText().isEmpty() && !adsTextArea.getText().isEmpty()){
                 if(emailField.getText().isEmpty()){
-                    if(!Validator.isPhoneNumber(telField.getText())){
-                        if(CustomerApiDataSource.updateCustomer(selectedCus.getId(),nameField.getText(),
-                                telField.getText(),null)){
-                            pushAlert("แก้ไขข้อมูลลูกค้าสำเร็จ", Alert.AlertType.INFORMATION);
-                            cusTable.refresh();
-                            onClickAnchor();
-                        }
-                        else{
-                            pushAlert("แก้ไขข้อมูลลูกค้าไม่สำเร็จ", Alert.AlertType.ERROR);
-                        }
+                    if(Validator.isPhoneNumber(telField.getText())){
+                       if(CustomerApiDataSource.updateCustomer(selectedCus.getId(),nameField.getText(),telField.getText(),null,adsTextArea.getText())){
+                           pushAlert("แก้ไขลูกค้าสำเร็จ", Alert.AlertType.INFORMATION);
+                           clearAll();
+                       }
+                       else {
+                           pushAlert("แก้ไขลูกค้าไม่สำเร็จ", Alert.AlertType.ERROR);
+                           clearAll();
+                       }
+                    }
+                    else{
+                        pushAlert("กรุณากรอกข้อมูลให้ถูกต้อง", Alert.AlertType.WARNING);
+                        clearAll();
                     }
                 }
                 else{
-                    if(!Validator.isPhoneNumber(telField.getText()) && !Validator.isEmail(emailField.getText())){
-                        if(CustomerApiDataSource.updateCustomer(selectedCus.getId(),nameField.getText(),
-                                telField.getText(),null)){
-                            pushAlert("แก้ไขข้อมูลลูกค้าสำเร็จ", Alert.AlertType.INFORMATION);
-                            cusTable.refresh();
-                            onClickAnchor();
+                    if(Validator.isEmail(emailField.getText())){
+                        if(CustomerApiDataSource.updateCustomer(selectedCus.getId(),nameField.getText(),telField.getText(),emailField.getText(),adsTextArea.getText())){
+                            pushAlert("แก้ไขลูกค้าสำเร็จ", Alert.AlertType.INFORMATION);
+                            clearAll();
                         }
                         else{
-                            pushAlert("แก้ไขข้อมูลลูกค้าไม่สำเร็จ", Alert.AlertType.ERROR);
+                            pushAlert("แก้ไขลูกค้าไม่สำเร็จ", Alert.AlertType.ERROR);
+                            clearAll();
                         }
                     }
+                    else{
+                        pushAlert("กรุณากรอกข้อมูลให้ถูกต้อง", Alert.AlertType.WARNING);
+                        clearAll();
+                    }
                 }
+            }
+            else{
+                pushAlert("กรุณากรอกข้อมูลให้ครบถ้วน", Alert.AlertType.WARNING);
+                clearAll();
             }
         }
     }
@@ -297,15 +320,15 @@ public class CustomerListController extends Navigator {
         if(serviceAddCombo.getSelectionModel().getSelectedItem() != null && piecesCombo.getSelectionModel().getSelectedItem() != null){
             if(selectedCus.getMemCredit() == 0){
                 selectedCus.setMemCredit(piecesCombo.getSelectionModel().getSelectedItem());
-                selectedCus.setMemService(serviceAddCombo.getSelectionModel().getSelectedItem());
-                CustomerApiDataSource.addMembership(selectedCus.getId(),selectedCus.getMemService(),selectedCus.getMemCredit());
+                selectedCus.setMemService(serviceAddCombo.getSelectionModel().getSelectedItem().toString());
+                CustomerApiDataSource.addMembership(selectedCus.getId(),serviceAddCombo.getSelectionModel().getSelectedItem(),selectedCus.getMemCredit());
                 cusTable.refresh();
                 pushAlert("เพิ่มสมาชิกสำเร็จ", Alert.AlertType.INFORMATION);
             }
             else if(selectedCus.getMemCredit() != 0){
                 if(selectedCus.getMemService().equals(serviceAddCombo.getSelectionModel().getSelectedItem())){
                     selectedCus.setMemCredit(selectedCus.getMemCredit()+piecesCombo.getSelectionModel().getSelectedItem());
-                    CustomerApiDataSource.addMembership(selectedCus.getId(),selectedCus.getMemService(),selectedCus.getMemCredit());
+                    CustomerApiDataSource.addMembership(selectedCus.getId(),serviceAddCombo.getSelectionModel().getSelectedItem(),selectedCus.getMemCredit());
                     pushAlert("เพิ่มสมาชิกสำเร็จ", Alert.AlertType.INFORMATION);
                     cusTable.refresh();
                     onClickAnchor();

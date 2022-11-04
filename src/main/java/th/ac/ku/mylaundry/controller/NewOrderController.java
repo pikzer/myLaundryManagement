@@ -706,7 +706,7 @@ public class NewOrderController extends Navigator {
         return null;
     }
 
-    public void makeOrder(){
+    public void makeOrder() throws IOException {
         if(cartClothList.size() <= 0){
             pushAlertWarning("กรุณาเพิ่มรายการผ้า", Alert.AlertType.WARNING);
         }
@@ -719,8 +719,10 @@ public class NewOrderController extends Navigator {
                 }
                 else{
                     if(!deliCheck.isSelected()){
-                        orderId = OrderApiDataSource.addOrderWithNoDeli(selectCustomer.getPhone(),new Order(mainService,selectPayMethod,
-                                "order in",1), cartClothList);
+                        if(OrderApiDataSource.payMember(selectCustomer.getId(),showCartQuantity())){
+                            orderId = OrderApiDataSource.addOrderWithNoDeli(selectCustomer.getPhone(),new Order(mainService,selectPayMethod,
+                                    "order in",1,1), cartClothList);
+                        }
                         if(orderId != 0){
                             pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
                             onMakeOrderComplete();
@@ -733,10 +735,12 @@ public class NewOrderController extends Navigator {
                     else{
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                         if(adsArea.getText() != null && deliDatePicker.getValue() != null && timeCombo.getSelectionModel() != null){
-                            orderId = OrderApiDataSource.addOrderWithDeli(selectCustomer.getPhone(),new Order(mainService,
-                                    deliDatePicker.getValue().format(formatter),timeCombo.getSelectionModel().getSelectedItem().toString(),
-                                    adsArea.getText(),0,payCombo.getSelectionModel().getSelectedItem().toString(),
-                                    1),cartClothList);
+                            if(OrderApiDataSource.payMember(selectCustomer.getId(),showCartQuantity())){
+                                orderId = OrderApiDataSource.addOrderWithDeli(selectCustomer.getPhone(),new Order(mainService,
+                                        deliDatePicker.getValue().format(formatter),timeCombo.getSelectionModel().getSelectedItem().toString(),
+                                        adsArea.getText(),1,payCombo.getSelectionModel().getSelectedItem().toString(),
+                                        1),cartClothList);
+                            }
                             if(orderId != 0){
                                 pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
                                 onMakeOrderComplete();
@@ -757,7 +761,7 @@ public class NewOrderController extends Navigator {
                 // if deli
                 if(!deliCheck.isSelected()){
                     orderId = OrderApiDataSource.addOrderWithNoDeli(selectCustomer.getPhone(),new Order(mainService,selectPayMethod,
-                            "order in",0), cartClothList);
+                            "order in",0,0), cartClothList);
                     if(orderId != 0){
                         pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
                         onMakeOrderComplete();
@@ -769,7 +773,7 @@ public class NewOrderController extends Navigator {
                 }
                 else{
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    if(adsArea.getText() != null && deliDatePicker.getValue() != null && timeCombo.getSelectionModel().getSelectedItem() != null){
+                    if(!adsArea.getText().equals("") && deliDatePicker.getValue() != null && timeCombo.getSelectionModel().getSelectedItem() != null){
                         orderId = OrderApiDataSource.addOrderWithDeli(selectCustomer.getPhone(),new Order(mainService,
                                 deliDatePicker.getValue().format(formatter),timeCombo.getSelectionModel().getSelectedItem().toString(),
                                 adsArea.getText(),0,payCombo.getSelectionModel().getSelectedItem().toString(),

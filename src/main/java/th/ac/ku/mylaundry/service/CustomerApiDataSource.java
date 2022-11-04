@@ -89,16 +89,60 @@ public class CustomerApiDataSource extends ApiCall {
 
     }
 
-    public static boolean updateCustomer(int id,String name, String phone, String email){
-        var urlParameters = "name="+name+"&"+"phone="+phone+"email="+email;
+    public static boolean addNewCustomer(String name, String phone, String ucode, String email){
+        var urlParameters = "name="+name+"&"+"phone="+phone+"&"+"email="+email;
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         try {
-            URL url = new URL(baseURL+"customers"+"/"+id);
+            URL url = new URL(baseURL+"customers");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("User-Agent", "Java client");
             conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            JSONObject jsonObject = new JSONObject(j);
+
+            urlParameters = "u_code="+ucode+"&"+"cus_phone="+phone;
+            postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+            url = new URL(baseURL+"address");
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+
+    }
+
+    public static boolean updateCustomer(int id,String name, String phone, String email,String address){
+        Integer adsId  = getCustomerAddress(id).getId();
+        if(!updateAddress(adsId,address)){
+            return false ;
+        }
+        var urlParameters = "name="+name+"&"+"phone="+phone+"&"+"email="+email;
+        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+        try {
+            URL url = new URL(baseURL+"customers"+"/"+id);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("X-HTTP-Method-Override", "PATCH");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             try (var wr = new DataOutputStream(conn.getOutputStream())) {
                 wr.write(postData);
@@ -177,9 +221,32 @@ public class CustomerApiDataSource extends ApiCall {
         }
     }
 
-    public void updateAddress(Address address){
-
+    public static boolean updateAddress(int id, String ucode){
+        var urlParameters = "u_code="+ucode;
+        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+        try {
+            URL url = new URL(baseURL+"address"+"/"+id);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("X-HTTP-Method-Override", "PATCH");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            JSONObject jsonObject = new JSONObject(j);
+            System.out.println(jsonObject);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
     }
+
+
 
 //    public static Integer getNumOfCus() throws IOException {
 //        URL url = new URL(baseURL + "customers"+"/getNumOfCustomer");

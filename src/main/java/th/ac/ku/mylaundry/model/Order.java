@@ -24,11 +24,12 @@ public class Order {
     Integer isMemOrder ;
 
 
-    public Order(String service, String payMethod, String status, Integer isMemOrder) {
+    public Order(String service, String payMethod, String status, Integer isMemOrder,Integer payStatus) {
         this.service = service;
         this.payMethod = payMethod;
         this.status = status;
         this.isMemOrder = isMemOrder;
+        this.payStatus = payStatus ;
     }
 
     public Order(String service, String deliDate, String deliTime, String address, Integer payStatus, String payMethod, Integer isMemOrder) {
@@ -212,5 +213,29 @@ public class Order {
 
     public void setMemOrder(Integer memOrder) {
         isMemOrder = memOrder;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", service='" + service + '\'' +
+                ", name='" + name + '\'' +
+                ", cus_phone='" + cus_phone + '\'' +
+                ", pickDate='" + pickDate + '\'' +
+                ", pickTime='" + pickTime + '\'' +
+                ", deliDate='" + deliDate + '\'' +
+                ", deliTime='" + deliTime + '\'' +
+                ", address='" + address + '\'' +
+                ", responder='" + responder + '\'' +
+                ", deliver='" + deliver + '\'' +
+                ", payStatus=" + payStatus +
+                ", payMethod='" + payMethod + '\'' +
+                ", pickSerCharge=" + pickSerCharge +
+                ", deliSerCharge=" + deliSerCharge +
+                ", total=" + total +
+                ", status='" + status + '\'' +
+                ", isMemOrder=" + isMemOrder +
+                '}';
     }
 }

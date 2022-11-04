@@ -31,8 +31,6 @@ public class EmployeeController extends Navigator{
     TextArea adsTextArea ;
     @FXML
     Button delBtn;
-    @FXML
-    PasswordField pwdField, conPwdField;
 
     ArrayList<Employee> employeeArrayList ;
     Employee selectedEmployee ;
@@ -153,8 +151,6 @@ public class EmployeeController extends Navigator{
         bankNameCombo.getItems().clear();
         bankNameCombo.getEditor().clear();
         bankNameCombo.getSelectionModel().clearSelection();
-        pwdField.clear();
-        conPwdField.clear();
         initialize();
     }
 
@@ -167,8 +163,7 @@ public class EmployeeController extends Navigator{
             if(nameField.getText().isEmpty() || phoneField.getText().isEmpty() || idCardField.getText().isEmpty()
                     || emailField.getText().isEmpty() || roleCombo.getSelectionModel().isEmpty()
                     || adsTextArea.getText().isEmpty() || bankNumField.getText().isEmpty()
-                    || bankNameCombo.getSelectionModel().isEmpty() || pwdField.getText().isEmpty()
-                    || conPwdField.getText().isEmpty()) {
+                    || bankNameCombo.getSelectionModel().isEmpty()) {
                 pushAlertWarning("กรุณากรอกข้อมูลให้ครบถ้วน");
             }
             else if(!Validator.isPhoneNumber(phoneField.getText())){
@@ -177,15 +172,7 @@ public class EmployeeController extends Navigator{
             else if(!Validator.isEmail(emailField.getText())){
                 pushAlertWarning("อีเมลล์ไม่ถูกต้อง");
             }
-            else if(pwdField.getText().length() <= 8 && pwdField.getText().length() >= 32){
-                pushAlertWarning("รหัสจะต้องมีความยาว 8 ตัวอักษรขึ้นไป");
-            }
-            else if(pwdField.getText().length() >= 32){
-                pushAlertWarning("รหัสมีความมากกว่า 32 ตัวอักษร");
-            }
-            else if(!pwdField.getText().equals(conPwdField.getText())){
-                pushAlertWarning("รหัสยืนยันไม่ถูกต้อง");
-            }
+
             // other Validation
             else if(bankNumField.getText().length() < 10 || bankNumField.getText().length() > 15){
                 pushAlertWarning("หมายเลขบัญชีไม่ถูกต้อง");
@@ -195,7 +182,7 @@ public class EmployeeController extends Navigator{
             }
             else{
                 Employee employee = new Employee(nameField.getText(),phoneField.getText(),emailField.getText(), roleCombo.getSelectionModel().getSelectedItem().toString(),
-                        pwdField.getText(),Double.parseDouble(salaryField.getText()),adsTextArea.getText(), idCardField.getText(),bankNumField.getText(),
+                        "",Double.parseDouble(salaryField.getText()),adsTextArea.getText(), idCardField.getText(),bankNumField.getText(),
                         bankNameCombo.getSelectionModel().getSelectedItem().toString()) ;
                 if(EmployeeApiDataSource.addEmployee(employee)){
                     Alert a = new Alert(Alert.AlertType.NONE);
@@ -215,7 +202,7 @@ public class EmployeeController extends Navigator{
         else{
             // TODO
             Employee employee = new Employee(selectedEmployee.getId(),nameField.getText(),phoneField.getText(),emailField.getText(), roleCombo.getSelectionModel().getSelectedItem().toString(),
-                        pwdField.getText(),Double.parseDouble(salaryField.getText()),adsTextArea.getText(), idCardField.getText(),bankNumField.getText(),
+                        "",Double.parseDouble(salaryField.getText()),adsTextArea.getText(), idCardField.getText(),bankNumField.getText(),
                         bankNameCombo.getSelectionModel().getSelectedItem().toString()) ;
                 if(EmployeeApiDataSource.patchEmployee(employee)){
                     Alert a = new Alert(Alert.AlertType.NONE);
@@ -307,7 +294,5 @@ public class EmployeeController extends Navigator{
         emailField.setText("rujipas@mail.com");
         roleCombo.getSelectionModel().select(0);
         bankNameCombo.getSelectionModel().select(0);
-        pwdField.setText("password");
-        conPwdField.setText("password");
     }
 }
