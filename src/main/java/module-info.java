@@ -10,6 +10,9 @@ module th.ac.ku.mylaundry {
     requires java.sql;
     requires json;
 
+    requires java.mail;
+    requires  promptpay;
+
 
     opens th.ac.ku.mylaundry to javafx.fxml;
     exports th.ac.ku.mylaundry;

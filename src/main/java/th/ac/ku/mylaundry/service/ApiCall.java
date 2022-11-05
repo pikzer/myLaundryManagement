@@ -102,7 +102,7 @@ public class ApiCall {
         }
     }
 
-        public static ArrayList<String> getDashboardData() throws IOException {
+    public static ArrayList<String> getDashboardData() throws IOException {
         ArrayList<String> s = new ArrayList<>();
         DecimalFormat f = new DecimalFormat("#0.00");
         URL url = new URL(baseURL + "orders"+"/getDashboardData");
