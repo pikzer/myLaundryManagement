@@ -29,7 +29,8 @@ public class LoginController {
     protected Button loginBtn, backBtn ;
 
     @FXML
-    public void initialize()  {
+    public void initialize() throws IOException {
+
         emailTextField.setText("owner@mail.com");
         pwdField.setText("password");
     }

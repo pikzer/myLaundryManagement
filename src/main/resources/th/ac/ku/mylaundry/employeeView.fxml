@@ -3,6 +3,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -101,7 +102,13 @@
             </ImageView>
          </graphic>
       </Button>
-      <AnchorPane layoutY="-1.0" prefHeight="768.0" prefWidth="228.0" style="-fx-background-color: lightskyblue;">
+      <Text layoutX="995.0" layoutY="613.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เงินเดือน" wrappingWidth="58.275001525878906">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <TextField fx:id="salaryField" layoutX="1077.0" layoutY="590.0" prefHeight="33.0" prefWidth="237.0" />
+      <AnchorPane layoutY="1.0" prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
          <children>
             <VBox layoutX="1.0" layoutY="104.0" prefHeight="645.0" prefWidth="227.0">
                <children>
@@ -232,12 +239,7 @@
                   <Image url="@images/main_icon_128px.png" />
                </image>
             </ImageView>
-            <Text layoutX="101.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by My Laundry" />
-            <Text fx:id="shopNameText" layoutX="90.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%ShopName%">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
+            <Text layoutX="95.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by My Laundry" />
             <Separator layoutX="14.0" layoutY="88.0" prefWidth="200.0" style="-fx-background-color: black;" />
             <Button layoutX="53.0" layoutY="745.0" mnemonicParsing="false" onAction="#onClickLogout" prefHeight="15.0" prefWidth="114.0" style="-fx-background-color: transparent;" text="ออกจากระบบ" underline="true">
                <effect>
@@ -247,13 +249,12 @@
                   <Font size="11.0" />
                </font>
             </Button>
+            <Label fx:id="shopNameLabel" layoutX="96.0" layoutY="25.0" text="shopName">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
-      <Text layoutX="995.0" layoutY="613.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เงินเดือน" wrappingWidth="58.275001525878906">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-      <TextField fx:id="salaryField" layoutX="1077.0" layoutY="590.0" prefHeight="33.0" prefWidth="237.0" />
    </children>
 </AnchorPane>

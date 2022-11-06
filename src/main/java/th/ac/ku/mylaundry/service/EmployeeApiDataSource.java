@@ -48,6 +48,21 @@ public class EmployeeApiDataSource extends ApiCall {
         }
     }
 
+    public static String getOwnerQR(){
+        try {
+            URL url = new URL(baseURL + "employees/1");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestMethod("GET");
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            JSONObject jsonObject = new JSONObject(j);
+            return jsonObject.getString("phone");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static boolean delEmployee(int id){
         try{
             URL url = new URL(baseURL+"employees/"+id);

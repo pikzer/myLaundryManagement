@@ -125,7 +125,6 @@ public class CustomerApiDataSource extends ApiCall {
             System.out.println(e);
             return false;
         }
-
     }
 
     public static boolean updateCustomer(int id,String name, String phone, String email,String address){

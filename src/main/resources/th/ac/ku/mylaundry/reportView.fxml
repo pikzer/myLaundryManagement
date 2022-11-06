@@ -15,10 +15,29 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.ReportController">
    <children>
-      <AnchorPane layoutY="1.0" prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
+      <Text layoutX="257.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายงาน">
+         <font>
+            <Font size="46.0" />
+         </font>
+      </Text>
+      <Text layoutX="271.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ตั้งแต่ " />
+      <DatePicker fx:id="fromDatePicker" layoutX="311.0" layoutY="108.0" prefHeight="39.0" prefWidth="188.0" />
+      <Text layoutX="519.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ถึง" />
+      <DatePicker fx:id="toDatePicker" layoutX="548.0" layoutY="108.0" prefHeight="39.0" prefWidth="188.0" />
+      <TableView fx:id="orderTable" layoutX="271.0" layoutY="157.0" prefHeight="504.0" prefWidth="1020.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+      <Button layoutX="1141.0" layoutY="694.0" mnemonicParsing="false" onAction="#printReport" text="พิมพ์รายงาน">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Button>
+      <AnchorPane prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
          <children>
             <VBox layoutX="1.0" layoutY="104.0" prefHeight="645.0" prefWidth="227.0">
                <children>
@@ -149,7 +168,7 @@
                   <Image url="@images/main_icon_128px.png" />
                </image>
             </ImageView>
-            <Text layoutX="114.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by My Laundry" />
+            <Text layoutX="95.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by My Laundry" />
             <Separator layoutX="14.0" layoutY="88.0" prefWidth="200.0" style="-fx-background-color: black;" />
             <Button layoutX="53.0" layoutY="745.0" mnemonicParsing="false" onAction="#onClickLogout" prefHeight="15.0" prefWidth="114.0" style="-fx-background-color: transparent;" text="ออกจากระบบ" underline="true">
                <effect>
@@ -159,32 +178,13 @@
                   <Font size="11.0" />
                </font>
             </Button>
-            <Label fx:id="shopNameLabel" layoutX="94.0" layoutY="30.0" text="\%shopNameLabel%">
+            <Label fx:id="shopNameLabel" layoutX="96.0" layoutY="25.0" text="shopName">
                <font>
-                  <Font size="14.0" />
+                  <Font size="17.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <Text layoutX="257.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายงาน">
-         <font>
-            <Font size="46.0" />
-         </font>
-      </Text>
-      <Text layoutX="271.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ตั้งแต่ " />
-      <DatePicker layoutX="311.0" layoutY="108.0" prefHeight="39.0" prefWidth="188.0" />
-      <Text layoutX="519.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ถึง" />
-      <DatePicker layoutX="548.0" layoutY="108.0" prefHeight="39.0" prefWidth="188.0" />
-      <TableView layoutX="271.0" layoutY="157.0" prefHeight="504.0" prefWidth="1020.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
-      </TableView>
-      <Button layoutX="1141.0" layoutY="694.0" mnemonicParsing="false" text="พิมพ์รายงาน">
-         <font>
-            <Font size="22.0" />
-         </font>
-      </Button>
+      <Button layoutX="781.0" layoutY="111.0" mnemonicParsing="false" onAction="#onClickGetData" prefHeight="33.0" prefWidth="81.0" text="ดึงข้อมูล" />
    </children>
 </AnchorPane>

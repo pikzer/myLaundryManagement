@@ -1,5 +1,8 @@
 package th.ac.ku.mylaundry.controller;
 
+import com.github.pheerathach.ThaiQRPromptPay;
+import com.google.zxing.WriterException;
+import com.itextpdf.text.DocumentException;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,14 +19,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import th.ac.ku.mylaundry.model.ClothList;
 import th.ac.ku.mylaundry.model.Order;
-import th.ac.ku.mylaundry.service.DeliveryTimeApiDataSource;
-import th.ac.ku.mylaundry.service.OrderApiDataSource;
+import th.ac.ku.mylaundry.service.*;
 
+import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -64,7 +71,7 @@ public class OrderListViewController extends Navigator {
 
     Order selectedOrder ;
 
-    public void initialize(){
+    public void initialize() throws IOException {
         orderArrayList = OrderApiDataSource.getTodayOrder();
         serviceCombo.getItems().addAll(serviceList);
         statusCombo.getItems().addAll(statusList);
@@ -74,6 +81,7 @@ public class OrderListViewController extends Navigator {
         statusCombo.getSelectionModel().select(0);
         orderTypeCombo.getSelectionModel().select(0);
         rangeCombo.getSelectionModel().select(0);
+        shopNameLabel.setText(LaundryApiDataSource.getLaundryName(1).toString());
         showOrderTable();
         updateBtn.setDisable(true);
         acceptBtn.setDisable(true);
@@ -373,6 +381,9 @@ public class OrderListViewController extends Navigator {
         orderTable.setItems(orderSortedList);
     }
 
+
+
+
     public void showClothListTable(Order order) throws IOException {
         clothListTable.getColumns().clear();
         ObservableList<ClothList> clothLists  = FXCollections.observableList(OrderApiDataSource.getOrderClothList(order.getId()));
@@ -424,11 +435,19 @@ public class OrderListViewController extends Navigator {
         tagBtn.setDisable(false);
         makePaperBtn.setDisable(false);
 
+        if (order.getPayMethod().equals("พร้อมเพย์")){
+            showQrBtn.setDisable(false);
+        }
+        else{
+            showQrBtn.setDisable(true);
+        }
+
         if(order.getIsMemOrder()==1){
             makePayBtn.setDisable(true);
             invBtn.setDisable(true);
             receiptBtn.setDisable(true);
         }
+
 
         // finace
         else if(order.getPayStatus()==0){
@@ -565,16 +584,40 @@ public class OrderListViewController extends Navigator {
         }
     }
 
-    public void onClickShowQr(){
+    public void onClickShowQr() throws IOException, WriterException {
+        ThaiQRPromptPay qr = new ThaiQRPromptPay.Builder().dynamicQR().creditTransfer().mobileNumber(EmployeeApiDataSource.getOwnerQR()).amount(new BigDecimal(totalField.getText())).build();
+        File file = new File("qr.png");
+        qr.draw(500,500,file);
+        StackPane secondaryLayout = new StackPane();
+        Scene secondScene = new Scene(secondaryLayout, 500, 500);
 
+        Image image = new Image(file.toURI().toString());
+        secondaryLayout.getChildren().add(new ImageView(image));
+        Stage newWindow = new Stage();
+        newWindow.setTitle("QR-Promtpay");
+        newWindow.setScene(secondScene);
+        newWindow.show();
+
+        newWindow.setOnHiding( aevent -> {
+            file.delete();
+        });
     }
 
-    public void onClickInv(){
 
+
+    public void onClickInv() throws IOException, DocumentException {
+        if(selectedOrder!=null){
+            WriterPDF.createINVPDF(selectedOrder);
+        }
     }
 
-    public void onClickReceipt(){
-
+    public void onClickReceipt() throws DocumentException, IOException {
+        if(selectedOrder.getPayStatus()==0){
+            pushAlert("รายการยังไม่ชำระค่าบริการ", Alert.AlertType.WARNING);
+        }
+        else{
+            WriterPDF.createReceipt(selectedOrder);
+        }
     }
 
     public void onClickTag(){

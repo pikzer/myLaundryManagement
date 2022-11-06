@@ -12,6 +12,12 @@ module th.ac.ku.mylaundry {
 
     requires java.mail;
     requires  promptpay;
+    requires com.google.zxing;
+    requires java.desktop;
+    requires itextpdf;
+    requires org.apache.poi.poi;
+    requires org.apache.poi.ooxml;
+//    requires com
 
 
     opens th.ac.ku.mylaundry to javafx.fxml;

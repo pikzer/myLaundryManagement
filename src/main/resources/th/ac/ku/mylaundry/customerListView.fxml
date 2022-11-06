@@ -20,6 +20,93 @@
 
 <AnchorPane onMouseClicked="#onClickAnchor" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.CustomerListController">
    <children>
+      <TableView fx:id="cusTable" layoutX="241.0" layoutY="118.0" prefHeight="618.0" prefWidth="563.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+      <Text layoutX="239.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายการลูกค้า">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Text>
+      <Text layoutX="946.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ชื่อ">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <TextField fx:id="nameField" layoutX="983.0" layoutY="137.0" prefHeight="30.0" prefWidth="241.0" />
+      <Text layoutX="916.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เบอร์โทร">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <TextField fx:id="telField" layoutX="983.0" layoutY="174.0" prefHeight="30.0" prefWidth="241.0" />
+      <Text layoutX="951.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ที่อยู่">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <TextArea fx:id="adsTextArea" layoutX="983.0" layoutY="256.0" prefHeight="90.0" prefWidth="284.0" />
+      <Text layoutX="933.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <TextField fx:id="emailField" layoutX="983.0" layoutY="218.0" prefHeight="30.0" prefWidth="241.0" />
+      <Button fx:id="addEditBtn" layoutX="1041.0" layoutY="354.0" mnemonicParsing="false" onAction="#onClickAddEditCus" prefHeight="25.0" prefWidth="130.0" text="เพิ่ม/แก้ไข">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <TextField fx:id="searchField" layoutX="618.0" layoutY="80.0" prefHeight="30.0" prefWidth="186.0" promptText="ค้นหา" />
+      <Text layoutX="241.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ตัวกรอง">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+      <CheckBox fx:id="memCheck" layoutX="329.0" layoutY="86.0" mnemonicParsing="false" text="สมาชิก" />
+      <ComboBox fx:id="serviceTypeCombo" layoutX="457.0" layoutY="80.0" prefHeight="30.0" prefWidth="150.0" />
+      <Text layoutX="406.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ประเภท" />
+      <Text layoutX="833.0" layoutY="446.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เพิ่มและแก้ไขสมาชิก">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="serviceAddCombo" layoutX="1053.0" layoutY="477.0" prefHeight="30.0" prefWidth="186.0" />
+      <Text layoutX="941.0" layoutY="497.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ประเภทบริการ">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="834.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ข้อมูลส่วนตัว">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Text>
+      <Separator layoutX="836.0" layoutY="405.0" prefHeight="3.0" prefWidth="472.0" style="-fx-background-color: black;" />
+      <Text layoutX="967.0" layoutY="563.0" strokeType="OUTSIDE" strokeWidth="0.0" text="จำนวนชิ้น">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="piecesCombo" layoutX="1053.0" layoutY="542.0" prefHeight="30.0" prefWidth="150.0" />
+      <Text layoutX="965.0" layoutY="619.0" strokeType="OUTSIDE" strokeWidth="0.0" text="จำนวนเงิน">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Label fx:id="totalLabel" layoutX="1057.0" layoutY="601.0" text="\%Total%">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <Button fx:id="addMemBtn" layoutX="1028.0" layoutY="656.0" mnemonicParsing="false" onAction="#onClickAddMem" prefHeight="44.0" prefWidth="130.0" text="เพิ่ม">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
       <AnchorPane prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
          <children>
             <VBox layoutX="1.0" layoutY="104.0" prefHeight="645.0" prefWidth="227.0">
@@ -151,12 +238,7 @@
                   <Image url="@images/main_icon_128px.png" />
                </image>
             </ImageView>
-            <Text layoutX="101.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by My Laundry" />
-            <Text fx:id="shopNameText" layoutX="90.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%ShopName%">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
+            <Text layoutX="95.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by My Laundry" />
             <Separator layoutX="14.0" layoutY="88.0" prefWidth="200.0" style="-fx-background-color: black;" />
             <Button layoutX="53.0" layoutY="745.0" mnemonicParsing="false" onAction="#onClickLogout" prefHeight="15.0" prefWidth="114.0" style="-fx-background-color: transparent;" text="ออกจากระบบ" underline="true">
                <effect>
@@ -166,104 +248,12 @@
                   <Font size="11.0" />
                </font>
             </Button>
+            <Label fx:id="shopNameLabel" layoutX="96.0" layoutY="25.0" text="shopName">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
-      <TableView fx:id="cusTable" layoutX="241.0" layoutY="118.0" prefHeight="618.0" prefWidth="563.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
-      </TableView>
-      <Text layoutX="239.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายการลูกค้า">
-         <font>
-            <Font size="37.0" />
-         </font>
-      </Text>
-      <Text layoutX="946.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ชื่อ">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-      <TextField fx:id="nameField" layoutX="983.0" layoutY="137.0" prefHeight="30.0" prefWidth="241.0" />
-      <Text layoutX="916.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เบอร์โทร">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-      <TextField fx:id="telField" layoutX="983.0" layoutY="174.0" prefHeight="30.0" prefWidth="241.0" />
-      <Text layoutX="951.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ที่อยู่">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
-      <TextArea fx:id="adsTextArea" layoutX="983.0" layoutY="256.0" prefHeight="90.0" prefWidth="284.0" />
-      <Text layoutX="933.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-      <TextField fx:id="emailField" layoutX="983.0" layoutY="218.0" prefHeight="30.0" prefWidth="241.0" />
-      <Button fx:id="addEditBtn" layoutX="1041.0" layoutY="354.0" mnemonicParsing="false" onAction="#onClickAddEditCus" prefHeight="25.0" prefWidth="130.0" text="เพิ่ม/แก้ไข">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
-      <TextField fx:id="searchField" layoutX="618.0" layoutY="80.0" prefHeight="30.0" prefWidth="186.0" promptText="ค้นหา" />
-      <Text layoutX="241.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ตัวกรอง">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Text>
-      <CheckBox fx:id="memCheck" layoutX="329.0" layoutY="86.0" mnemonicParsing="false" text="สมาชิก" />
-      <ComboBox fx:id="serviceTypeCombo" layoutX="457.0" layoutY="80.0" prefHeight="30.0" prefWidth="150.0" />
-      <Text layoutX="406.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ประเภท" />
-      <Text layoutX="833.0" layoutY="446.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เพิ่มและแก้ไขสมาชิก">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <ComboBox fx:id="serviceAddCombo" layoutX="1053.0" layoutY="477.0" prefHeight="30.0" prefWidth="186.0" />
-      <Text layoutX="941.0" layoutY="497.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ประเภทบริการ">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-      <Text layoutX="834.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ข้อมูลส่วนตัว">
-         <font>
-            <Font size="21.0" />
-         </font>
-      </Text>
-      <Separator layoutX="836.0" layoutY="405.0" prefHeight="3.0" prefWidth="472.0" style="-fx-background-color: black;" />
-      <Text layoutX="967.0" layoutY="563.0" strokeType="OUTSIDE" strokeWidth="0.0" text="จำนวนชิ้น">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-      <ComboBox fx:id="piecesCombo" layoutX="1053.0" layoutY="542.0" prefHeight="30.0" prefWidth="150.0" />
-      <Text layoutX="965.0" layoutY="619.0" strokeType="OUTSIDE" strokeWidth="0.0" text="จำนวนเงิน">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-      <Label fx:id="totalLabel" layoutX="1057.0" layoutY="601.0" text="\%Total%">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
-      <Button fx:id="addMemBtn" layoutX="1178.0" layoutY="655.0" mnemonicParsing="false" onAction="#onClickAddMem" prefHeight="44.0" prefWidth="130.0" text="เพิ่ม">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
-      <Button fx:id="invBtn" layoutX="851.0" layoutY="655.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="130.0" text="พิมพ์ใบแจ้งหนี้">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
-      <Button fx:id="recBtn" layoutX="1016.0" layoutY="655.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="130.0" text="พิมพ์ใบเสร็จ">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
    </children>
 </AnchorPane>

@@ -5,10 +5,7 @@ import org.json.*;
 import th.ac.ku.mylaundry.model.Employee;
 import th.ac.ku.mylaundry.model.Laundry;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,6 +18,8 @@ import static th.ac.ku.mylaundry.service.ApiUtil.decodeRespond;
 public class ApiCall {
     public static final String baseURL = "http://localhost/api/" ;
     public static String token ;
+    
+    public static String role = null;
 
 
     public static String getRole() throws IOException {
@@ -70,6 +69,7 @@ public class ApiCall {
             String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
             System.out.println(j);
             JSONObject jsonObject = new JSONObject(j);
+            delTempFile();
             return jsonObject.getString("message").equals("Successfully logged out");
         } catch (Exception e) {
             return false ;
@@ -119,6 +119,13 @@ public class ApiCall {
         s.add(String.valueOf(jsonObject.getInt("numOfCus")));
         s.add(String.valueOf(jsonObject.getInt("numOfMem")));
             return s;
+    }
+
+    public static void delTempFile(){
+        new File("inv").delete();
+        new File("receipt").delete();
+        // on del report
+        new File("report").delete();
     }
 
 

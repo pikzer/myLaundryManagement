@@ -1,5 +1,8 @@
 package th.ac.ku.mylaundry.controller;
 
+import com.github.pheerathach.ThaiQRPromptPay;
+import com.google.zxing.WriterException;
+import com.itextpdf.text.DocumentException;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import java.awt.image.BufferedImage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -25,7 +29,8 @@ import javafx.util.Callback;
 import th.ac.ku.mylaundry.model.*;
 import th.ac.ku.mylaundry.service.*;
 
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.io.*;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -77,7 +82,7 @@ public class NewOrderController extends Navigator {
     ObservableList<ClothList> clothListObservableList ;
     ArrayList<ServiceRate> serviceRatesData ;
 
-    int selectService ;
+    Integer selectService ;
     DecimalFormat f = new DecimalFormat("#0.00");
     Cloth selectCloth ;
     Customer selectCustomer ;
@@ -101,6 +106,7 @@ public class NewOrderController extends Navigator {
         quantitySpinner.setEditable(true);
         quantitySpinner.setDisable(true);
         showQrBtn.setDisable(true);
+        shopNameLabel.setText(LaundryApiDataSource.getLaundryName(1).toString());
         initSpinner();
 //        timeCombo.getItems().addAll(timeList);
         adsArea.setDisable(true);
@@ -394,6 +400,10 @@ public class NewOrderController extends Navigator {
 
 
     public void showCleanService(){
+        if(quantitySpinner.getValue() != null){
+            onClickPane();
+
+        }
         if(selectPayMethod == null || selectPayMethod.equals("เงินสด") || selectPayMethod.equals("พร้อมเพย์")){
             showCleanBtn.setDisable(true);
             showCleanIronBtn.setDisable(false);
@@ -429,6 +439,8 @@ public class NewOrderController extends Navigator {
 
 
     public void showCleanIronService(){
+        onClickPane();
+
         if(selectPayMethod == null || selectPayMethod.equals("เงินสด") || selectPayMethod.equals("พร้อมเพย์")){
             showCleanBtn.setDisable(false);
             showCleanIronBtn.setDisable(true);
@@ -467,6 +479,8 @@ public class NewOrderController extends Navigator {
     }
 
     public void dryCleanService(){
+        onClickPane();
+
         showCleanBtn.setDisable(false);
         showCleanIronBtn.setDisable(false);
         showDryCleanBtn.setDisable(true);
@@ -493,6 +507,8 @@ public class NewOrderController extends Navigator {
     }
 
     public void showIronService(){
+        onClickPane();
+
         showCleanBtn.setDisable(false);
         showCleanIronBtn.setDisable(false);
         showDryCleanBtn.setDisable(false);
@@ -646,18 +662,26 @@ public class NewOrderController extends Navigator {
         updateSpinnerValue(0);
     }
 
+    Scene start,game;
 
-    public void showQr(ActionEvent event){
+    public void showQr(ActionEvent event) throws IOException, WriterException {
+
+        ThaiQRPromptPay qr = new ThaiQRPromptPay.Builder().dynamicQR().creditTransfer().mobileNumber(EmployeeApiDataSource.getOwnerQR()).amount(new BigDecimal(totalField.getText())).build();
+        File file = new File("qr.png");
+        qr.draw(500,500,file);
         StackPane secondaryLayout = new StackPane();
         Scene secondScene = new Scene(secondaryLayout, 500, 500);
+
+        Image image = new Image(file.toURI().toString());
+        secondaryLayout.getChildren().add(new ImageView(image));
         Stage newWindow = new Stage();
-
-//        ThaiQRPromptPay qr = new ThaiQRPromptPay.Builder().dynamicQR().creditTransfer().mobileNumber("0812345678").amount(new BigDecimal("100.00")).build();
-
-        newWindow.setTitle("Second Stage");
+        newWindow.setTitle("QR-Promtpay");
         newWindow.setScene(secondScene);
-
         newWindow.show();
+
+        newWindow.setOnHiding( aevent -> {
+            file.delete();
+        });
     }
 
     public void newCustomer(ActionEvent event) throws IOException {
@@ -814,12 +838,22 @@ public class NewOrderController extends Navigator {
         }
     }
 
-    public void printInv(){
-
+    public void printInv() throws DocumentException, IOException {
+        if(makeOrder){
+            if(!makePayBtn.isDisable()){
+                WriterPDF.createINVPDF(OrderApiDataSource.getOrder(orderId));
+            }
+        }
     }
 
-    public void printReceipt(){
-
+    public void printReceipt() throws DocumentException, IOException {
+        if(makeOrder){
+            if(makePayBtn.isDisable()){
+                if(orderId != 0){
+                    WriterPDF.createINVPDF(OrderApiDataSource.getOrder(orderId));
+                }
+            }
+        }
     }
 
     public void printTag(){
@@ -831,10 +865,7 @@ public class NewOrderController extends Navigator {
         alert.setTitle("ยืนยันการชำระเงิน");
         alert.setHeaderText("คุณต้องการชำระเงินเลยหรือไม่");
         Optional<ButtonType> option = alert.showAndWait();
-        if(option.get() == null){
-
-        }
-        else if (option.get() == ButtonType.OK) {
+        if(option.get() == ButtonType.OK){
             if(OrderApiDataSource.payMoney(orderId)){
                 makePayBtn.setDisable(true);
                 pushAlertWarning("ชำระเงินสำเร็จ", Alert.AlertType.INFORMATION);
@@ -842,9 +873,6 @@ public class NewOrderController extends Navigator {
             else{
                 pushAlertWarning("ชำระเงินไม่สำเร็จ", Alert.AlertType.ERROR);
             }
-        }
-        else {
-
         }
     }
 

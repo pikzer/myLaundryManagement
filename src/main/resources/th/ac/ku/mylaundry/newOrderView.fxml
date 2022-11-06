@@ -203,7 +203,37 @@
             <Text layoutX="31.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ชื่อ" />
             <Label fx:id="nameLabel" layoutX="66.0" layoutY="102.0" text="-" />
          </children></Pane>
-      <AnchorPane layoutX="-8.0" prefHeight="768.0" prefWidth="226.0" style="-fx-background-color: lightskyblue;">
+      <Pane layoutX="245.0" layoutY="592.0" prefHeight="170.0" prefWidth="695.0" style="-fx-background-color: aliceblue;">
+         <children>
+            <Text layoutX="14.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ราคารวม">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Text layoutX="359.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ราคาค่าส่ง">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Text layoutX="14.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ภาษีมูลค่าเพิ่ม">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <TextField fx:id="subTotalField" editable="false" layoutX="118.0" layoutY="19.0" prefHeight="45.0" prefWidth="214.0" />
+            <TextField fx:id="deliveryPriceField" editable="false" layoutX="451.0" layoutY="19.0" prefHeight="45.0" prefWidth="214.0" />
+            <TextField fx:id="taxField" editable="false" layoutX="132.0" layoutY="84.0" prefHeight="45.0" prefWidth="200.0" />
+            <Text layoutX="363.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ราคาสุทธิ">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <TextField fx:id="totalField" editable="false" layoutX="451.0" layoutY="84.0" prefHeight="45.0" prefWidth="220.0" />
+            <Button fx:id="showQrBtn" layoutX="521.0" layoutY="142.0" mnemonicParsing="false" onAction="#showQr" prefHeight="28.0" prefWidth="160.0" text="แสดง QR Promptpay" />
+         </children>
+      </Pane>
+      <Button layoutX="862.0" layoutY="19.0" mnemonicParsing="false" onAction="#onReset" text="รีเซต" />
+      <AnchorPane prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
          <children>
             <VBox layoutX="1.0" layoutY="104.0" prefHeight="645.0" prefWidth="227.0">
                <children>
@@ -334,7 +364,7 @@
                   <Image url="@images/main_icon_128px.png" />
                </image>
             </ImageView>
-            <Text layoutX="114.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by My Laundry" />
+            <Text layoutX="95.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by My Laundry" />
             <Separator layoutX="14.0" layoutY="88.0" prefWidth="200.0" style="-fx-background-color: black;" />
             <Button layoutX="53.0" layoutY="745.0" mnemonicParsing="false" onAction="#onClickLogout" prefHeight="15.0" prefWidth="114.0" style="-fx-background-color: transparent;" text="ออกจากระบบ" underline="true">
                <effect>
@@ -344,42 +374,12 @@
                   <Font size="11.0" />
                </font>
             </Button>
-            <Label fx:id="shopNameLabel" layoutX="94.0" layoutY="30.0" text="\%shopNameLabel%">
+            <Label fx:id="shopNameLabel" layoutX="96.0" layoutY="25.0" text="shopName">
                <font>
-                  <Font size="14.0" />
+                  <Font size="17.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <Pane layoutX="245.0" layoutY="592.0" prefHeight="170.0" prefWidth="695.0" style="-fx-background-color: aliceblue;">
-         <children>
-            <Text layoutX="14.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ราคารวม">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </Text>
-            <Text layoutX="359.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ราคาค่าส่ง">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </Text>
-            <Text layoutX="14.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ภาษีมูลค่าเพิ่ม">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </Text>
-            <TextField fx:id="subTotalField" editable="false" layoutX="118.0" layoutY="19.0" prefHeight="45.0" prefWidth="214.0" />
-            <TextField fx:id="deliveryPriceField" editable="false" layoutX="451.0" layoutY="19.0" prefHeight="45.0" prefWidth="214.0" />
-            <TextField fx:id="taxField" editable="false" layoutX="132.0" layoutY="84.0" prefHeight="45.0" prefWidth="200.0" />
-            <Text layoutX="363.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ราคาสุทธิ">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </Text>
-            <TextField fx:id="totalField" editable="false" layoutX="451.0" layoutY="84.0" prefHeight="45.0" prefWidth="220.0" />
-            <Button fx:id="showQrBtn" layoutX="521.0" layoutY="142.0" mnemonicParsing="false" onAction="#showQr" prefHeight="28.0" prefWidth="160.0" text="แสดง QR Promptpay" />
-         </children>
-      </Pane>
-      <Button layoutX="862.0" layoutY="19.0" mnemonicParsing="false" onAction="#onReset" text="รีเซต" />
    </children>
 </AnchorPane>

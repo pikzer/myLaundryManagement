@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import th.ac.ku.mylaundry.model.Laundry;
 import th.ac.ku.mylaundry.model.Order;
 import th.ac.ku.mylaundry.service.ApiCall;
 import th.ac.ku.mylaundry.service.CustomerApiDataSource;
@@ -32,8 +33,7 @@ public class HomeController extends Navigator {
     protected Scene scene;
     protected Parent root;
 
-    @FXML
-    Label shopNameLabel;
+
 
     @FXML
     Text shopNameText ;
@@ -52,6 +52,7 @@ public class HomeController extends Navigator {
 
     @FXML
     public void initialize() throws IOException {
+        ApiCall.role = ApiCall.getRole() ;
         refresh() ;
     }
 

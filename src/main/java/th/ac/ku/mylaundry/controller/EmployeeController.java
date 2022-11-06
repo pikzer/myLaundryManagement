@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import th.ac.ku.mylaundry.model.Employee;
 import th.ac.ku.mylaundry.service.EmployeeApiDataSource;
+import th.ac.ku.mylaundry.service.LaundryApiDataSource;
 import th.ac.ku.mylaundry.service.Validator;
 
 import java.io.IOException;
@@ -41,6 +42,7 @@ public class EmployeeController extends Navigator{
     public void initialize() throws IOException {
         employeeArrayList = EmployeeApiDataSource.getEmployees() ;
         bankNameCombo.getItems().addAll(bankList);
+        shopNameLabel.setText(LaundryApiDataSource.getLaundryName(1).toString());
         roleCombo.getItems().addAll(roleList);
         showEmployeeTable(employeeArrayList);
         employeeTable.getSelectionModel().selectedItemProperty().addListener((observableValue, newValue, oldValue) -> {

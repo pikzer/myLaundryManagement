@@ -44,6 +44,50 @@
             <Font size="19.0" />
          </font>
       </Text>
+      <DatePicker fx:id="datePicker" layoutX="285.0" layoutY="93.0" prefHeight="25.0" prefWidth="161.0" />
+      <Text layoutX="480.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="งาน:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="jobCombo" layoutX="525.0" layoutY="91.0" prefWidth="150.0" />
+      <Text layoutX="984.0" layoutY="557.0" strokeType="OUTSIDE" strokeWidth="0.0" text="การมอบหมาย">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="deliverCombo" editable="true" layoutX="1044.0" layoutY="597.0" prefHeight="45.0" prefWidth="213.0" />
+      <Text layoutX="1002.0" layoutY="624.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ผู้รับส่ง" />
+      <Text layoutX="981.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รหัสรายการ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text layoutX="984.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ข้อมูลรายการ">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Text>
+      <Label fx:id="orderNameLabel" layoutX="1100.0" layoutY="175.0" text="-">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="deliDatePicker" layoutX="1057.0" layoutY="241.0" prefHeight="34.0" prefWidth="188.0" />
+      <Text layoutX="1017.0" layoutY="263.0" strokeType="OUTSIDE" strokeWidth="0.0" text="วันที่รับ" />
+      <ComboBox fx:id="timeCombo" layoutX="1057.0" layoutY="304.0" prefHeight="34.0" prefWidth="188.0" />
+      <Text layoutX="1016.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เวลารับ" />
+      <Button fx:id="assignBtn" layoutX="1078.0" layoutY="675.0" mnemonicParsing="false" onAction="#onClickAssign" prefHeight="45.0" prefWidth="146.0" text="มอบหมาย">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="editBtn" layoutX="1172.0" layoutY="387.0" mnemonicParsing="false" onAction="#onClickEdit" prefHeight="45.0" prefWidth="146.0" text="แก้ไข">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="cancelBtn" layoutX="998.0" layoutY="387.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="45.0" prefWidth="130.0" text="ยกเลิก" />
       <AnchorPane layoutY="3.0" prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
          <children>
             <VBox layoutX="1.0" layoutY="104.0" prefHeight="645.0" prefWidth="227.0">
@@ -175,12 +219,7 @@
                   <Image url="@images/main_icon_128px.png" />
                </image>
             </ImageView>
-            <Text layoutX="101.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by My Laundry" />
-            <Text fx:id="shopNameText" layoutX="90.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%ShopName%">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
+            <Text layoutX="95.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by My Laundry" />
             <Separator layoutX="14.0" layoutY="88.0" prefWidth="200.0" style="-fx-background-color: black;" />
             <Button layoutX="53.0" layoutY="745.0" mnemonicParsing="false" onAction="#onClickLogout" prefHeight="15.0" prefWidth="114.0" style="-fx-background-color: transparent;" text="ออกจากระบบ" underline="true">
                <effect>
@@ -190,51 +229,12 @@
                   <Font size="11.0" />
                </font>
             </Button>
+            <Label fx:id="shopNameLabel" layoutX="96.0" layoutY="25.0" text="shopName">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
-      <DatePicker fx:id="datePicker" layoutX="285.0" layoutY="93.0" prefHeight="25.0" prefWidth="161.0" />
-      <Text layoutX="480.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="งาน:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Text>
-      <ComboBox fx:id="jobCombo" layoutX="525.0" layoutY="91.0" prefWidth="150.0" />
-      <Text layoutX="984.0" layoutY="557.0" strokeType="OUTSIDE" strokeWidth="0.0" text="การมอบหมาย">
-         <font>
-            <Font size="25.0" />
-         </font>
-      </Text>
-      <ComboBox fx:id="deliverCombo" editable="true" layoutX="1044.0" layoutY="597.0" prefHeight="45.0" prefWidth="213.0" />
-      <Text layoutX="1002.0" layoutY="624.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ผู้รับส่ง" />
-      <Text layoutX="981.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รหัสรายการ">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <Text layoutX="984.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ข้อมูลรายการ">
-         <font>
-            <Font size="29.0" />
-         </font>
-      </Text>
-      <Label fx:id="orderNameLabel" layoutX="1100.0" layoutY="175.0" text="-">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <DatePicker fx:id="deliDatePicker" layoutX="1057.0" layoutY="241.0" prefHeight="34.0" prefWidth="188.0" />
-      <Text layoutX="1017.0" layoutY="263.0" strokeType="OUTSIDE" strokeWidth="0.0" text="วันที่รับ" />
-      <ComboBox fx:id="timeCombo" layoutX="1057.0" layoutY="304.0" prefHeight="34.0" prefWidth="188.0" />
-      <Text layoutX="1016.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เวลารับ" />
-      <Button fx:id="assignBtn" layoutX="1078.0" layoutY="675.0" mnemonicParsing="false" onAction="#onClickAssign" prefHeight="45.0" prefWidth="146.0" text="มอบหมาย">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
-      <Button fx:id="editBtn" layoutX="1172.0" layoutY="387.0" mnemonicParsing="false" onAction="#onClickEdit" prefHeight="45.0" prefWidth="146.0" text="แก้ไข">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
-      <Button fx:id="cancelBtn" layoutX="998.0" layoutY="387.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="45.0" prefWidth="130.0" text="ยกเลิก" />
    </children>
 </AnchorPane>

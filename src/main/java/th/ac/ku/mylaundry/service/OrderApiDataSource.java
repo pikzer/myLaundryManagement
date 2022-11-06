@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import th.ac.ku.mylaundry.model.Cloth;
 import th.ac.ku.mylaundry.model.ClothList;
 import th.ac.ku.mylaundry.model.Order;
+import th.ac.ku.mylaundry.model.PreviewClothList;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -59,6 +60,83 @@ public class OrderApiDataSource extends ApiCall {
         }
         return orderArrayList;
     }
+
+
+    public static Order getOrder(int id) {
+        try {
+            Order order;
+            URL url = new URL(baseURL + "orders/"+id);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestMethod("GET");
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            JSONObject jsonObject = new JSONObject(j);
+                        order = new Order(jsonObject.getInt("id"),
+                        jsonObject.getString("cus_phone"),
+                        jsonObject.getString("service"),
+                        jsonObject.getString("name"),
+                        jsonObject.get("pick_date").toString(),
+                        jsonObject.get("pick_time").toString(),
+                        jsonObject.get("deli_date").toString(),
+                        jsonObject.get("deli_time").toString(),
+                        jsonObject.get("address").toString(),
+                        jsonObject.get("responder").toString(),
+                        jsonObject.get("deliver").toString(),
+                        jsonObject.getInt("pay_status"),
+                        jsonObject.getString("pay_method"),
+                        jsonObject.getDouble("pick_ser_charge"),
+                        jsonObject.getDouble("deli_ser_charge"),
+                        jsonObject.getDouble("total"),
+                        jsonObject.getString("status"),
+                        jsonObject.getInt("is_membership_or"));
+                        return order;
+            } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static ArrayList<Order> getReport(String from, String to) throws IOException {
+        ArrayList<Order> orderArrayList = new ArrayList<>();
+        var urlParameters = "from="+from+"&"+"to="+to ;
+        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+        URL url = new URL(baseURL + "orders/getReport");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setDoOutput(true);
+        conn.setRequestProperty("User-Agent", "Java client");
+        conn.setRequestProperty("Authorization", "Bearer " + token);
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        try (var wr = new DataOutputStream(conn.getOutputStream())) {
+            wr.write(postData);
+        }
+        String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+        JSONArray jsonArray = new JSONArray(j);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            orderArrayList.add(new Order(jsonArray.getJSONObject(i).getInt("id"),
+                    jsonArray.getJSONObject(i).getString("cus_phone"),
+                    jsonArray.getJSONObject(i).getString("service"),
+                    jsonArray.getJSONObject(i).getString("name"),
+                    jsonArray.getJSONObject(i).get("pick_date").toString(),
+                    jsonArray.getJSONObject(i).get("pick_time").toString(),
+                    jsonArray.getJSONObject(i).get("deli_date").toString(),
+                    jsonArray.getJSONObject(i).get("deli_time").toString(),
+                    jsonArray.getJSONObject(i).get("address").toString(),
+                    jsonArray.getJSONObject(i).get("responder").toString(),
+                    jsonArray.getJSONObject(i).get("deliver").toString(),
+                    jsonArray.getJSONObject(i).getInt("pay_status"),
+                    jsonArray.getJSONObject(i).getString("pay_method"),
+                    jsonArray.getJSONObject(i).getDouble("pick_ser_charge"),
+                    jsonArray.getJSONObject(i).getDouble("deli_ser_charge"),
+                    jsonArray.getJSONObject(i).getDouble("total"),
+                    jsonArray.getJSONObject(i).getString("status"),
+                    jsonArray.getJSONObject(i).getInt("is_membership_or"),
+                    jsonArray.getJSONObject(i).getString("created_at")
+                    ));
+        }
+        return orderArrayList ;
+    }
+
+
 
 
 
@@ -204,10 +282,6 @@ public class OrderApiDataSource extends ApiCall {
             var urlParameters = "service="+order.getService()+"&"+"pay_method="+order.getPayMethod()
                     +"&"+"status="+order.getStatus()+"&"+"is_membership_or="+order.getMemOrder()+"&"+"cus_phone="+phone
                     +"&"+"responder="+getEmployeeName()+"&"+"pay_status="+order.getPayStatus();
-
-            // REAL-
-//            var urlParameters = "service="+order.getService()+"&"+"pay_method="+order.getPayMethod()
-//                    +"&"+"status="+order.getStatus()+"&"+"is_membership_or="+order.getMemOrder()+"&"+"cus_phone="+phone;
 
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
             URL url = new URL(baseURL + "orders");
@@ -430,6 +504,35 @@ public class OrderApiDataSource extends ApiCall {
             System.out.println(e);
             return false ;
         }
+    }
+
+    public static PreviewClothList getPreviewClothList(int cl_id){
+        try {
+            var urlParameters = "cl_id="+cl_id;
+            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+            URL url = new URL(baseURL + "orders/getPreviewClothList");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            JSONObject jsonObject = new JSONObject(j);
+            PreviewClothList previewClothList = new PreviewClothList(jsonObject.getString("service"),
+                    jsonObject.getString("clothType"),
+                    jsonObject.getInt("quantity"),
+                    jsonObject.getDouble("pricePerU"),
+                    jsonObject.getDouble("amount")
+                    );
+            return previewClothList ;
+
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return null ;
     }
 
     public static boolean confirmOrder(int id){

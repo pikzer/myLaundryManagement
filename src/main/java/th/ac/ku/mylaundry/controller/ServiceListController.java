@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import th.ac.ku.mylaundry.model.Category;
 import th.ac.ku.mylaundry.model.Customer;
 import th.ac.ku.mylaundry.model.ServiceRate;
+import th.ac.ku.mylaundry.service.LaundryApiDataSource;
 import th.ac.ku.mylaundry.service.ServiceRateApiDataSource;
 import th.ac.ku.mylaundry.service.Validator;
 
@@ -66,6 +67,7 @@ public class ServiceListController extends Navigator{
         showBasePrice();
         categorySplitService();
         delBtn.setDisable(true);
+        shopNameLabel.setText(LaundryApiDataSource.getLaundryName(1).toString());
 
         cleanCatObserve = FXCollections.observableList(cleanCatArr);
         FilteredList<Category> cleanFiltered = new FilteredList<>(cleanCatObserve);

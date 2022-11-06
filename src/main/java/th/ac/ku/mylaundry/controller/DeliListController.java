@@ -44,6 +44,7 @@ public class DeliListController extends Navigator {
         FilteredList<DeliveryTime> deliveryTimes = new FilteredList<>(observableList);
         editBtn.setDisable(true);
         assignBtn.setDisable(true);
+        shopNameLabel.setText(LaundryApiDataSource.getLaundryName(1).toString());
         jobCombo.getItems().addAll(jobList);
         jobCombo.getSelectionModel().select(0);
 

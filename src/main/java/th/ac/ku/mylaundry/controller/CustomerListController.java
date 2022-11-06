@@ -1,5 +1,6 @@
 package th.ac.ku.mylaundry.controller;
 
+import com.itextpdf.text.DocumentException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -15,9 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import th.ac.ku.mylaundry.model.Customer;
 import th.ac.ku.mylaundry.model.MemberPackage;
-import th.ac.ku.mylaundry.service.CustomerApiDataSource;
-import th.ac.ku.mylaundry.service.MemberPackageApiDataSource;
-import th.ac.ku.mylaundry.service.Validator;
+import th.ac.ku.mylaundry.service.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,8 +66,7 @@ public class CustomerListController extends Navigator {
         piecesCombo.setDisable(true);
         serviceAddCombo.setDisable(true);
         addMemBtn.setDisable(true);
-        recBtn.setDisable(true);
-        invBtn.setDisable(true);
+        shopNameLabel.setText(LaundryApiDataSource.getLaundryName(1).toString());
 //        serviceAddCombo.getItems().clear();
 //        piecesCombo.getItems().clear();
         serviceTypeCombo.getItems().addAll(serviceType);
@@ -211,8 +209,6 @@ public class CustomerListController extends Navigator {
         piecesCombo.setDisable(false);
         serviceAddCombo.setDisable(false);
         addMemBtn.setDisable(false);
-        recBtn.setDisable(false);
-        invBtn.setDisable(false);
     }
 
     public void onClickAddEditCus(ActionEvent event) throws IOException {
@@ -316,7 +312,7 @@ public class CustomerListController extends Navigator {
         return arr.toArray(new Integer[0]);
     }
 
-    public void onClickAddMem() throws IOException {
+    public void onClickAddMem() throws IOException, DocumentException {
         if(serviceAddCombo.getSelectionModel().getSelectedItem() != null && piecesCombo.getSelectionModel().getSelectedItem() != null){
             if(selectedCus.getMemCredit() == 0){
                 selectedCus.setMemCredit(piecesCombo.getSelectionModel().getSelectedItem());
@@ -324,19 +320,21 @@ public class CustomerListController extends Navigator {
                 CustomerApiDataSource.addMembership(selectedCus.getId(),serviceAddCombo.getSelectionModel().getSelectedItem(),selectedCus.getMemCredit());
                 cusTable.refresh();
                 pushAlert("เพิ่มสมาชิกสำเร็จ", Alert.AlertType.INFORMATION);
+                getReceipt(selectedCus,new MemberPackage(0,serviceAddCombo.getSelectionModel().getSelectedItem().toString(),piecesCombo.getSelectionModel().getSelectedItem(),Double.parseDouble(totalLabel.getText())));
             }
             else if(selectedCus.getMemCredit() != 0){
                 if(selectedCus.getMemService().equals(serviceAddCombo.getSelectionModel().getSelectedItem())){
                     selectedCus.setMemCredit(selectedCus.getMemCredit()+piecesCombo.getSelectionModel().getSelectedItem());
                     CustomerApiDataSource.addMembership(selectedCus.getId(),serviceAddCombo.getSelectionModel().getSelectedItem(),selectedCus.getMemCredit());
                     pushAlert("เพิ่มสมาชิกสำเร็จ", Alert.AlertType.INFORMATION);
+                    getReceipt(selectedCus,new MemberPackage(0,serviceAddCombo.getSelectionModel().getSelectedItem().toString(),piecesCombo.getSelectionModel().getSelectedItem(),Double.parseDouble(totalLabel.getText())));
                     cusTable.refresh();
                     onClickAnchor();
                 }
                 else{
                     Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Replace member package");
-                    alert.setHeaderText("Are you sure want to replace package?");
+                    alert.setTitle("แทนที่สมาชิกแบบเหมาเก่า");
+                    alert.setHeaderText("คุณแน่ใจที่จะทำการแทนที่สมาชิกแบบเหมาเก่า?");
                     Optional<ButtonType> option = alert.showAndWait();
                     ButtonType cancel = new ButtonType("ยกเลิก");
                     alert.getButtonTypes().add(cancel);
@@ -348,6 +346,7 @@ public class CustomerListController extends Navigator {
                         selectedCus.setMemService(serviceAddCombo.getSelectionModel().getSelectedItem());
                         CustomerApiDataSource.addMembership(selectedCus.getId(),selectedCus.getMemService(),selectedCus.getMemCredit());
                         pushAlert("เพิ่มสมาชิกสำเร็จ", Alert.AlertType.INFORMATION);
+                        getReceipt(selectedCus,new MemberPackage(0,serviceAddCombo.getSelectionModel().getSelectedItem().toString(),piecesCombo.getSelectionModel().getSelectedItem(),Double.parseDouble(totalLabel.getText())));
                         cusTable.refresh();
 //                        onClickAnchor();
                     } else if (option.get() == ButtonType.CANCEL) {
@@ -355,6 +354,12 @@ public class CustomerListController extends Navigator {
                     }
                 }
             }
+        }
+    }
+
+    public void getReceipt(Customer customer, MemberPackage memberPackage) throws DocumentException, IOException {
+        if(customer != null || memberPackage != null){
+            WriterPDF.packageReceipt(customer,memberPackage);
         }
     }
 

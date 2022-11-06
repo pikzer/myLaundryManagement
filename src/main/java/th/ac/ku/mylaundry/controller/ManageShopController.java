@@ -42,6 +42,7 @@ public class ManageShopController extends Navigator  {
         employeeArrayList = EmployeeApiDataSource.getEmployees() ;
         showEmployeeTable(employeeArrayList);
         laundry = LaundryApiDataSource.getShop();
+        shopNameLabel.setText(LaundryApiDataSource.getLaundryName(1).toString());
         nameField.setText(laundry.getName());
         shopTelField.setText(laundry.getPhone());
         shopMailField.setText(laundry.getEmail());

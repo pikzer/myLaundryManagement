@@ -29,7 +29,7 @@
           <TableColumn prefWidth="75.0" text="C2" />
         </columns>
       </TableView>
-      <Text layoutX="29.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อัตราต่าบริการแบบแพ๊คเกจ">
+      <Text layoutX="29.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อัตราค่าบริการแบบแพ๊คเกจ">
          <font>
             <Font size="26.0" />
          </font>

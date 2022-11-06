@@ -23,6 +23,8 @@ public class Order {
     String status ;
     Integer isMemOrder ;
 
+    String created_at;
+
 
     public Order(String service, String payMethod, String status, Integer isMemOrder,Integer payStatus) {
         this.service = service;
@@ -63,6 +65,28 @@ public class Order {
         this.isMemOrder = isMemOrder;
     }
 
+    public Order(Integer id, String service, String name, String cus_phone, String pickDate, String pickTime, String deliDate, String deliTime, String address, String responder, String deliver, Integer payStatus, String payMethod, Double pickSerCharge, Double deliSerCharge, Double total, String status, Integer isMemOrder, String created_at) {
+        this.id = id;
+        this.service = service;
+        this.name = name;
+        this.cus_phone = cus_phone;
+        this.pickDate = pickDate;
+        this.pickTime = pickTime;
+        this.deliDate = deliDate;
+        this.deliTime = deliTime;
+        this.address = address;
+        this.responder = responder;
+        this.deliver = deliver;
+        this.payStatus = payStatus;
+        this.payMethod = payMethod;
+        this.pickSerCharge = pickSerCharge;
+        this.deliSerCharge = deliSerCharge;
+        this.total = total;
+        this.status = status;
+        this.isMemOrder = isMemOrder;
+        this.created_at = created_at.substring(0,10);
+    }
+
     public String getCus_phone() {
         return cus_phone;
     }
@@ -97,6 +121,10 @@ public class Order {
 
     public String getName() {
         return name;
+    }
+
+    public String getCreated_at() {
+        return created_at;
     }
 
     public void setName(String name) {
