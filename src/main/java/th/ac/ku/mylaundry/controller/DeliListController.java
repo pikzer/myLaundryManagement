@@ -5,11 +5,16 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import th.ac.ku.mylaundry.model.*;
 import th.ac.ku.mylaundry.service.*;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -114,7 +119,11 @@ public class DeliListController extends Navigator {
 
         deliTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
-                showSelectedDeliveryTime((DeliveryTime) newValue) ;
+                try {
+                    showSelectedDeliveryTime((DeliveryTime) newValue) ;
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -149,12 +158,13 @@ public class DeliListController extends Navigator {
         deliTable.setItems(sortedList);
     }
 
-    public void showSelectedDeliveryTime(DeliveryTime deliveryTime){
+    public void showSelectedDeliveryTime(DeliveryTime deliveryTime) throws IOException {
         selectDeliveryTime = deliveryTime ;
         orderNameLabel.setText(deliveryTime.getOrderName());
         if(selectDeliveryTime.getJob().equals("cancel")){
             editBtn.setDisable(true);
             assignBtn.setDisable(true);
+            onClear();
         }
         else{
             editBtn.setDisable(false);
@@ -165,12 +175,16 @@ public class DeliListController extends Navigator {
     }
 
     public void onClickEdit() throws IOException {
-        if(selectDeliveryTime != null && datePicker.getValue() != null && !timeCombo.getSelectionModel().isEmpty()){
+//        DeliveryTimeApiDataSource.addDeliveryTime(new DeliveryTime(deliDatePicker.getValue().format(formatter),
+//                timeCombo.getSelectionModel().getSelectedItem().toString(),selectDeliveryTime.getOrderName(),
+//                selectDeliveryTime.getJob()));
+
+        if(selectDeliveryTime != null  && !timeCombo.getSelectionModel().isEmpty()){
             if(DeliveryTimeApiDataSource.addDeliveryTime(new DeliveryTime(deliDatePicker.getValue().format(formatter),
                     timeCombo.getSelectionModel().getSelectedItem().toString(),selectDeliveryTime.getOrderName(),
                     selectDeliveryTime.getJob()))){
                 DeliveryTimeApiDataSource.cancelDelivery(selectDeliveryTime.getId());
-                pushAlertWarning("แก้ไขเวลารับส่งสำเร็จ", Alert.AlertType.ERROR);
+                pushAlertWarning("แก้ไขเวลารับส่งสำเร็จ", Alert.AlertType.INFORMATION);
                 onClear();
             }
             else {
@@ -203,10 +217,15 @@ public class DeliListController extends Navigator {
         timeCombo.getSelectionModel().clearSelection();
         orderNameLabel.setText("-");
         initialize();
+
     }
 
     public void onClickAnchor() throws IOException {
-        onClear();
+//        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/deliListView.fxml"));
+//        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+//        scene = new Scene(root);
+//        stage.setScene(scene);
+//        stage.show();
     }
 
     public void onClickCancel(){

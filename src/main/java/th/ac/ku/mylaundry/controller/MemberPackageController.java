@@ -74,7 +74,7 @@ public class MemberPackageController {
                 if(newValue != null){
                     if(!numOfClothField.getText().isEmpty()){
                         if(Validator.isDoubleAndPositive(newValue)){
-                            pricePerPieceLabel.setText(String.valueOf(Double.parseDouble(newValue)/Integer.parseInt(numOfClothField.getText())));
+                            pricePerPieceLabel.setText(f.format(Double.parseDouble(newValue)/Integer.parseInt(numOfClothField.getText())));
                         }
                     }
                 }

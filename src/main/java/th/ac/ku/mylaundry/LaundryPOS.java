@@ -13,6 +13,7 @@ public class LaundryPOS extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(LaundryPOS.class.getResource("landingView.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1366, 768);
         stage.setTitle("My Laundry");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

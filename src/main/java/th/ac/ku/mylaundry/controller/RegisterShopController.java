@@ -173,8 +173,7 @@ public class RegisterShopController  {
         friCheck.setSelected(true);
         satCheck.setSelected(true);
 
-        // TODO __-------______----_____---___Dev___-______-__ ONLY
-        dev();
+
     }
     @FXML
     public void onClickRegister(ActionEvent event) throws IOException {
@@ -214,12 +213,17 @@ public class RegisterShopController  {
         }
         else{
 
-            Laundry laundry = new Laundry(shopNameField.getText(), shopTelField.getText(),shopMailField.getText(),
-                    idLineField.getText(),adsTextArea.getText(),getWorkDayCode(),openTimeCombo.getSelectionModel().getSelectedItem().toString(),
+            Laundry laundry = new Laundry(shopNameField.getText(), shopTelField.getText(),shopMailField.getText()
+                    ,adsTextArea.getText(),idLineField.getText(),getWorkDayCode(),openTimeCombo.getSelectionModel().getSelectedItem().toString(),
                     closeTimeCombo.getSelectionModel().getSelectedItem().toString()) ;
             Employee employee = new Employee(nameField.getText(),telField.getText(),mailField.getText(),
                     pwdField.getText(),ownerAdsTextArea.getText(), idField.getText(),bankNumField.getText(),
                     bankCombo.getSelectionModel().getSelectedItem().toString()) ;
+            root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/loginView.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
             ApiCall.postLaundry(laundry,employee);
         }
     }

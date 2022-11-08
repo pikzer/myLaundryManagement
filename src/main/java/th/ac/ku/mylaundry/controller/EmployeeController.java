@@ -85,7 +85,7 @@ public class EmployeeController extends Navigator{
                 }
             }
         });
-        devOnly();
+//        devOnly();
     }
 
 
@@ -152,6 +152,7 @@ public class EmployeeController extends Navigator{
         roleCombo.getSelectionModel().clearSelection();
         bankNameCombo.getItems().clear();
         bankNameCombo.getEditor().clear();
+        salaryField.clear();
         bankNameCombo.getSelectionModel().clearSelection();
         initialize();
     }
@@ -284,7 +285,6 @@ public class EmployeeController extends Navigator{
         a.show();
     }
 
-    // TODO
     public void devOnly(){
         employeeTable.getSelectionModel().clearSelection();
         delBtn.setDisable(true);

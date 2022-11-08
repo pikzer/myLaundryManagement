@@ -4,14 +4,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import th.ac.ku.mylaundry.model.Category;
+import th.ac.ku.mylaundry.model.Employee;
 import th.ac.ku.mylaundry.model.Laundry;
 import th.ac.ku.mylaundry.model.ServiceRate;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static th.ac.ku.mylaundry.service.ApiUtil.decodeRespond;
@@ -31,7 +35,11 @@ public class LaundryApiDataSource extends ApiCall {
             return new Laundry(jsonObject.getInt("id"),jsonObject.getString("name"),jsonObject.getString("phone"),
                     jsonObject.getString("owner"),jsonObject.getString("email"),jsonObject.getString("address"),
                     jsonObject.getString("lineId"),jsonObject.getString("workDay"),jsonObject.getString("opentime"),
-                    jsonObject.getString("closetime"),jsonObject.getInt("numOfWork"),jsonObject.getString("status"));
+                    jsonObject.getString("closetime"),jsonObject.getInt("numOfWork"),jsonObject.getString("status"))
+                    ;
+//            return new Laundry(jsonObject.getInt("id"),jsonObject.getString("name"),jsonObject.getString("phone")
+//                    ,jsonObject.getString("owner"),jsonObject.getString("email"),jsonObject.getString("address")
+//                    ,jsonObject.getString("lineId",jsonObject.getString("workDay"),jsonObject.getString("opentime"))
 
         } catch (Exception e) {
             System.out.println(e);
@@ -77,6 +85,37 @@ public class LaundryApiDataSource extends ApiCall {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public static boolean patchLaundry(Laundry laundry){
+        var urlParameters = laundry.getPostLaundry();
+        System.out.println(urlParameters);
+        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+        try {
+            URL url = new URL(baseURL+"laundry"+"/"+1);
+            System.out.println(url);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("X-HTTP-Method-Override", "PATCH");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            JSONObject jsonObject = new JSONObject(j);
+            System.out.println(jsonObject);
+            return true ;
+        } catch (ProtocolException e) {
+            throw new RuntimeException(e);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

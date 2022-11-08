@@ -71,7 +71,7 @@
          </font>
       </Text>
       <TextField fx:id="idCardField" layoutX="1079.0" layoutY="198.0" prefHeight="33.0" prefWidth="227.0" />
-      <Button layoutX="1177.0" layoutY="656.0" mnemonicParsing="false" onAction="#onClickAddOrEdit" prefHeight="69.0" prefWidth="148.0" text="แก้ไข/เพิ่ม">
+      <Button layoutX="1177.0" layoutY="656.0" mnemonicParsing="false" onAction="#onClickAddOrEdit" prefHeight="69.0" prefWidth="148.0" text="บันทึก">
          <font>
             <Font size="26.0" />
          </font>

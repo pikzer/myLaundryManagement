@@ -31,8 +31,6 @@ public class LoginController {
     @FXML
     public void initialize() throws IOException {
 
-        emailTextField.setText("owner@mail.com");
-        pwdField.setText("password");
     }
 
 

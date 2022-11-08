@@ -14,9 +14,12 @@ import th.ac.ku.mylaundry.model.Employee;
 import th.ac.ku.mylaundry.model.Laundry;
 import th.ac.ku.mylaundry.service.EmployeeApiDataSource;
 import th.ac.ku.mylaundry.service.LaundryApiDataSource;
+import th.ac.ku.mylaundry.service.Validator;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static th.ac.ku.mylaundry.service.LaundryApiDataSource.patchLaundry;
 
 public class ManageShopController extends Navigator  {
 
@@ -42,7 +45,7 @@ public class ManageShopController extends Navigator  {
         employeeArrayList = EmployeeApiDataSource.getEmployees() ;
         showEmployeeTable(employeeArrayList);
         laundry = LaundryApiDataSource.getShop();
-        shopNameLabel.setText(LaundryApiDataSource.getLaundryName(1).toString());
+        shopNameLabel.setText(laundry.getName());
         nameField.setText(laundry.getName());
         shopTelField.setText(laundry.getPhone());
         shopMailField.setText(laundry.getEmail());
@@ -78,8 +81,55 @@ public class ManageShopController extends Navigator  {
         employeeTable.getColumns().addAll(idCol,nameCol,roleCol,telCol,emailCol) ;
         employeeTable.setItems(employeeObservableList);
     }
-    public void onClickSave(){
+    public void onClickSave() throws IOException {
+        if(!nameField.getText().equals("") && !shopMailField.getText().equals("")&& !shopTelField.getText().equals("") &&
+                !adsTextArea.getText().equals("") && !idLineField.getText().equals("") && !getWorkDayCode().equals("0000000")
+                && !openTimeCombo.getSelectionModel().isEmpty() && !closeTimeCombo.getSelectionModel().isEmpty()
+        ){
+            if(Validator.isEmail(shopMailField.getText()) && Validator.isPhoneNumber(shopTelField.getText())){
+                patchLaundry(new Laundry(nameField.getText(),shopTelField.getText(),shopMailField.getText(),
+                        adsTextArea.getText(),idLineField.getText(),getWorkDayCode(),openTimeCombo.getSelectionModel().getSelectedItem().toString(),
+                        closeTimeCombo.getSelectionModel().getSelectedItem().toString()));
+                pushAlert("Edit Complete", Alert.AlertType.INFORMATION);
+                initialize();
+            }
+            else{
+                pushAlert("Invalid information", Alert.AlertType.WARNING);
+            }
+        }
+    }
 
+    public String getWorkDayCode(){
+        String workDay = "" ;
+        if(sunCheck.isSelected())
+            workDay+="1";
+        else
+            workDay+=0;
+        if(monCheck.isSelected())
+            workDay+="1";
+        else
+            workDay+="0";
+        if(tueCheck.isSelected())
+            workDay+="1";
+        else
+            workDay+="0";
+        if(wedCheck.isSelected())
+            workDay+="1";
+        else
+            workDay+="0";
+        if(thuCheck.isSelected())
+            workDay+="1";
+        else
+            workDay+="0";
+        if(friCheck.isSelected())
+            workDay+="1";
+        else
+            workDay+="0";
+        if(satCheck.isSelected())
+            workDay+="1";
+        else
+            workDay+="0";
+        return workDay;
     }
 
 
