@@ -139,4 +139,35 @@ public class ServiceRateApiDataSource extends  ApiCall {
         }
     }
 
+    public static boolean patchCategory(Category category){
+//        String serviceType[] = {"ซักอบ","ซักรีด","ซักแห้ง","รีด"} ;
+        var urlParameters = "service_rate_id="+category.getService_rate_id()+"&"+"addOnPrice="+category.getAddOnPrice()+"&"+"clothType="+category.getClothType();
+        System.out.println(urlParameters);
+        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+        try {
+            URL url = new URL(baseURL+"category"+"/"+category.getId());
+            System.out.println(url);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("X-HTTP-Method-Override", "PATCH");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            JSONObject jsonObject = new JSONObject(j);
+            System.out.println(jsonObject);
+            return true ;
+        } catch (ProtocolException e) {
+            throw new RuntimeException(e);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

@@ -63,7 +63,7 @@
          </font>
       </Text>
       <Label fx:id="pricePerPieceLabel" layoutX="583.0" layoutY="373.0" />
-      <Button fx:id="addEditBtn" layoutX="639.0" layoutY="462.0" mnemonicParsing="false" onAction="#onClickAddEdit" text="เพิ่มแก้ไข">
+      <Button fx:id="addEditBtn" layoutX="639.0" layoutY="462.0" mnemonicParsing="false" onAction="#onClickAddEdit" text="บันทึก">
          <font>
             <Font size="18.0" />
          </font>

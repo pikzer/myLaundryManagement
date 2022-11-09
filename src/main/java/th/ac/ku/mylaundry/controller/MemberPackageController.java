@@ -41,7 +41,7 @@ public class MemberPackageController {
 
     ArrayList<MemberPackage> memberPackages ;
 
-    String serviceList[] = {"ซักอบ&ซักรีด","ซักรีด", "ซักอบ", "ซักแห้ง", "รีด"} ;
+    String serviceList[] = {"ซักรีด", "ซักอบ", "ซักแห้ง", "รีด"} ;
     DecimalFormat f = new DecimalFormat("#0.00");
     MemberPackage selectedPackage ;
 

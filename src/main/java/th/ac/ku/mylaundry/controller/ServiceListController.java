@@ -311,7 +311,28 @@ public class ServiceListController extends Navigator{
             }
         }
         else if(selectedCat != null){
-
+            if(serviceCombo.getSelectionModel().isEmpty() || categoryField.getText() == null || categoryField.getText().isEmpty()
+                    || priceField.getText().isEmpty() || priceField.getText() == null){
+                pushAlert("กรุณากรอกข้อมูลให้ครบถ้วน", Alert.AlertType.WARNING);
+            }
+            else if(!Validator.isDoubleAndPositive(priceField.getText())){
+                pushAlert("กรุณากรอกราคาให้ถูกต้อง", Alert.AlertType.WARNING);
+            }
+            else {
+                Category cat = new Category(selectedCat.getId(),selectedCat.getService_rate_id(),
+                        categoryField.getText(),Double.parseDouble(priceField.getText()) -
+                        serviceRates.get(serviceCombo.getSelectionModel().getSelectedIndex()).getBasePrice() );
+                if(ServiceRateApiDataSource.patchCategory(cat)){
+                    pushAlert("แก้ไขประเภทผ้าสำเร็จ", Alert.AlertType.INFORMATION);
+                    onClickAnchor();
+                    initialize();
+                }
+                else{
+                    pushAlert("แก้ไขประเภทผ้าไม่สำเร็จ", Alert.AlertType.ERROR);
+                    onClickAnchor();
+                    initialize();
+                }
+            }
         }
     }
 
