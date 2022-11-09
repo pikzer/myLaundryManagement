@@ -1,5 +1,6 @@
 package th.ac.ku.mylaundry.controller;
 
+import com.itextpdf.text.DocumentException;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
@@ -565,12 +566,22 @@ public class AddClothListAppController extends Navigator{
         }
     }
 
-    public void printReceipt(){
-
+    public void printInv() throws DocumentException, IOException {
+        if(makeOrder){
+            if(!makePayBtn.isDisable()){
+                WriterPDF.createINVPDF(OrderApiDataSource.getOrder(orderId));
+            }
+        }
     }
 
-    public void printInv(){
-
+    public void printReceipt() throws DocumentException, IOException {
+        if(makeOrder){
+            if(makePayBtn.isDisable()){
+                if(orderId != 0){
+                    WriterPDF.createINVPDF(OrderApiDataSource.getOrder(orderId));
+                }
+            }
+        }
     }
 
     public void addClothList() throws IOException {

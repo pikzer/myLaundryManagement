@@ -30,7 +30,7 @@ public class LoginController {
 
     @FXML
     public void initialize() throws IOException {
-
+        forDev();
     }
 
 
@@ -84,6 +84,11 @@ public class LoginController {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void forDev(){
+        emailTextField.setText("ruji@mail.com");
+        pwdField.setText("password");
     }
 
 

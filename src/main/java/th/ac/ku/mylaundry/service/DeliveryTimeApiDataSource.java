@@ -110,9 +110,9 @@ public class DeliveryTimeApiDataSource extends ApiCall{
     }
 
 
-    public static boolean addDeliver (int id, String deliver) throws IOException {
+    public static boolean addDeliver (int id, String deliver,String orderName) throws IOException {
         try {
-            var urlParameters = "deliver="+deliver;
+            var urlParameters = "deliver="+deliver +"&"+"orderName="+orderName;
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
             URL url = new URL(baseURL+"delivery-time"+"/"+id+"/"+"addDeliver");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

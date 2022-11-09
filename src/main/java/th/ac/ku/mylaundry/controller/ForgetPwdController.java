@@ -35,7 +35,7 @@ public class ForgetPwdController {
         stage.show();
     }
 
-    public void onClickEdit() throws IOException {
+    public void onClickEdit(ActionEvent event) throws IOException {
         if(!idField.getText().isEmpty() && !pwdField.getText().isEmpty()){
             if(idField.getText().length() != 13){
                 pushAlertWarning("รหัสบัตรประชาชนไม่ถูกต้่อง", Alert.AlertType.WARNING);
@@ -50,6 +50,11 @@ public class ForgetPwdController {
             else if(pwdField.getText().equals(conPwdField.getText())){
                 if(EmployeeApiDataSource.changePassword(pwdField.getText(),idField.getText())){
                     pushAlertWarning("แก้ไขรหัสสำเร็จ", Alert.AlertType.INFORMATION);
+                    root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/landingView.fxml"));
+                    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
                 }
                 else{
                     pushAlertWarning("แก้ไขรหัสไม่สำเร็จ", Alert.AlertType.ERROR);

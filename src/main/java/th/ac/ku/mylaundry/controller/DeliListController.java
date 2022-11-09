@@ -164,7 +164,6 @@ public class DeliListController extends Navigator {
         if(selectDeliveryTime.getJob().equals("cancel")){
             editBtn.setDisable(true);
             assignBtn.setDisable(true);
-            onClear();
         }
         else{
             editBtn.setDisable(false);
@@ -175,10 +174,6 @@ public class DeliListController extends Navigator {
     }
 
     public void onClickEdit() throws IOException {
-//        DeliveryTimeApiDataSource.addDeliveryTime(new DeliveryTime(deliDatePicker.getValue().format(formatter),
-//                timeCombo.getSelectionModel().getSelectedItem().toString(),selectDeliveryTime.getOrderName(),
-//                selectDeliveryTime.getJob()));
-
         if(selectDeliveryTime != null  && !timeCombo.getSelectionModel().isEmpty()){
             if(DeliveryTimeApiDataSource.addDeliveryTime(new DeliveryTime(deliDatePicker.getValue().format(formatter),
                     timeCombo.getSelectionModel().getSelectedItem().toString(),selectDeliveryTime.getOrderName(),
@@ -196,7 +191,8 @@ public class DeliListController extends Navigator {
 
     public void onClickAssign() throws IOException {
         if(!deliverCombo.getSelectionModel().isEmpty()){
-            if(DeliveryTimeApiDataSource.addDeliver(selectDeliveryTime.getId(),deliverCombo.getSelectionModel().getSelectedItem().toString())){
+            if(DeliveryTimeApiDataSource.addDeliver(selectDeliveryTime.getId(),
+                    deliverCombo.getSelectionModel().getSelectedItem().toString(),selectDeliveryTime.getOrderName())){
                 pushAlertWarning("เพิ่มผู้รับส่งสำเร็จ", Alert.AlertType.INFORMATION);
                 onClear();
             }
