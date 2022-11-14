@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
@@ -20,14 +21,17 @@
 
 <AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.ManageShopController">
    <children>
-      <TextField fx:id="nameField" layoutX="326.0" layoutY="100.0" prefHeight="36.0" prefWidth="305.0" />
+      <TextField fx:id="nameField" layoutX="327.0" layoutY="100.0" prefHeight="36.0" prefWidth="305.0">
+         <font>
+            <Font size="19.0" />
+         </font></TextField>
       <Text layoutX="286.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ชื่อร้าน" />
       <Text layoutX="257.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="จัดการร้าน">
          <font>
             <Font size="34.0" />
          </font>
       </Text>
-      <Text layoutX="257.0" layoutY="473.0" strokeType="OUTSIDE" strokeWidth="0.0" text="วันเวลาทำการ">
+      <Text layoutX="248.0" layoutY="466.0" strokeType="OUTSIDE" strokeWidth="0.0" text="วันเวลาทำการ">
          <font>
             <Font size="16.0" />
          </font>
@@ -45,15 +49,15 @@
          </font>
       </TextField>
       <TextArea fx:id="adsTextArea" layoutX="326.0" layoutY="257.0" prefHeight="121.0" prefWidth="305.0" />
-      <Text layoutX="282.0" layoutY="566.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เวลาเปิด" />
-      <Text layoutX="282.0" layoutY="613.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เวลาปิด" />
-      <CheckBox fx:id="monCheck" layoutX="364.0" layoutY="494.0" mnemonicParsing="false" text="จันทร์" />
-      <CheckBox fx:id="tueCheck" layoutX="442.0" layoutY="494.0" mnemonicParsing="false" text="อังคาร" />
-      <CheckBox fx:id="wedCheck" layoutX="510.0" layoutY="494.0" mnemonicParsing="false" text="พุทธ" />
-      <CheckBox fx:id="thuCheck" layoutX="572.0" layoutY="494.0" mnemonicParsing="false" text="พฤหัสบดี" />
-      <CheckBox fx:id="friCheck" layoutX="657.0" layoutY="494.0" mnemonicParsing="false" text="ศุกร์" />
-      <CheckBox fx:id="satCheck" layoutX="711.0" layoutY="494.0" mnemonicParsing="false" text="เสาร์" />
-      <CheckBox fx:id="sunCheck" layoutX="290.0" layoutY="494.0" mnemonicParsing="false" text="อาทิตย์" />
+      <Text layoutX="282.0" layoutY="594.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เวลาเปิด" />
+      <Text layoutX="282.0" layoutY="641.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เวลาปิด" />
+      <CheckBox fx:id="monCheck" layoutX="355.0" layoutY="487.0" mnemonicParsing="false" text="จันทร์" />
+      <CheckBox fx:id="tueCheck" layoutX="433.0" layoutY="487.0" mnemonicParsing="false" text="อังคาร" />
+      <CheckBox fx:id="wedCheck" layoutX="501.0" layoutY="487.0" mnemonicParsing="false" text="พุทธ" />
+      <CheckBox fx:id="thuCheck" layoutX="563.0" layoutY="487.0" mnemonicParsing="false" text="พฤหัสบดี" />
+      <CheckBox fx:id="friCheck" layoutX="648.0" layoutY="487.0" mnemonicParsing="false" text="ศุกร์" />
+      <CheckBox fx:id="satCheck" layoutX="703.0" layoutY="487.0" mnemonicParsing="false" text="เสาร์" />
+      <CheckBox fx:id="sunCheck" layoutX="281.0" layoutY="487.0" mnemonicParsing="false" text="อาทิตย์" />
       <TextField fx:id="idLineField" layoutX="326.0" layoutY="399.0" prefHeight="36.0" prefWidth="305.0">
          <font>
             <Font size="19.0" />
@@ -61,8 +65,8 @@
       </TextField>
       <Text layoutX="277.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ไลน์ไอดี" />
       <Text layoutX="276.0" layoutY="278.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ที่อยู่ร้าน" />
-      <ComboBox fx:id="openTimeCombo" layoutX="350.0" layoutY="543.0" prefHeight="36.0" prefWidth="150.0" />
-      <ComboBox fx:id="closeTimeCombo" layoutX="350.0" layoutY="590.0" prefHeight="36.0" prefWidth="150.0" />
+      <ComboBox fx:id="openTimeCombo" layoutX="350.0" layoutY="571.0" prefHeight="36.0" prefWidth="150.0" />
+      <ComboBox fx:id="closeTimeCombo" layoutX="350.0" layoutY="618.0" prefHeight="36.0" prefWidth="150.0" />
       <Button layoutX="391.0" layoutY="676.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="55.0" prefWidth="176.0" text="บันทึก">
          <font>
             <Font size="29.0" />
@@ -233,5 +237,8 @@
             </Label>
          </children>
       </AnchorPane>
+      <Spinner fx:id="numOfWorkSpinner" layoutX="353.0" layoutY="524.0" prefHeight="36.0" prefWidth="148.0" />
+      <Text layoutX="269.0" layoutY="547.0" strokeType="OUTSIDE" strokeWidth="0.0" text="จำนวนงาน" />
+      <Text layoutX="519.0" layoutY="547.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ต่อช่วงเวลา" wrappingWidth="74.0" />
    </children>
 </AnchorPane>

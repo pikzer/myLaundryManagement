@@ -320,6 +320,7 @@ public class CustomerListController extends Navigator {
                 CustomerApiDataSource.addMembership(selectedCus.getId(),serviceAddCombo.getSelectionModel().getSelectedItem(),selectedCus.getMemCredit());
                 cusTable.refresh();
                 pushAlert("เพิ่มสมาชิกสำเร็จ", Alert.AlertType.INFORMATION);
+                onClickAnchor();
                 getReceipt(selectedCus,new MemberPackage(0,serviceAddCombo.getSelectionModel().getSelectedItem().toString(),piecesCombo.getSelectionModel().getSelectedItem(),Double.parseDouble(totalLabel.getText())));
             }
             else if(selectedCus.getMemCredit() != 0){

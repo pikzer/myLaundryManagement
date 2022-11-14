@@ -750,6 +750,7 @@ public class NewOrderController extends Navigator {
                         if(orderId != 0){
                             pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
                             onMakeOrderComplete();
+                            updateBalance();
                             makeOrder = true ;
                         }
                         else{
@@ -768,6 +769,7 @@ public class NewOrderController extends Navigator {
                             if(orderId != 0){
                                 pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
                                 onMakeOrderComplete();
+                                updateBalance();
                                 makeOrder = true ;
                             }
                             else{
@@ -820,11 +822,22 @@ public class NewOrderController extends Navigator {
 
     }
 
+    public void updateBalance(){
+        selectCustomer = CustomerApiDataSource.searchCustomer(telCombo.getSelectionModel().getSelectedItem().toString());
+        memBalanceLabel.setText(String.valueOf(selectCustomer.getMemCredit()));
+    }
+
     public void onMakeOrderComplete(){
         makePayBtn.setDisable(false);
         makeTagBtn.setDisable(false);
         makeInvBtn.setDisable(false);
         makeReceiptBtn.setDisable(false);
+        if(OrderApiDataSource.getOrder(orderId).getIsMemOrder() == 1){
+            makePayBtn.setDisable(true);
+            makeTagBtn.setDisable(true);
+            makeInvBtn.setDisable(true);
+            makeReceiptBtn.setDisable(true);
+        }
         telCombo.setDisable(true);
         payCombo.setDisable(true);
         deliCheck.setDisable(true);
@@ -850,7 +863,7 @@ public class NewOrderController extends Navigator {
         if(makeOrder){
             if(makePayBtn.isDisable()){
                 if(orderId != 0){
-                    WriterPDF.createINVPDF(OrderApiDataSource.getOrder(orderId));
+                    WriterPDF.createReceipt(OrderApiDataSource.getOrder(orderId));
                 }
             }
         }
@@ -864,6 +877,8 @@ public class NewOrderController extends Navigator {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("ยืนยันการชำระเงิน");
         alert.setHeaderText("คุณต้องการชำระเงินเลยหรือไม่");
+        ButtonType cancel = new ButtonType("ยกเลิก");
+        alert.getButtonTypes().add(cancel);
         Optional<ButtonType> option = alert.showAndWait();
         if(option.get() == ButtonType.OK){
             if(OrderApiDataSource.payMoney(orderId)){

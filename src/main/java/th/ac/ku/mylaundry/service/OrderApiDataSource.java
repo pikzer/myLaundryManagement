@@ -53,6 +53,15 @@ public class OrderApiDataSource extends ApiCall {
                         jsonArray.getJSONObject(i).getDouble("total"),
                         jsonArray.getJSONObject(i).getString("status"),
                         jsonArray.getJSONObject(i).getInt("is_membership_or")));
+                if(orderArrayList.get(i).getPickDate().equals("null")){
+                    orderArrayList.get(i).setPickDate("");
+                    orderArrayList.get(i).setPickTime("");
+                }
+                if(orderArrayList.get(i).getDeliDate().equals("null")){
+                    orderArrayList.get(i).setDeliDate("");
+                    orderArrayList.get(i).setDeliDate("");
+                }
+
             }
             return orderArrayList;
         } catch (Exception e) {
@@ -132,6 +141,17 @@ public class OrderApiDataSource extends ApiCall {
                     jsonArray.getJSONObject(i).getInt("is_membership_or"),
                     jsonArray.getJSONObject(i).getString("created_at")
                     ));
+            if(orderArrayList.get(i).getPickDate().equals("null")){
+                orderArrayList.get(i).setPickDate("");
+                orderArrayList.get(i).setPickTime("");
+            }
+            if(orderArrayList.get(i).getDeliDate().equals("null")){
+                orderArrayList.get(i).setDeliDate("");
+                orderArrayList.get(i).setDeliDate("");
+            }
+            if(orderArrayList.get(i).getDeliver().equals("null")){
+                orderArrayList.get(i).setDeliver("");
+            }
         }
         return orderArrayList ;
     }
@@ -169,6 +189,14 @@ public class OrderApiDataSource extends ApiCall {
                         jsonArray.getJSONObject(i).getDouble("total"),
                         jsonArray.getJSONObject(i).getString("status"),
                         jsonArray.getJSONObject(i).getInt("is_membership_or")));
+                if(orderArrayList.get(i).getPickDate().equals("null")){
+                    orderArrayList.get(i).setPickDate("");
+                    orderArrayList.get(i).setPickTime("");
+                }
+                if(orderArrayList.get(i).getDeliDate().equals("null")){
+                    orderArrayList.get(i).setDeliDate("");
+                    orderArrayList.get(i).setDeliDate("");
+                }
             }
             return orderArrayList;
         } catch (Exception e) {
@@ -206,6 +234,17 @@ public class OrderApiDataSource extends ApiCall {
                         jsonArray.getJSONObject(i).getDouble("total"),
                         jsonArray.getJSONObject(i).getString("status"),
                         jsonArray.getJSONObject(i).getInt("is_membership_or")));
+                if(orderArrayList.get(i).getPickDate().equals("null")){
+                    orderArrayList.get(i).setPickDate("");
+                    orderArrayList.get(i).setPickTime("");
+                }
+                if(orderArrayList.get(i).getDeliDate().equals("null")){
+                    orderArrayList.get(i).setDeliDate("");
+                    orderArrayList.get(i).setDeliDate("");
+                }
+                if(orderArrayList.get(i).getDeliver().equals("null")){
+                    orderArrayList.get(i).setDeliver("");
+                }
             }
             return orderArrayList;
         } catch (Exception e) {
@@ -243,6 +282,17 @@ public class OrderApiDataSource extends ApiCall {
                         jsonArray.getJSONObject(i).getDouble("total"),
                         jsonArray.getJSONObject(i).getString("status"),
                         jsonArray.getJSONObject(i).getInt("is_membership_or")));
+                if(orderArrayList.get(i).getPickDate().equals("null")){
+                    orderArrayList.get(i).setPickDate("");
+                    orderArrayList.get(i).setPickTime("");
+                }
+                if(orderArrayList.get(i).getDeliDate().equals("null")){
+                    orderArrayList.get(i).setDeliDate("");
+                    orderArrayList.get(i).setDeliDate("");
+                }
+                if(orderArrayList.get(i).getDeliver().equals("null")){
+                    orderArrayList.get(i).setDeliver("");
+                }
             }
             return orderArrayList;
         } catch (Exception e) {
@@ -433,16 +483,26 @@ public class OrderApiDataSource extends ApiCall {
         }
     }
 
-    public static void updateOrderStatus(int id){
+    public static boolean updateOrderStatus(int id,String status){
         try {
-            URL url = new URL(baseURL + "orders"+"/"+id+"/"+"nextStatus");
+            var urlParameters = "status="+status ;
+            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+            URL url = new URL(baseURL + "orders"+"/"+id+"/"+"updateStatus");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("Authorization", "Bearer " + token);
-            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestMethod("PUT");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
             String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            return true ;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
+            return false;
+//            throw new RuntimeException(e);
         }
     }
 
@@ -475,6 +535,17 @@ public class OrderApiDataSource extends ApiCall {
                         jsonArray.getJSONObject(i).getDouble("total"),
                         jsonArray.getJSONObject(i).getString("status"),
                         jsonArray.getJSONObject(i).getInt("is_membership_or")));
+                if(orderArrayList.get(i).getPickDate().equals("null")){
+                    orderArrayList.get(i).setPickDate("");
+                    orderArrayList.get(i).setPickTime("");
+                }
+                if(orderArrayList.get(i).getDeliDate().equals("null")){
+                    orderArrayList.get(i).setDeliDate("");
+                    orderArrayList.get(i).setDeliDate("");
+                }
+                if(orderArrayList.get(i).getDeliver().equals("null")){
+                    orderArrayList.get(i).setDeliver("");
+                }
             }
             return orderArrayList;
         } catch (Exception e) {
@@ -551,7 +622,7 @@ public class OrderApiDataSource extends ApiCall {
 
     public static boolean addClothListApp(Order order, ArrayList<ClothList> clothLists,String date, String time) throws IOException {
         if(addClothList(order.getId(),clothLists)){
-            updateOrderStatus(order.getId());
+            updateOrderStatus(order.getId(),"เพิ่มรายการ");
             if(order.getIsMemOrder()==0){
                 URL url = new URL(baseURL + "orders"+"/"+order.getId()+"/"+"calDeliApp");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -588,11 +659,4 @@ public class OrderApiDataSource extends ApiCall {
         String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
         System.out.println(j);
     }
-
-
-
-
-
-
-
 }

@@ -84,11 +84,7 @@ public class DeliveryTimeApiDataSource extends ApiCall{
                 wr.write(postData);
             }
             String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
-            System.out.println(j);
-            JSONObject jsonObject = new JSONObject(j);
             return true ;
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

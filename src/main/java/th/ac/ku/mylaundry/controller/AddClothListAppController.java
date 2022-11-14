@@ -88,6 +88,7 @@ public class AddClothListAppController extends Navigator{
 
     public void setOrder(Order selectOrder){
         this.order = selectOrder ;
+        orderId = selectOrder.getId();
         customer = CustomerApiDataSource.searchCustomer(order.getCus_phone());
         selectCustomer = customer ;
     }
@@ -98,7 +99,6 @@ public class AddClothListAppController extends Navigator{
             @Override
             public void run() {
                 total = 0 ;
-                orderId = 0 ;
                 deliCharge = 0;
                 vat = 0;
                 makeOrder = false ;
@@ -122,6 +122,7 @@ public class AddClothListAppController extends Navigator{
                 quantitySpinner.setDisable(true);
                 initClothList();
                 selectPayMethod = order.getPayMethod();
+
                 deliDatePicker.setDayCellFactory(picker -> new DateCell() {
                     public void updateItem(LocalDate date, boolean empty) {
                         super.updateItem(date, empty);
@@ -548,7 +549,10 @@ public class AddClothListAppController extends Navigator{
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("ยืนยันการชำระเงิน");
         alert.setHeaderText("คุณต้องการชำระเงินเลยหรือไม่");
+        ButtonType cancel = new ButtonType("ยกเลิก");
+        alert.getButtonTypes().add(cancel);
         Optional<ButtonType> option = alert.showAndWait();
+
         if(option.get() == null){
 
         }
@@ -568,19 +572,13 @@ public class AddClothListAppController extends Navigator{
 
     public void printInv() throws DocumentException, IOException {
         if(makeOrder){
-            if(!makePayBtn.isDisable()){
-                WriterPDF.createINVPDF(OrderApiDataSource.getOrder(orderId));
-            }
+            WriterPDF.createINVPDF(OrderApiDataSource.getOrder(orderId));
         }
     }
 
     public void printReceipt() throws DocumentException, IOException {
         if(makeOrder){
-            if(makePayBtn.isDisable()){
-                if(orderId != 0){
-                    WriterPDF.createINVPDF(OrderApiDataSource.getOrder(orderId));
-                }
-            }
+            WriterPDF.createReceipt(OrderApiDataSource.getOrder(orderId));
         }
     }
 
@@ -601,6 +599,7 @@ public class AddClothListAppController extends Navigator{
     }
 
     public void onMakeOrderComplete(){
+        makeOrder = true;
         makePayBtn.setDisable(false);
         makeTagBtn.setDisable(false);
         makeInvBtn.setDisable(false);

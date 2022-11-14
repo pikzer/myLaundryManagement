@@ -79,7 +79,6 @@
             <Font size="21.0" />
          </font>
       </Text>
-      <Button fx:id="updateBtn" layoutX="895.0" layoutY="571.0" mnemonicParsing="false" onAction="#onClickUpdate" prefHeight="45.0" prefWidth="172.0" text="อัปเดตสถานะ" />
       <Button fx:id="acceptBtn" layoutX="895.0" layoutY="628.0" mnemonicParsing="false" onAction="#onClickAccept" prefHeight="45.0" prefWidth="172.0" text="ยืนยันรายการ" />
       <Button fx:id="cancelBtn" layoutX="895.0" layoutY="719.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="28.0" prefWidth="172.0" text="ยกเลิกรายการ" />
       <Separator layoutX="877.0" layoutY="539.0" orientation="VERTICAL" prefHeight="211.0" prefWidth="0.0" />
@@ -280,5 +279,15 @@
             </Label>
          </children>
       </AnchorPane>
+      <ComboBox fx:id="statusOrderCombo" layoutX="894.0" layoutY="572.0" prefHeight="45.0" prefWidth="138.0" />
+      <Button fx:id="changeStatusBtn" layoutX="1032.0" layoutY="572.0" mnemonicParsing="false" onAction="#onClickChangeStatus" prefHeight="45.0" prefWidth="41.0">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/save_icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

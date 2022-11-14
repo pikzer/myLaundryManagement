@@ -34,6 +34,9 @@ public class ManageShopController extends Navigator  {
     @FXML
     TableView employeeTable ;
 
+    @FXML
+    Spinner numOfWorkSpinner ;
+
     Laundry laundry ;
     ArrayList<Employee> employeeArrayList ;
     ArrayList<Boolean> day ;
@@ -43,6 +46,7 @@ public class ManageShopController extends Navigator  {
 
     public void initialize() throws IOException {
         employeeArrayList = EmployeeApiDataSource.getEmployees() ;
+        initSpinner();
         showEmployeeTable(employeeArrayList);
         laundry = LaundryApiDataSource.getShop();
         shopNameLabel.setText(laundry.getName());
@@ -51,6 +55,7 @@ public class ManageShopController extends Navigator  {
         shopMailField.setText(laundry.getEmail());
         adsTextArea.setText(laundry.getAddress());
         idLineField.setText(laundry.getLineID());
+        numOfWorkSpinner.getValueFactory().setValue(laundry.getNumOfWork());
         openTimeCombo.getItems().addAll(timeTable);
         closeTimeCombo.getItems().addAll(timeTable);
         openTimeCombo.getSelectionModel().select(laundry.getOpentime());
@@ -63,6 +68,11 @@ public class ManageShopController extends Navigator  {
         thuCheck.setSelected(day.get(4));
         friCheck.setSelected(day.get(5));
         satCheck.setSelected(day.get(6));
+
+    }
+
+    public void initSpinner(){
+        numOfWorkSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100,0));
     }
 
     public void showEmployeeTable(ArrayList<Employee> employees){
@@ -84,17 +94,19 @@ public class ManageShopController extends Navigator  {
     public void onClickSave() throws IOException {
         if(!nameField.getText().equals("") && !shopMailField.getText().equals("")&& !shopTelField.getText().equals("") &&
                 !adsTextArea.getText().equals("") && !idLineField.getText().equals("") && !getWorkDayCode().equals("0000000")
-                && !openTimeCombo.getSelectionModel().isEmpty() && !closeTimeCombo.getSelectionModel().isEmpty()
-        ){
+                && !openTimeCombo.getSelectionModel().isEmpty() && !closeTimeCombo.getSelectionModel().isEmpty()){
             if(Validator.isEmail(shopMailField.getText()) && Validator.isPhoneNumber(shopTelField.getText())){
-                patchLaundry(new Laundry(nameField.getText(),shopTelField.getText(),shopMailField.getText(),
-                        adsTextArea.getText(),idLineField.getText(),getWorkDayCode(),openTimeCombo.getSelectionModel().getSelectedItem().toString(),
-                        closeTimeCombo.getSelectionModel().getSelectedItem().toString()));
-                pushAlert("Edit Complete", Alert.AlertType.INFORMATION);
-                initialize();
+                if(patchLaundry(nameField.getText(),shopTelField.getText(),shopMailField.getText(),adsTextArea.getText(),idLineField.getText(),openTimeCombo.getSelectionModel().getSelectedItem().toString(),closeTimeCombo.getSelectionModel().getSelectedItem().toString(),getWorkDayCode(),Integer.parseInt(numOfWorkSpinner.getValue().toString()))){
+                    pushAlert("แก้ไขสำเร็จ", Alert.AlertType.INFORMATION);
+                    initialize();
+                }
+                else {
+                    pushAlert("แก้ไขไม่สำเร็จ", Alert.AlertType.ERROR);
+
+                }
             }
             else{
-                pushAlert("Invalid information", Alert.AlertType.WARNING);
+                pushAlert("ข้อมูลไม่ถูกต้อง", Alert.AlertType.WARNING);
             }
         }
     }

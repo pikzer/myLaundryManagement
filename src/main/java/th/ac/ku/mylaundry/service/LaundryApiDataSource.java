@@ -37,10 +37,6 @@ public class LaundryApiDataSource extends ApiCall {
                     jsonObject.getString("lineId"),jsonObject.getString("workDay"),jsonObject.getString("opentime"),
                     jsonObject.getString("closetime"),jsonObject.getInt("numOfWork"),jsonObject.getString("status"))
                     ;
-//            return new Laundry(jsonObject.getInt("id"),jsonObject.getString("name"),jsonObject.getString("phone")
-//                    ,jsonObject.getString("owner"),jsonObject.getString("email"),jsonObject.getString("address")
-//                    ,jsonObject.getString("lineId",jsonObject.getString("workDay"),jsonObject.getString("opentime"))
-
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -90,8 +86,14 @@ public class LaundryApiDataSource extends ApiCall {
     }
 
 
-    public static boolean patchLaundry(Laundry laundry){
-        var urlParameters = laundry.getPostLaundry();
+    public static boolean patchLaundry(String shopName,String shopPhone, String shopEmail, String shopAddress,
+                                       String lineId, String openTime, String closeTime,String workDay,Integer numOfWork){
+//        var urlParameters = laundry.getPostLaundry();
+        var urlParameters = "shopName="+shopName+"&"+"shopPhone="+shopPhone
+                +"&"+"shopEmail="+shopEmail+"&"+"lineId="+lineId+"&"+"openTime="+openTime
+                +"&"+"closeTime="+closeTime+"&"+"numOfWork="+numOfWork +"&"+ "shopAddress="+shopAddress
+                + "&" + "workDay=" +workDay
+                ;
         System.out.println(urlParameters);
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         try {
@@ -111,10 +113,6 @@ public class LaundryApiDataSource extends ApiCall {
             JSONObject jsonObject = new JSONObject(j);
             System.out.println(jsonObject);
             return true ;
-        } catch (ProtocolException e) {
-            throw new RuntimeException(e);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
