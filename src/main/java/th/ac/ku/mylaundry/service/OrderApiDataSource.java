@@ -59,7 +59,7 @@ public class OrderApiDataSource extends ApiCall {
                 }
                 if(orderArrayList.get(i).getDeliDate().equals("null")){
                     orderArrayList.get(i).setDeliDate("");
-                    orderArrayList.get(i).setDeliDate("");
+                    orderArrayList.get(i).setDeliTime("");
                 }
 
             }
@@ -147,7 +147,7 @@ public class OrderApiDataSource extends ApiCall {
             }
             if(orderArrayList.get(i).getDeliDate().equals("null")){
                 orderArrayList.get(i).setDeliDate("");
-                orderArrayList.get(i).setDeliDate("");
+                orderArrayList.get(i).setDeliTime("");
             }
             if(orderArrayList.get(i).getDeliver().equals("null")){
                 orderArrayList.get(i).setDeliver("");
@@ -195,7 +195,8 @@ public class OrderApiDataSource extends ApiCall {
                 }
                 if(orderArrayList.get(i).getDeliDate().equals("null")){
                     orderArrayList.get(i).setDeliDate("");
-                    orderArrayList.get(i).setDeliDate("");
+                    orderArrayList.get(i).setDeliTime("");
+
                 }
             }
             return orderArrayList;
@@ -240,7 +241,8 @@ public class OrderApiDataSource extends ApiCall {
                 }
                 if(orderArrayList.get(i).getDeliDate().equals("null")){
                     orderArrayList.get(i).setDeliDate("");
-                    orderArrayList.get(i).setDeliDate("");
+                    orderArrayList.get(i).setDeliTime("");
+
                 }
                 if(orderArrayList.get(i).getDeliver().equals("null")){
                     orderArrayList.get(i).setDeliver("");
@@ -288,7 +290,8 @@ public class OrderApiDataSource extends ApiCall {
                 }
                 if(orderArrayList.get(i).getDeliDate().equals("null")){
                     orderArrayList.get(i).setDeliDate("");
-                    orderArrayList.get(i).setDeliDate("");
+                    orderArrayList.get(i).setDeliTime("");
+
                 }
                 if(orderArrayList.get(i).getDeliver().equals("null")){
                     orderArrayList.get(i).setDeliver("");
@@ -541,7 +544,7 @@ public class OrderApiDataSource extends ApiCall {
                 }
                 if(orderArrayList.get(i).getDeliDate().equals("null")){
                     orderArrayList.get(i).setDeliDate("");
-                    orderArrayList.get(i).setDeliDate("");
+                    orderArrayList.get(i).setDeliTime("");
                 }
                 if(orderArrayList.get(i).getDeliver().equals("null")){
                     orderArrayList.get(i).setDeliver("");

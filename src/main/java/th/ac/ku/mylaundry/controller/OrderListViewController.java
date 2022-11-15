@@ -250,6 +250,7 @@ public class OrderListViewController extends Navigator {
                 }
             }
         });
+
         searchField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {

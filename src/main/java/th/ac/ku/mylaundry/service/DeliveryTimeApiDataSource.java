@@ -78,12 +78,14 @@ public class DeliveryTimeApiDataSource extends ApiCall{
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setRequestProperty("User-Agent", "Java client");
+            conn.setRequestMethod("POST");
             conn.setRequestProperty("Authorization","Bearer "+ token);
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             try (var wr = new DataOutputStream(conn.getOutputStream())) {
                 wr.write(postData);
             }
             String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            System.out.println(j);
             return true ;
         } catch (IOException e) {
             throw new RuntimeException(e);
