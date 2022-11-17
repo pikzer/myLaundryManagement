@@ -178,11 +178,11 @@ public class WriterPDF {
             billTable.addCell(summaryR);
 
             Image qrImg = null ;
+            File file1 = new File("qr.png");
 
             if(order.getPayMethod().equals("พร้อมเพย์")){
                 ThaiQRPromptPay qr = new ThaiQRPromptPay.Builder().dynamicQR().creditTransfer().mobileNumber(
                         EmployeeApiDataSource.getOwnerQR()).amount(new BigDecimal(order.getTotal())).build();
-                File file1 = new File("qr.png");
                 qr.draw(200,200,file1);
                 qrImg = Image.getInstance (file1.getPath());//Header Image
                 qrImg.scaleAbsolute(100f, 100f);//image widt
@@ -222,6 +222,11 @@ public class WriterPDF {
             file.close();
 
             Desktop.getDesktop().open(new File(pdfFilename));
+
+
+            if(file1.exists()){
+                file1.delete();
+            }
 
 
 

@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import th.ac.ku.mylaundry.service.ApiCall;
 import th.ac.ku.mylaundry.service.LaundryApiDataSource;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Navigator {
@@ -110,6 +111,30 @@ public class Navigator {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+            File dir = new File("inv");
+            if(dir.exists()){
+                for (File file: dir.listFiles()) {
+                    if(!file.isDirectory()){
+                        file.delete();
+                    }
+                }
+            }
+            dir = new File("receipt");
+            if(dir.exists()){
+                for (File file: dir.listFiles()) {
+                    if(!file.isDirectory()){
+                        file.delete();
+                    }
+                }
+            }
+            dir = new File("report");
+            if(dir.exists()){
+                for (File file: dir.listFiles()) {
+                    if(!file.isDirectory()){
+                        file.delete();
+                    }
+                }
+            }
         }
     }
 
