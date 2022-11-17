@@ -14,11 +14,11 @@ public class Laundry {
     private String opentime;
     private String closetime;
     private Integer numOfWork;
+    private String email_pwd;
 
     private String status;
 
-    public Laundry(String name, String phone, String email, String address, String lineID, String workDay, String opentime, String closetime) {
-
+    public Laundry(String name, String phone, String email, String address, String lineID, String workDay, String opentime, String closetime,String email_pwd) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -27,6 +27,23 @@ public class Laundry {
         this.workDay = workDay;
         this.opentime = opentime;
         this.closetime = closetime;
+        this.email_pwd = email_pwd ;
+    }
+
+    public Laundry(Integer id, String name, String phone, String owner, String email, String address, String lineID, String workDay, String opentime, String closetime, Integer numOfWork, String status,String email_pwd) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.owner = owner;
+        this.email = email;
+        this.address = address;
+        this.lineID = lineID;
+        this.workDay = workDay;
+        this.opentime = opentime;
+        this.closetime = closetime;
+        this.numOfWork = numOfWork;
+        this.email_pwd = email_pwd;
+        this.status = status;
     }
 
     public Laundry(Integer id, String name, String phone, String owner, String email, String address, String lineID, String workDay, String opentime, String closetime, Integer numOfWork, String status) {
@@ -140,6 +157,10 @@ public class Laundry {
         this.status = status;
     }
 
+    public String getEmail_pwd() {
+        return email_pwd;
+    }
+
     public String getPostLaundry(){
         return "shopName="+getName()+"&"
                 +"shopPhone="+ getPhone()+"&"
@@ -148,7 +169,8 @@ public class Laundry {
                 +"workDay="+ getWorkDay()+"&"
                 +"shopEmail="+ getEmail()+"&"
                 +"opentime="+ getOpentime()+"&"
-                +"closetime="+ getClosetime() ;
+                +"closetime="+ getClosetime()+"&"
+                +"email_pwd="+ getEmail_pwd();
     }
 
 }

@@ -19,7 +19,7 @@ public class Validator {
     }
 
     public static boolean isPhoneNumber(String phone){
-        String regex = "^[0-9]{10}$";
+        String regex = "^0[0-9]{9}$";
         //Compile regular expression to get the pattern
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(phone);

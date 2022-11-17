@@ -146,15 +146,18 @@ public class DeliListController extends Navigator {
         TableColumn<DeliveryTime, String> deliverCol = new TableColumn<DeliveryTime, String>("ผู้รับส่ง");
         TableColumn<DeliveryTime, String> orderCol = new TableColumn<DeliveryTime, String>("รายการ");
         TableColumn<DeliveryTime, String> jobCol = new TableColumn<DeliveryTime, String>("งาน");
+        TableColumn<DeliveryTime, String> adsCol = new TableColumn<DeliveryTime, String>("ที่อยู่รับส่ง");
+
 
         idCol.setCellValueFactory(new PropertyValueFactory<DeliveryTime,Integer>("id"));
         dateCol.setCellValueFactory(new PropertyValueFactory<DeliveryTime,String>("date"));
         timeCol.setCellValueFactory(new PropertyValueFactory<DeliveryTime,String>("time"));
         orderCol.setCellValueFactory(new PropertyValueFactory<DeliveryTime,String>("orderName"));
+        adsCol.setCellValueFactory(new PropertyValueFactory<DeliveryTime,String>("u_code"));
         deliverCol.setCellValueFactory(new PropertyValueFactory<DeliveryTime,String >("deliver"));
         jobCol.setCellValueFactory(new PropertyValueFactory<DeliveryTime,String>("job"));
 
-        deliTable.getColumns().addAll(idCol,dateCol,timeCol,deliverCol,orderCol,jobCol) ;
+        deliTable.getColumns().addAll(idCol,dateCol,timeCol,adsCol,deliverCol,orderCol,jobCol) ;
         deliTable.setItems(sortedList);
     }
 
@@ -177,7 +180,7 @@ public class DeliListController extends Navigator {
         if(selectDeliveryTime != null  && !timeCombo.getSelectionModel().isEmpty()){
             if(DeliveryTimeApiDataSource.addDeliveryTime(new DeliveryTime(deliDatePicker.getValue().format(formatter),
                     timeCombo.getSelectionModel().getSelectedItem().toString(),selectDeliveryTime.getOrderName(),
-                    selectDeliveryTime.getJob()))){
+                    selectDeliveryTime.getJob(),selectDeliveryTime.getU_code()))){
                 DeliveryTimeApiDataSource.cancelDelivery(selectDeliveryTime.getId());
                 pushAlertWarning("แก้ไขเวลารับส่งสำเร็จ", Alert.AlertType.INFORMATION);
                 onClear();

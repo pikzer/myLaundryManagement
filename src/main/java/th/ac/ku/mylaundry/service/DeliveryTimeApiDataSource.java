@@ -32,7 +32,8 @@ public class DeliveryTimeApiDataSource extends ApiCall{
                         jsonArray.getJSONObject(i).getString("time"),
                         jsonArray.getJSONObject(i).getString("orderName"),
                         jsonArray.getJSONObject(i).getString("deliver"),
-                        jsonArray.getJSONObject(i).getString("job")
+                        jsonArray.getJSONObject(i).getString("job"),
+                        jsonArray.getJSONObject(i).getString("address")
                         ));
             }
             return deliveryTimes ;
@@ -72,7 +73,8 @@ public class DeliveryTimeApiDataSource extends ApiCall{
     public static boolean addDeliveryTime(DeliveryTime deliveryTime){
         try {
             var urlParameters = "date="+deliveryTime.getDate()+"&"+"time="+deliveryTime.getTime()+"&"
-                    + "orderName="+deliveryTime.getOrderName()+"&"+"job="+deliveryTime.getJob();
+                    + "orderName="+deliveryTime.getOrderName()+"&"+"job="+deliveryTime.getJob()
+                    +"&" +"address="+deliveryTime.getU_code();
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
             URL url = new URL(baseURL+"delivery-time");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

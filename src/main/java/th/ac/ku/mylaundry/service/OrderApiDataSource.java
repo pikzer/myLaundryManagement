@@ -447,10 +447,6 @@ public class OrderApiDataSource extends ApiCall {
                 );
             }
             return cloths;
-        } catch (ProtocolException e) {
-            throw new RuntimeException(e);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

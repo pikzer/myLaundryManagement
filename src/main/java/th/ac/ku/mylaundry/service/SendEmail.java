@@ -1,5 +1,7 @@
 package th.ac.ku.mylaundry.service;
 
+import th.ac.ku.mylaundry.model.Laundry;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -20,6 +22,8 @@ public class SendEmail {
         properties.put("mail.smtp.starttls.enable", true);
         properties.put("mail.transport.protocol", "smtp");
 
+        Laundry laundry = LaundryApiDataSource.getShop();
+
 //        properties.put("mail.smtp.auth", true);
 //        properties.put("mail.smtp.starttls.enable", "true");
 //        properties.put("mail.smtp.host", "smtp.mailtrap.io");
@@ -30,7 +34,7 @@ public class SendEmail {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 // TODO
-                return new PasswordAuthentication("mylaundryshopmail@gmail.com", "penxayotfodonekt");
+                return new PasswordAuthentication(laundry.getEmail(), laundry.getEmail_pwd());
             }
         });
 
@@ -49,8 +53,8 @@ public class SendEmail {
 //        attachment.attachFile(file) ;
             MimeBodyPart messageBodyPart = new MimeBodyPart();
 
-            messageBodyPart.setContent("<h1>" + header+ "</h1>", "text/html");
-            multipart.addBodyPart(messageBodyPart);
+//            messageBodyPart.setContent("<h1>" + header+ "</h1>", "text/html");
+//            multipart.addBodyPart(messageBodyPart);
             MimeBodyPart messageBodyPart1 = new MimeBodyPart();
             messageBodyPart1.setText(body);
 

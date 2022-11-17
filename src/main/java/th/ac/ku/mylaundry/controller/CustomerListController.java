@@ -224,13 +224,34 @@ public class CustomerListController extends Navigator {
                 }
             }
             else{
-                if (CustomerApiDataSource.addNewCustomer(nameField.getText(), telField.getText(), adsTextArea.getText(), emailField.getText())) {
-                    pushAlert("เพิ่มลูกค้าสำเร็จ", Alert.AlertType.INFORMATION);
-                    clearAll();
-                } else {
-                    pushAlert("เพิ่มลูกค้าไม่สำเร็จ", Alert.AlertType.ERROR);
-                    clearAll();
+                if(nameField.getText() != null && telField.getText() != null && adsTextArea.getText() != null){
+                    if(Validator.isPhoneNumber(telField.getText())){
+                        if(emailField.getText()!=null){
+                            if(Validator.isEmail(emailField.getText())){
+                                if (CustomerApiDataSource.addNewCustomer(nameField.getText(), telField.getText(), adsTextArea.getText(), emailField.getText())) {
+                                    pushAlert("เพิ่มลูกค้าสำเร็จ", Alert.AlertType.INFORMATION);
+                                    clearAll();
+                                }
+                                else {
+                                    pushAlert("เพิ่มลูกค้าไม่สำเร็จ", Alert.AlertType.ERROR);
+                                    clearAll();
+                                }
+                            }
+                        }
+                        else{
+                            if (CustomerApiDataSource.addNewCustomer(nameField.getText(), telField.getText(), adsTextArea.getText(), emailField.getText())) {
+                                pushAlert("เพิ่มลูกค้าสำเร็จ", Alert.AlertType.INFORMATION);
+                                clearAll();
+                            }
+                            else {
+                                pushAlert("เพิ่มลูกค้าไม่สำเร็จ", Alert.AlertType.ERROR);
+                                clearAll();
+                            }
+                        }
+
+                    }
                 }
+
             }
         }
         // EDIT

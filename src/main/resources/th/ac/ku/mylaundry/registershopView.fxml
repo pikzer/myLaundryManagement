@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.RegisterShopController">
+<AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.RegisterShopController">
    <children>
       <Pane layoutX="729.0" layoutY="92.0" prefHeight="584.0" prefWidth="574.0" style="-fx-background-color: white;">
          <children>
@@ -69,13 +69,16 @@
          <children>
             <Text layoutX="67.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เบอร์โทรร้าน" />
             <Text layoutX="100.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ชื่อร้าน" />
-            <TextField fx:id="shopMailField" layoutX="142.0" layoutY="180.0">
+            <TextField fx:id="shopMailField" layoutX="85.0" layoutY="183.0" prefHeight="37.0" prefWidth="189.0">
                <font>
                   <Font size="19.0" />
                </font>
             </TextField>
             <TextArea fx:id="adsTextArea" layoutX="142.0" layoutY="235.0" prefHeight="79.0" prefWidth="240.0" />
             <Text layoutX="95.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ที่อยู่ร้าน" />
+            <Text layoutX="37.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์" />
+            <Text layoutX="287.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รหัสผ่าน" />
+            <PasswordField fx:id="mailPwdField" layoutX="346.0" layoutY="183.0" prefHeight="37.0" prefWidth="189.0" promptText="รหัสผ่านเข้าใช้อีเมลล์" />
          </children>
       </Pane>
       <Pane layoutX="-1.0" layoutY="1.0" prefHeight="79.0" prefWidth="1366.0" style="-fx-background-color: lightskyblue lightskyblue;" />
@@ -94,7 +97,6 @@
             <Font size="19.0" />
          </font>
       </TextField>
-      <Text layoutX="149.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์" />
       <Text layoutX="143.0" layoutY="585.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เวลาเปิด" />
       <Text layoutX="143.0" layoutY="639.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เวลาปิด" />
       <Text layoutX="62.0" layoutY="522.0" strokeType="OUTSIDE" strokeWidth="0.0" text="วันที่เปิด" />

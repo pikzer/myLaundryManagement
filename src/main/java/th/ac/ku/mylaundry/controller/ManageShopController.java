@@ -28,6 +28,8 @@ public class ManageShopController extends Navigator  {
     @FXML
     TextArea adsTextArea ;
     @FXML
+    PasswordField emailPwdField;
+    @FXML
     CheckBox sunCheck, monCheck, tueCheck, wedCheck, thuCheck, friCheck, satCheck;
     @FXML
     ComboBox openTimeCombo, closeTimeCombo ;
@@ -96,8 +98,12 @@ public class ManageShopController extends Navigator  {
                 !adsTextArea.getText().equals("") && !idLineField.getText().equals("") && !getWorkDayCode().equals("0000000")
                 && !openTimeCombo.getSelectionModel().isEmpty() && !closeTimeCombo.getSelectionModel().isEmpty()){
             if(Validator.isEmail(shopMailField.getText()) && Validator.isPhoneNumber(shopTelField.getText())){
-                if(patchLaundry(nameField.getText(),shopTelField.getText(),shopMailField.getText(),adsTextArea.getText(),idLineField.getText(),openTimeCombo.getSelectionModel().getSelectedItem().toString(),closeTimeCombo.getSelectionModel().getSelectedItem().toString(),getWorkDayCode(),Integer.parseInt(numOfWorkSpinner.getValue().toString()))){
+                if(patchLaundry(nameField.getText(),shopTelField.getText(),shopMailField.getText(),adsTextArea.getText(),
+                        idLineField.getText(),openTimeCombo.getSelectionModel().getSelectedItem().toString(),
+                        closeTimeCombo.getSelectionModel().getSelectedItem().toString(),getWorkDayCode(),
+                        Integer.parseInt(numOfWorkSpinner.getValue().toString()),emailPwdField.getText())){
                     pushAlert("แก้ไขสำเร็จ", Alert.AlertType.INFORMATION);
+                    emailPwdField.clear();
                     initialize();
                 }
                 else {

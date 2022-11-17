@@ -31,7 +31,7 @@ public class RegisterShopController  {
     ComboBox openTimeCombo, closeTimeCombo, bankCombo;
 
     @FXML
-    PasswordField pwdField,conPwdField ;
+    PasswordField pwdField,conPwdField,mailPwdField ;
     @FXML
     CheckBox sunCheck, monCheck, tueCheck, wedCheck, thuCheck, friCheck, satCheck, telCheck, mailCheck, adsCheck ;
     @FXML
@@ -182,7 +182,7 @@ public class RegisterShopController  {
         || ownerAdsTextArea.getText().isEmpty() || bankNumField.getText().isEmpty() || bankCombo.getItems().isEmpty() ||
                 pwdField.getText().isEmpty() || conPwdField.getText().isEmpty() || shopNameField.getText().isEmpty()
         ||shopTelField.getText().isEmpty() || shopMailField.getText().isEmpty() ||adsTextArea.getText().isEmpty() ||
-        idLineField.getText().isEmpty() || bankCombo.getItems().isEmpty() ){
+        idLineField.getText().isEmpty() || bankCombo.getItems().isEmpty() || mailPwdField.getText().isEmpty() ){
             pushAlertWarning("กรุณากรอกข้อมูลให้ครบถ้วน");
         }
         // At least must have 1 day work time
@@ -215,7 +215,7 @@ public class RegisterShopController  {
 
             Laundry laundry = new Laundry(shopNameField.getText(), shopTelField.getText(),shopMailField.getText()
                     ,adsTextArea.getText(),idLineField.getText(),getWorkDayCode(),openTimeCombo.getSelectionModel().getSelectedItem().toString(),
-                    closeTimeCombo.getSelectionModel().getSelectedItem().toString()) ;
+                    closeTimeCombo.getSelectionModel().getSelectedItem().toString(),mailPwdField.getText()) ;
             Employee employee = new Employee(nameField.getText(),telField.getText(),mailField.getText(),
                     pwdField.getText(),ownerAdsTextArea.getText(), idField.getText(),bankNumField.getText(),
                     bankCombo.getSelectionModel().getSelectedItem().toString()) ;

@@ -87,7 +87,7 @@ public class OrderListViewController extends Navigator {
         showOrderTable();
 //        updateBtn.setDisable(true);
         acceptBtn.setDisable(true);
-        addClothListBtn.setDisable(true);
+        addClothListBtn.setDisable(false);
         cancelBtn.setDisable(true);
         invBtn.setDisable(true);
         showQrBtn.setDisable(true);
@@ -523,7 +523,7 @@ public class OrderListViewController extends Navigator {
             }
             acceptBtn.setDisable(true);
             cancelBtn.setDisable(true);
-            addClothListBtn.setDisable(true);
+            addClothListBtn.setDisable(false);
             makePaperBtn.setDisable(false);
             tagBtn.setDisable(false);
         }
@@ -689,7 +689,7 @@ public class OrderListViewController extends Navigator {
         if(selectedOrder == null){
         }
 
-        else{
+        else if(selectedOrder != null && selectedOrder.getStatus().equals("รับผ้า")){
             Button b = (Button) event.getSource();
             Stage stage = (Stage) b.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/th/ac/ku/mylaundry/AddClothListAppView.fxml"));
@@ -699,6 +699,15 @@ public class OrderListViewController extends Navigator {
             stage.show();
         }
 
+        else {
+            Button b = (Button) event.getSource();
+            Stage stage = (Stage) b.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/th/ac/ku/mylaundry/editOrderView.fxml"));
+            stage.setScene(new Scene(loader.load(), 1366, 768));
+            EditOrderController editOrderController = loader.getController();
+            editOrderController.setOrder(selectedOrder);
+            stage.show();
+        }
 
     }
 

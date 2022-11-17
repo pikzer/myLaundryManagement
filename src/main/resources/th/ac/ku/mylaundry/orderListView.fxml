@@ -94,7 +94,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button fx:id="addClothListBtn" layoutX="421.0" layoutY="738.0" mnemonicParsing="false" onAction="#addClothList" text="เพิ่มรายการผ้า" />
+      <Button fx:id="addClothListBtn" layoutX="388.0" layoutY="737.0" mnemonicParsing="false" onAction="#addClothList" text="เพิ่ม/แก้ไขรายการผ้า" />
       <Text layoutX="539.0" layoutY="541.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ข้อมูล">
          <font>
             <Font size="17.0" />

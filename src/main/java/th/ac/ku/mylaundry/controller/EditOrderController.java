@@ -3,6 +3,7 @@ package th.ac.ku.mylaundry.controller;
 import com.github.pheerathach.ThaiQRPromptPay;
 import com.google.zxing.WriterException;
 import com.itextpdf.text.DocumentException;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -62,6 +63,7 @@ public class EditOrderController extends Navigator {
     @FXML
     Pane pane;
 
+    Order order;
     double total ;
     double vat ;
     double deliCharge ;
@@ -81,252 +83,318 @@ public class EditOrderController extends Navigator {
     String selectPayMethod ;
     ClothList selectClothList ;
     boolean makeOrder ;
+    Customer customer;
 
-    String payMethodList[] = {"เงินสด","พร้อมเพย์"};
+    String payMethodList[] = {"เงินสด","พร้อมเพย์","สมาชิก"};
     String timeList[] =  {"ช่วงเช้า","ช่วงบ่าย","ช่วงเย็น"} ;
+
+    public void setOrder(Order selectOrder){
+        this.order = selectOrder ;
+        orderId = selectOrder.getId();
+        customer = CustomerApiDataSource.searchCustomer(order.getCus_phone());
+        selectCustomer = customer ;
+    }
 
     public void initialize() throws IOException {
         serviceRatesData = ServiceRateApiDataSource.getServiceRate();
-        total = 0 ;
-        orderId = 0 ;
-        deliCharge = 0;
-        vat = 0;
-        makeOrder = false ;
-        cartClothList = new ArrayList<>();
-        showCleanBtn.setDisable(true);
-        showCleanService();
-        quantitySpinner.setEditable(true);
-        quantitySpinner.setDisable(true);
-        showQrBtn.setDisable(true);
-        shopNameLabel.setText(LaundryApiDataSource.getLaundryName(1).toString());
-        initSpinner();
-//        timeCombo.getItems().addAll(timeList);
-        adsArea.setDisable(true);
-        deliDatePicker.setDisable(true);
-        addCateBtn.setDisable(true);
-        delCateBtn.setDisable(true);
-        makeInvBtn.setDisable(true);
-        showQrBtn.setDisable(true);
-        timeCombo.setDisable(true);
-        makeReceiptBtn.setDisable(true);
-        makeTagBtn.setDisable(true);
-        makePayBtn.setDisable(true);
-        quantitySpinner.setDisable(true);
-        payCombo.getItems().addAll(payMethodList);
-        initClothList();
-        ObservableList<String> customers = FXCollections.observableList(getCusPhone());
-        FilteredList<String> filteredItems = new FilteredList<String>(customers);
-        telCombo.getEditor().textProperty().addListener(new InputFilter(telCombo,filteredItems,false));
-        telCombo.setItems(filteredItems);
-        deliDatePicker.setDayCellFactory(picker -> new DateCell() {
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                LocalDate today = LocalDate.now();
-                setDisable(empty || date.compareTo(today.plusDays(1)) < 0 );
-            }
-        });
-        deliDatePicker.setOnAction(event -> {
-            ArrayList<Boolean> art = DeliveryTimeApiDataSource.getAvailableInDateTime(deliDatePicker.getValue().toString());
-            timeCombo.getItems().clear();
-            if(art.get(0)){
-                timeCombo.getItems().add("ช่วงเช้า");
-            }
-            if(art.get(1)){
-                timeCombo.getItems().add("ช่วงบ่าย");
-
-            }
-            if(art.get(2)){
-                timeCombo.getItems().add("ช่วงเย็น");
-            }
-        });
-
-
-
-        deliCheck.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        Platform.runLater(new Runnable() {
             @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
-                if(newValue){
-                    addDeliCharge();
-                    updatePrice();
-                    adsArea.setDisable(false);
-                    deliDatePicker.setDisable(false);
-                    timeCombo.setDisable(false);
+            public void run() {
+                initSpinner();
+                telCombo.getSelectionModel().select(customer.getPhone());
+                vat = 0;
+                makeOrder = false ;
+                cartClothList = new ArrayList<>();
+                showCleanBtn.setDisable(true);
+                showCleanService();
+                quantitySpinner.setEditable(true);
+                quantitySpinner.setDisable(true);
+                showQrBtn.setDisable(true);
+                telCombo.setDisable(true);
+                payCombo.setDisable(true);
+                nameLabel.setText(customer.getName());
+                memBalanceLabel.setText(String.valueOf(customer.getMemCredit()));
+                serviceTypeLabel.setText(customer.getMemService());
+                payCombo.getSelectionModel().select(order.getPayMethod());
+                total = order.getTotal();
+                deliCharge = order.getPickSerCharge() + order.getDeliSerCharge();
+                timeCombo.getItems().addAll(timeList);
+                selectPayMethod = order.getPayMethod();
+                updatePrice();
+                initClothList();
+                showCustomerData(customer);
+                try {
+                    initClothListIn();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    shopNameLabel.setText(LaundryApiDataSource.getLaundryName(1).toString());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                if(order.getAddress().equals("null")){
+                    deliCheck.setSelected(false);
                 }
                 else{
-                    removeDelCharge();
-                    updatePrice();
+                    deliCheck.setSelected(true);
+                    deliCheck.setDisable(true);
                     adsArea.setDisable(true);
-                    timeCombo.setDisable(true);
-                    deliDatePicker.setDisable(true);
+                    adsArea.setText(order.getAddress());
+                    deliDatePicker.setValue(LocalDate.parse(order.getDeliDate()));
+                    timeCombo.getSelectionModel().select(order.getDeliTime());
                 }
-            }
-        });
+//        timeCombo.getItems().addAll(timeList);
+//                adsArea.setDisable(true);
+                deliDatePicker.setDisable(true);
+                timeCombo.setDisable(true);
+//                addCateBtn.setDisable(true);
+//                delCateBtn.setDisable(true);
+//                makeInvBtn.setDisable(true);
+//                showQrBtn.setDisable(true);
+//                timeCombo.setDisable(true);
+//                makeReceiptBtn.setDisable(true);
+//                makeTagBtn.setDisable(true);
+//                makePayBtn.setDisable(true);
+//                quantitySpinner.setDisable(true);
+                payCombo.getItems().addAll(payMethodList);
+//                ObservableList<String> customers = null;
+//                try {
+//                    customers = FXCollections.observableList(getCusPhone());
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
 
-        categoryTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null){
-                showSelectedCategory((Cloth) newValue) ;
-            }
-        });
-        clothListTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null){
-                showSelectClothList((ClothList) newValue);
-            }
-        });
-
-
-        quantitySpinner.valueProperty().addListener(((observableValue, oldValue, newValue) -> {
-            if(newValue != null && selectCloth != null){
-                priceCateLabel.setText(String.valueOf(selectCloth.getPrice() * Integer.parseInt(newValue.toString())));
-            } else if (selectClothList != null && selectCloth == null) {
-                priceCateLabel.setText(String.valueOf(selectClothList.getPricePerUnit() * Integer.parseInt(newValue.toString())));
-            }
-        }));
-        telCombo.setOnAction(event -> {
-            if(telCombo.getSelectionModel().isEmpty()){
-
-            }
-            if(!telCombo.getSelectionModel().isEmpty()){
-                if(Validator.isPhoneNumber(telCombo.getSelectionModel().getSelectedItem().toString())){
-                    selectCustomer = CustomerApiDataSource.searchCustomer(telCombo.getSelectionModel().getSelectedItem().toString());
-                    if(selectCustomer != null){
-                        showCustomerData(selectCustomer) ;
+//                FilteredList<String> filteredItems = new FilteredList<String>(customers);
+//                telCombo.getEditor().textProperty().addListener(new InputFilter(telCombo,filteredItems,false));
+//                telCombo.setItems(filteredItems);
+                deliDatePicker.setDayCellFactory(picker -> new DateCell() {
+                    public void updateItem(LocalDate date, boolean empty) {
+                        super.updateItem(date, empty);
+                        LocalDate today = LocalDate.now();
+                        setDisable(empty || date.compareTo(today.plusDays(1)) < 0 );
                     }
-                }
-            }
-        });
-        payCombo.setOnAction(event -> {
-            if(payCombo.getSelectionModel().isEmpty()){
+                });
 
-            }
-            else if(payCombo.getSelectionModel().getSelectedItem().toString().equals("สมาขิก")){
-                selectPayMethod = "สมาชิก" ;
-                cartClothList = new ArrayList<>();
-                total = 0;
-                updateClothListTable();
-                clothListTable.refresh();
-                if(selectCustomer.getMemService().equals("ซักอบ&ซักรีด")) {
-                    showCleanService();
-                }
-                else if(selectCustomer.getMemService().equals("ซักอบ")){
-                    showCleanService();
-                    showDryCleanBtn.setDisable(true);
-                    showIronBtn.setDisable(true);
-                    showCleanIronBtn.setDisable(true);
-                }
-                else if(selectCustomer.getMemService().equals("ซักรีด")){
-                    showCleanIronService();
-                    showDryCleanBtn.setDisable(true);
-                    showIronBtn.setDisable(true);
-                    showCleanBtn.setDisable(true);
-                }
-                else if(selectCustomer.getMemService().equals("รีด")){
-                    showIronService();
-                    showDryCleanBtn.setDisable(true);
-                    showCleanIronBtn.setDisable(true);
-                    showCleanBtn.setDisable(true);
-                }
-                else if(selectCustomer.getMemService().equals("ซักแห้ง")){
-                    dryCleanService();
-                    showCleanBtn.setDisable(true);
-                    showCleanIronBtn.setDisable(true);
-                    showCleanIronBtn.setDisable(true);
-                }
-            }
-            else if(payCombo.getSelectionModel().getSelectedItem().toString().equals("เงินสด")){
-                selectPayMethod = "เงินสด" ;
-                showCleanBtn.setDisable(false);
-                showDryCleanBtn.setDisable(false);
-                showCleanIronBtn.setDisable(false);
-                showIronBtn.setDisable(false);
-                showQrBtn.setDisable(true);
-                showCleanService();
+                // TODO set delidate
+                deliDatePicker.setOnAction(event -> {
+                    ArrayList<Boolean> art = DeliveryTimeApiDataSource.getAvailableInDateTime(deliDatePicker.getValue().toString());
+                    timeCombo.getItems().clear();
+                    if(art.get(0)){
+                        timeCombo.getItems().add("ช่วงเช้า");
+                    }
+                    if(art.get(1)){
+                        timeCombo.getItems().add("ช่วงบ่าย");
 
-            }
-            else if(payCombo.getSelectionModel().getSelectedItem().toString().equals("พร้อมเพย์")){
-                selectPayMethod = "พร้อมเพย์" ;
-                showCleanBtn.setDisable(false);
-                showDryCleanBtn.setDisable(false);
-                showCleanIronBtn.setDisable(false);
-                showIronBtn.setDisable(false);
-                showQrBtn.setDisable(false);
-                showCleanService();
-            }
-        });
-    }
+                    }
+                    if(art.get(2)){
+                        timeCombo.getItems().add("ช่วงเย็น");
+                    }
+                });
 
-
-    public void addDeliCharge(){
-        int n = showCartQuantity();
-        if(n <= 15){
-            deliCharge = 15 ;
-        }
-        else if(n > 15 && n <= 30){
-            deliCharge = 25 ;
-        }
-        else if(n > 30 && n <= 50){
-            deliCharge = 30  ;
-        }
-        else if(n > 50){
-            deliCharge = 0 ;
-        }
-    }
-    public void removeDelCharge(){
-        deliCharge = 0 ;
-    }
-    public void initClothList(){
-        clothListTable.getColumns().clear();
-        TableColumn numberCol = new TableColumn("#");
-        numberCol.setMinWidth(20);
-        numberCol.setMaxWidth(30);
-        numberCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ClothList, ClothList>, ObservableValue<ClothList>>() {
-            @Override
-            public ObservableValue call(TableColumn.CellDataFeatures<ClothList, ClothList> p) {
-                return new ReadOnlyObjectWrapper(p.getValue());
-            }
-        });
-
-        numberCol.setCellFactory(new Callback<TableColumn<ClothList, ClothList>, TableCell<ClothList, ClothList>>() {
-            @Override public TableCell<ClothList, ClothList> call(TableColumn<ClothList, ClothList> param) {
-                return new TableCell<ClothList, ClothList>() {
-                    @Override protected void updateItem(ClothList item, boolean empty) {
-                        super.updateItem(item, empty);
-
-                        if (this.getTableRow() != null && item != null) {
-                            setText(this.getTableRow().getIndex()+1+"");
-                        } else {
-                            setText("");
+                // TODO set check if deli
+                deliCheck.selectedProperty().addListener(new ChangeListener<Boolean>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+                        if(newValue){
+                            addDeliCharge();
+                            updatePrice();
+                            adsArea.setDisable(false);
+                            deliDatePicker.setDisable(false);
+                            timeCombo.setDisable(false);
+                        }
+                        else{
+                            removeDelCharge();
+                            updatePrice();
+                            adsArea.setDisable(true);
+                            timeCombo.setDisable(true);
+                            deliDatePicker.setDisable(true);
                         }
                     }
-                };
+                });
+
+                categoryTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    if(newValue != null){
+                        showSelectedCategory((Cloth) newValue) ;
+                    }
+                });
+
+                clothListTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    if(newValue != null){
+                        showSelectClothList((ClothList) newValue);
+                    }
+                });
+
+
+                quantitySpinner.valueProperty().addListener(((observableValue, oldValue, newValue) -> {
+                    if(newValue != null && selectCloth != null){
+                        priceCateLabel.setText(String.valueOf(selectCloth.getPrice() * Integer.parseInt(newValue.toString())));
+                    } else if (selectClothList != null && selectCloth == null) {
+                        priceCateLabel.setText(String.valueOf(selectClothList.getPricePerUnit() * Integer.parseInt(newValue.toString())));
+                    }
+                }));
+
+//                telCombo.setOnAction(event -> {
+//                    if(telCombo.getSelectionModel().isEmpty()){
+//
+//                    }
+//                    if(!telCombo.getSelectionModel().isEmpty()){
+//                        if(Validator.isPhoneNumber(telCombo.getSelectionModel().getSelectedItem().toString())){
+//                            selectCustomer = CustomerApiDataSource.searchCustomer(telCombo.getSelectionModel().getSelectedItem().toString());
+//                            if(selectCustomer != null){
+//                                showCustomerData(selectCustomer) ;
+//                            }
+//                        }
+//                    }
+//                });
+//                payCombo.setOnAction(event -> {
+//                    if(payCombo.getSelectionModel().isEmpty()){
+//
+//                    }
+//                    else if(payCombo.getSelectionModel().getSelectedItem().toString().equals("สมาขิก")){
+//                        selectPayMethod = "สมาชิก" ;
+//                        cartClothList = new ArrayList<>();
+//                        total = 0;
+//                        updateClothListTable();
+//                        clothListTable.refresh();
+//                        if(selectCustomer.getMemService().equals("ซักอบ&ซักรีด")) {
+//                            showCleanService();
+//                        }
+//                        else if(selectCustomer.getMemService().equals("ซักอบ")){
+//                            showCleanService();
+//                            showDryCleanBtn.setDisable(true);
+//                            showIronBtn.setDisable(true);
+//                            showCleanIronBtn.setDisable(true);
+//                        }
+//                        else if(selectCustomer.getMemService().equals("ซักรีด")){
+//                            showCleanIronService();
+//                            showDryCleanBtn.setDisable(true);
+//                            showIronBtn.setDisable(true);
+//                            showCleanBtn.setDisable(true);
+//                        }
+//                        else if(selectCustomer.getMemService().equals("รีด")){
+//                            showIronService();
+//                            showDryCleanBtn.setDisable(true);
+//                            showCleanIronBtn.setDisable(true);
+//                            showCleanBtn.setDisable(true);
+//                        }
+//                        else if(selectCustomer.getMemService().equals("ซักแห้ง")){
+//                            dryCleanService();
+//                            showCleanBtn.setDisable(true);
+//                            showCleanIronBtn.setDisable(true);
+//                            showCleanIronBtn.setDisable(true);
+//                        }
+//                    }
+//                    else if(payCombo.getSelectionModel().getSelectedItem().toString().equals("เงินสด")){
+//                        selectPayMethod = "เงินสด" ;
+//                        showCleanBtn.setDisable(false);
+//                        showDryCleanBtn.setDisable(false);
+//                        showCleanIronBtn.setDisable(false);
+//                        showIronBtn.setDisable(false);
+//                        showQrBtn.setDisable(true);
+//                        showCleanService();
+//
+//                    }
+//                    else if(payCombo.getSelectionModel().getSelectedItem().toString().equals("พร้อมเพย์")){
+//                        selectPayMethod = "พร้อมเพย์" ;
+//                        showCleanBtn.setDisable(false);
+//                        showDryCleanBtn.setDisable(false);
+//                        showCleanIronBtn.setDisable(false);
+//                        showIronBtn.setDisable(false);
+//                        showQrBtn.setDisable(false);
+//                        showCleanService();
+//                    }
+//                });
+            }
+
+
+            public void addDeliCharge(){
+                int n = showCartQuantity();
+                if(n <= 15){
+                    deliCharge = 15 ;
+                }
+                else if(n > 15 && n <= 30){
+                    deliCharge = 25 ;
+                }
+                else if(n > 30 && n <= 50){
+                    deliCharge = 30  ;
+                }
+                else if(n > 50){
+                    deliCharge = 0 ;
+                }
+            }
+            public void removeDelCharge(){
+                deliCharge = 0 ;
+            }
+            public void initClothList(){
+                clothListTable.getColumns().clear();
+                TableColumn numberCol = new TableColumn("#");
+                numberCol.setMinWidth(20);
+                numberCol.setMaxWidth(30);
+                numberCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ClothList, ClothList>, ObservableValue<ClothList>>() {
+                    @Override
+                    public ObservableValue call(TableColumn.CellDataFeatures<ClothList, ClothList> p) {
+                        return new ReadOnlyObjectWrapper(p.getValue());
+                    }
+                });
+
+                numberCol.setCellFactory(new Callback<TableColumn<ClothList, ClothList>, TableCell<ClothList, ClothList>>() {
+                    @Override public TableCell<ClothList, ClothList> call(TableColumn<ClothList, ClothList> param) {
+                        return new TableCell<ClothList, ClothList>() {
+                            @Override protected void updateItem(ClothList item, boolean empty) {
+                                super.updateItem(item, empty);
+
+                                if (this.getTableRow() != null && item != null) {
+                                    setText(this.getTableRow().getIndex()+1+"");
+                                } else {
+                                    setText("");
+                                }
+                            }
+                        };
+                    }
+                });
+                numberCol.setSortable(false);
+                TableColumn<ClothList, String> serviceCol = new TableColumn<>("บริการ");
+                TableColumn<ClothList, String> cateCol = new TableColumn<ClothList, String>("ประเภทผ้า");
+                TableColumn<ClothList, Integer> quantityCol = new TableColumn<ClothList, Integer>("จำนวน");
+                cateCol.setCellValueFactory(new PropertyValueFactory<ClothList,String>("category"));
+                quantityCol.setCellValueFactory(new PropertyValueFactory<ClothList,Integer>("quantity"));
+                serviceCol.setCellValueFactory(new PropertyValueFactory<ClothList,String >("service"));
+
+                clothListTable.getColumns().addAll(numberCol,serviceCol,cateCol, quantityCol) ;
+//        clothListTable.setItems(sortedList);
             }
         });
-        numberCol.setSortable(false);
-        TableColumn<ClothList, String> serviceCol = new TableColumn<>("บริการ");
-        TableColumn<ClothList, String> cateCol = new TableColumn<ClothList, String>("ประเภทผ้า");
-        TableColumn<ClothList, Integer> quantityCol = new TableColumn<ClothList, Integer>("จำนวน");
-        cateCol.setCellValueFactory(new PropertyValueFactory<ClothList,String>("category"));
-        quantityCol.setCellValueFactory(new PropertyValueFactory<ClothList,Integer>("quantity"));
-        serviceCol.setCellValueFactory(new PropertyValueFactory<ClothList,String >("service"));
+//        total = order.getTotal() ;
+//        orderId = order.getId() ;
+//        deliCharge = order.getDeliSerCharge()+order.getPickSerCharge();
 
-        clothListTable.getColumns().addAll(numberCol,serviceCol,cateCol, quantityCol) ;
-//        clothListTable.setItems(sortedList);
+
     }
     public void initSpinner(){
         quantitySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100,0));
     }
     public void updateSpinnerValue(int n){
-        quantitySpinner.getValueFactory().setValue(n);
+        quantitySpinner.getValueFactory().setValue(Integer.valueOf(n));
     }
 
-    public ArrayList<String> getCusPhone() throws IOException {
-        ArrayList<String> phones = new ArrayList<>();
-        ArrayList<Customer> customers = CustomerApiDataSource.getCustomers();
-        for (Customer c:customers) {
-            phones.add(c.getPhone());
-        }
-        return phones;
-    }
+//    public ArrayList<String> getCusPhone() throws IOException {
+//        ArrayList<String> phones = new ArrayList<>();
+//        ArrayList<Customer> customers = CustomerApiDataSource.getCustomers();
+//        for (Customer c:customers) {
+//            phones.add(c.getPhone());
+//        }
+//        return phones;
+//    }
 
+
+    public void initClothListIn() throws IOException {
+        ArrayList<ClothList> clothLists = OrderApiDataSource.getOrderClothList(order.getId()) ;
+        cartClothList.addAll(clothLists);
+        showCartQuantity();
+        updateClothListTable();
+        clothListTable.refresh();
+     }
     public void showCustomerData(Customer customer){
         nameLabel.setText(customer.getName());
         if(customer.getIsMembership() == 0){
@@ -334,17 +402,17 @@ public class EditOrderController extends Navigator {
             memBalanceLabel.setText("-");
             payCombo.getItems().clear();
             payCombo.getItems().addAll(payMethodList);
-            if(CustomerApiDataSource.getCustomerAddress(customer.getId()) != null){
-                adsArea.setText(CustomerApiDataSource.getCustomerAddress(customer.getId()).getuCode());
-            }
+//            if(CustomerApiDataSource.getCustomerAddress(customer.getId()) != null){
+//                adsArea.setText(CustomerApiDataSource.getCustomerAddress(customer.getId()).getuCode());
+//            }
         }
         else{
             payCombo.getItems().add("สมาขิก") ;
             serviceTypeLabel.setText(customer.getMemService());
             memBalanceLabel.setText(customer.getMemCredit().toString());
-            if(CustomerApiDataSource.getCustomerAddress(customer.getId()) != null){
-                adsArea.setText(CustomerApiDataSource.getCustomerAddress(customer.getId()).getuCode());
-            }
+//            if(CustomerApiDataSource.getCustomerAddress(customer.getId()) != null){
+//                adsArea.setText(CustomerApiDataSource.getCustomerAddress(customer.getId()).getuCode());
+//            }
         }
     }
 
@@ -360,8 +428,6 @@ public class EditOrderController extends Navigator {
         idCol.setCellValueFactory(new PropertyValueFactory<Customer,Integer>("id"));
         cateCol.setCellValueFactory(new PropertyValueFactory<Customer,String>("clothType"));
         addOnPrice.setCellValueFactory(new PropertyValueFactory<Customer,Double>("price"));
-
-
         categoryTable.getColumns().addAll(idCol,cateCol,addOnPrice) ;
         categoryTable.setItems(sortedList);
     }
@@ -389,12 +455,9 @@ public class EditOrderController extends Navigator {
 
 
     // Button OnClick
-
-
     public void showCleanService(){
         if(quantitySpinner.getValue() != null){
             onClickPane();
-
         }
         if(selectPayMethod == null || selectPayMethod.equals("เงินสด") || selectPayMethod.equals("พร้อมเพย์")){
             showCleanBtn.setDisable(true);
@@ -432,7 +495,6 @@ public class EditOrderController extends Navigator {
 
     public void showCleanIronService(){
         onClickPane();
-
         if(selectPayMethod == null || selectPayMethod.equals("เงินสด") || selectPayMethod.equals("พร้อมเพย์")){
             showCleanBtn.setDisable(false);
             showCleanIronBtn.setDisable(true);
@@ -632,6 +694,22 @@ public class EditOrderController extends Navigator {
         subTotalField.setText(f.format(subtotal));
         deliveryPriceField.setText(f.format(deliCharge));
         totalField.setText(f.format(subtotal+tax));
+    }
+
+    public void addDeliCharge(){
+        int n = showCartQuantity();
+        if(n <= 15){
+            deliCharge = 15 ;
+        }
+        else if(n > 15 && n <= 30){
+            deliCharge = 25 ;
+        }
+        else if(n > 30 && n <= 50){
+            deliCharge = 30  ;
+        }
+        else if(n > 50){
+            deliCharge = 0 ;
+        }
     }
 
     public int showCartQuantity(){

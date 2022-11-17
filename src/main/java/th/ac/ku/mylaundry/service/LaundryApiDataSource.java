@@ -35,8 +35,9 @@ public class LaundryApiDataSource extends ApiCall {
             return new Laundry(jsonObject.getInt("id"),jsonObject.getString("name"),jsonObject.getString("phone"),
                     jsonObject.getString("owner"),jsonObject.getString("email"),jsonObject.getString("address"),
                     jsonObject.getString("lineId"),jsonObject.getString("workDay"),jsonObject.getString("opentime"),
-                    jsonObject.getString("closetime"),jsonObject.getInt("numOfWork"),jsonObject.getString("status"))
-                    ;
+                    jsonObject.getString("closetime"),jsonObject.getInt("numOfWork"),jsonObject.getString("status"),
+                    jsonObject.getString("email_pwd")
+            );
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -78,22 +79,23 @@ public class LaundryApiDataSource extends ApiCall {
             String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
             JSONObject jsonDo = new JSONObject(j) ;
             System.out.println(jsonDo);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (JSONException e) {
+        } catch (IOException | JSONException e) {
             throw new RuntimeException(e);
         }
     }
 
 
     public static boolean patchLaundry(String shopName,String shopPhone, String shopEmail, String shopAddress,
-                                       String lineId, String openTime, String closeTime,String workDay,Integer numOfWork){
+                                       String lineId, String openTime, String closeTime,String workDay,Integer numOfWork,String email_pwd){
 //        var urlParameters = laundry.getPostLaundry();
         var urlParameters = "shopName="+shopName+"&"+"shopPhone="+shopPhone
                 +"&"+"shopEmail="+shopEmail+"&"+"lineId="+lineId+"&"+"openTime="+openTime
                 +"&"+"closeTime="+closeTime+"&"+"numOfWork="+numOfWork +"&"+ "shopAddress="+shopAddress
                 + "&" + "workDay=" +workDay
                 ;
+        if(!email_pwd.isEmpty()){
+            urlParameters += "&email_pwd=" +email_pwd;
+        }
         System.out.println(urlParameters);
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         try {

@@ -42,6 +42,9 @@ public class CustomerApiDataSource extends ApiCall {
                         jsonArray.getJSONObject(i).getString("memService"),
                         jsonArray.getJSONObject(i).getInt("memCredit")
                         ));
+                if(customerShows.get(i).getEmail().equals("null")){
+                    customerShows.get(i).setEmail("");
+                }
             }
 //            customerShows.toString();
             return customerShows ;

@@ -19,6 +19,10 @@ public class Customer {
         this.memCredit = memCredit;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setMemService(String memService) {
         this.memService = memService;
     }

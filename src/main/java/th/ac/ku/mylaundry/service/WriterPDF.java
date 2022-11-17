@@ -1,5 +1,6 @@
 package th.ac.ku.mylaundry.service;
 
+import com.github.pheerathach.ThaiQRPromptPay;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +25,8 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import th.ac.ku.mylaundry.model.*;
 
 public class WriterPDF {
@@ -43,7 +47,6 @@ public class WriterPDF {
         DecimalFormat f = new DecimalFormat("#0.00");
         String pdfFilename ="inv/" +order.getName()+"-inv.pdf";
         try {
-
             File dir = new File("inv") ;
             if(dir.mkdir()){
             }
@@ -174,10 +177,31 @@ public class WriterPDF {
             summaryR.setColspan (3);
             billTable.addCell(summaryR);
 
+            Image qrImg = null ;
+
+            if(order.getPayMethod().equals("พร้อมเพย์")){
+                ThaiQRPromptPay qr = new ThaiQRPromptPay.Builder().dynamicQR().creditTransfer().mobileNumber(
+                        EmployeeApiDataSource.getOwnerQR()).amount(new BigDecimal(order.getTotal())).build();
+                File file1 = new File("qr.png");
+                qr.draw(200,200,file1);
+                qrImg = Image.getInstance (file1.getPath());//Header Image
+                qrImg.scaleAbsolute(100f, 100f);//image widt
+                // h,height
+                qrImg.setAlignment(Element.ALIGN_CENTER);
+            }
+
             PdfPTable describer = new PdfPTable(1);
-            describer.setWidthPercentage(100);
-            describer.addCell(getdescCell(" "));
-            describer.addCell(getdescCell(" "));
+//            javafx.scene.image.Image image = new javafx.scene.image.Image(file.toURI().toString());
+            if (qrImg != null){
+//                describer.setWidthPercentage(100);
+                describer.addCell(getdescCell("คิวอาร์พร้อมเพย์"));
+                describer.addCell(qrImg);
+            }
+            else{
+                describer.setWidthPercentage(100);
+                describer.addCell(getdescCell(" "));
+                describer.addCell(getdescCell(" "));
+            }
 
             document.open();//PDF document opened........
             document.add(image);

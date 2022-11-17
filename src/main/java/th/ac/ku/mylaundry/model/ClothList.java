@@ -46,4 +46,15 @@ public class ClothList {
     public Integer getQuantity() {
         return quantity;
     }
+
+    @Override
+    public String toString() {
+        return "ClothList{" +
+                "id=" + id +
+                ", service='" + service + '\'' +
+                ", category='" + category + '\'' +
+                ", quantity=" + quantity +
+                ", pricePerUnit=" + pricePerUnit +
+                '}';
+    }
 }
