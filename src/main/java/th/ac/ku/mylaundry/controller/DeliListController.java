@@ -1,5 +1,6 @@
 package th.ac.ku.mylaundry.controller;
 
+import com.itextpdf.text.DocumentException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -219,6 +220,10 @@ public class DeliListController extends Navigator {
         orderNameLabel.setText("-");
         initialize();
 
+    }
+
+    public void onClickPrintTodayDeliList() throws DocumentException, IOException {
+        WriterPDF.writeDeliveryList(DeliveryTimeApiDataSource.getDeliveryTodayList());
     }
 
     public void onClickAnchor() throws IOException {

@@ -133,5 +133,32 @@ public class DeliveryTimeApiDataSource extends ApiCall{
         }
     }
 
+    public static ArrayList<DeliveryTime> getDeliveryTodayList(){
+        ArrayList<DeliveryTime> deliveryTimes = new ArrayList<>() ;
+        try {
+            URL url = new URL(baseURL+"delivery-time/getDeliveryListToday");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestProperty("Content-Type","application/json");
+            conn.setRequestMethod("GET");
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            JSONArray jsonArray = new JSONArray(j) ;
+            for(int i = 0 ; i < jsonArray.length();i++){
+                deliveryTimes.add(new DeliveryTime(jsonArray.getJSONObject(i).getInt("id"),
+                        jsonArray.getJSONObject(i).getString("date"),
+                        jsonArray.getJSONObject(i).getString("time"),
+                        jsonArray.getJSONObject(i).getString("orderName"),
+                        jsonArray.getJSONObject(i).getString("deliver"),
+                        jsonArray.getJSONObject(i).getString("job"),
+                        jsonArray.getJSONObject(i).getString("address")
+                ));
+            }
+            return deliveryTimes ;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return deliveryTimes ;
+    }
+
 
 }

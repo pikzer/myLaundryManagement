@@ -228,5 +228,6 @@
          </children>
       </AnchorPane>
       <Separator layoutX="1020.0" layoutY="443.0" prefHeight="3.0" prefWidth="304.0" style="-fx-background-color: black;" />
+      <Button layoutX="813.0" layoutY="732.0" mnemonicParsing="false" onAction="#onClickPrintTodayDeliList" prefHeight="25.0" prefWidth="146.0" text="พิมพ์รายการรับส่งผ้า" />
    </children>
 </AnchorPane>

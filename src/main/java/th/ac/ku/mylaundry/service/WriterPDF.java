@@ -16,17 +16,11 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
 
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import th.ac.ku.mylaundry.model.*;
 
 public class WriterPDF {
@@ -203,7 +197,7 @@ public class WriterPDF {
                 describer.addCell(getdescCell(" "));
             }
 
-            document.open();//PDF document opened........
+            document.open();
             document.add(image);
             document.add(paragraph);
             document.add(paragraph1);
@@ -223,13 +217,9 @@ public class WriterPDF {
 
             Desktop.getDesktop().open(new File(pdfFilename));
 
-
             if(file1.exists()){
                 file1.delete();
             }
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -272,8 +262,6 @@ public class WriterPDF {
             Paragraph paragraph3 = new Paragraph("อีเมลล์ : " + laundry.getEmail(),font2);
 
 
-
-
             PdfPTable irdTable = new PdfPTable(3);
             irdTable.addCell(getIRDCell("เลขที่"));
             irdTable.addCell(getIRDCell("วันที่ออก"));
@@ -302,9 +290,6 @@ public class WriterPDF {
 
 
             Phrase bill = fs.process("ลูกค้า"); // customer information
-
-
-
 
             font2 = new Font(customfont,13,Font.NORMAL);
             Paragraph name = new Paragraph(customer.getName(),font2);
@@ -592,8 +577,104 @@ public class WriterPDF {
         }
     }
 
+    public static void writeDeliveryList(ArrayList<DeliveryTime> deliveryTimes) throws DocumentException, IOException {
+
+        File dir = new File("delivery") ;
+        if(dir.mkdir()){
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String fontpath = "/System/Library/Fonts/Supplemental/Tahoma.ttf";
+        BaseFont customfont = BaseFont.createFont(fontpath,BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
+        Font font2 = new Font(customfont,15,Font.BOLD);
+        String pdfFilename ="delivery/" +LocalDate.now().format(formatter)+".pdf";
+        OutputStream file = new FileOutputStream(new File(pdfFilename));
+        Document document = new Document();
+        PdfWriter.getInstance(document, file);
+        document.open();
+        font2 = new Font(customfont,32,Font.BOLD);
+        Paragraph paragraph1 = new Paragraph("รายการส่งวันที่ "+LocalDate.now().format(formatter),font2);
+        document.add(paragraph1) ;
+        ArrayList<DeliveryTime> mornDeli = new ArrayList<>();
+        ArrayList<DeliveryTime> afterDeli = new ArrayList<>();
+        ArrayList<DeliveryTime> evenDeli = new ArrayList<>();
+
+        for (DeliveryTime d:deliveryTimes) {
+            if(d.getTime().equals("ช่วงเช้า")){
+                mornDeli.add(d);
+            }
+            else if(d.getTime().equals("ช่วงบ่าย")){
+                afterDeli.add(d);
+            }
+            else if(d.getTime().equals("ช่วงเย็น")){
+                evenDeli.add(d);
+            }
+        }
+        Paragraph paragraph ;
+        font2 = new Font(customfont,20,Font.BOLD);
+        paragraph = new Paragraph("\nช่วงเช้า",font2);
+        document.add(paragraph);
+        for(int i = 0 ; i < mornDeli.size() ; i++){
+            font2 = new Font(customfont,15,Font.BOLD);
+            paragraph = new Paragraph("รายการ: "+mornDeli.get(i).getOrderName(),font2);
+            document.add(paragraph) ;
+            font2 = new Font(customfont,15,Font.NORMAL);
+            paragraph = new Paragraph("งาน: "+mornDeli.get(i).getJob(),font2);
+            document.add(paragraph) ;
+            font2 = new Font(customfont,12,Font.NORMAL);
+            paragraph = new Paragraph("ที่อยู่: "+mornDeli.get(i).getU_code(),font2);
+            document.add(paragraph) ;
+            font2 = new Font(customfont,12,Font.NORMAL);
+            paragraph = new Paragraph("",font2);
+            document.add(paragraph) ;
+        }
+
+
+        font2 = new Font(customfont,20,Font.BOLD);
+        paragraph = new Paragraph("\nช่วงบ่าย",font2);
+        document.add(paragraph);
+        for(int i = 0 ; i < afterDeli.size() ; i++){
+            font2 = new Font(customfont,15,Font.BOLD);
+            paragraph = new Paragraph("รายการ: "+afterDeli.get(i).getOrderName(),font2);
+            document.add(paragraph) ;
+            font2 = new Font(customfont,15,Font.NORMAL);
+            paragraph = new Paragraph("งาน: "+afterDeli.get(i).getJob(),font2);
+            document.add(paragraph) ;
+            font2 = new Font(customfont,12,Font.NORMAL);
+            paragraph = new Paragraph("ที่อยู่: "+afterDeli.get(i).getU_code(),font2);
+            document.add(paragraph) ;
+            font2 = new Font(customfont,12,Font.NORMAL);
+            paragraph = new Paragraph("",font2);
+            document.add(paragraph) ;
+        }
+
+        font2 = new Font(customfont,20,Font.BOLD);
+        paragraph = new Paragraph("\nช่วงเย็น",font2);
+        document.add(paragraph);
+        for(int i = 0 ; i < evenDeli.size() ; i++){
+            font2 = new Font(customfont,15,Font.BOLD);
+            paragraph = new Paragraph("รายการ: "+evenDeli.get(i).getOrderName(),font2);
+            document.add(paragraph) ;
+            font2 = new Font(customfont,15,Font.NORMAL);
+            paragraph = new Paragraph("งาน: "+evenDeli.get(i).getJob(),font2);
+            document.add(paragraph) ;
+            font2 = new Font(customfont,12,Font.NORMAL);
+            paragraph = new Paragraph("ที่อยู่: "+evenDeli.get(i).getU_code(),font2);
+            document.add(paragraph) ;
+            font2 = new Font(customfont,12,Font.NORMAL);
+            paragraph = new Paragraph("",font2);
+            document.add(paragraph) ;
+        }
+
+        document.close();
+        file.close();
+
+        Desktop.getDesktop().open(new File(pdfFilename));
+    }
+
 
     public static PdfPCell getIRHCell(String text, int alignment) throws DocumentException, IOException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         FontSelector fs = new FontSelector();
 //        Font font = FontFactory.getFont(FontFactory.HELVETICA, 16);
         String fontpath = "/System/Library/Fonts/Supplemental/Tahoma.ttf";
