@@ -96,7 +96,7 @@ public class EmployeeController extends Navigator{
         TableColumn<Employee, String> nameCol = new TableColumn<Employee, String>("ชื่อ");
         TableColumn<Employee, String> roleCol = new TableColumn<Employee, String>("หน้าที่");
         TableColumn<Employee, String> telCol = new TableColumn<Employee, String>("เบอร์โทร");
-        TableColumn<Employee, String> emailCol = new TableColumn<Employee, String>("อีเมลล์");
+        TableColumn<Employee, String> emailCol = new TableColumn<Employee, String>("อีเมล");
         TableColumn<Employee, String> addressCol = new TableColumn<Employee, String>("ที่อยู่");
         TableColumn<Employee, String> salaryCol = new TableColumn<Employee, String>("เงินเดือน");
 
@@ -173,7 +173,7 @@ public class EmployeeController extends Navigator{
                 pushAlertWarning("หมายเลขโทรศัพท์ไม่ถูกต้อง");
             }
             else if(!Validator.isEmail(emailField.getText())){
-                pushAlertWarning("อีเมลล์ไม่ถูกต้อง");
+                pushAlertWarning("อีเมลไม่ถูกต้อง");
             }
 
             // other Validation

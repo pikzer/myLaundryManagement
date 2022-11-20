@@ -167,6 +167,34 @@ public class AddClothListAppController extends Navigator{
                 }));
                 showOrder();
 
+                if(order.getService().equals("ซักอบ")){
+                    showCleanService();
+                    showCleanBtn.setDisable(true);
+                    showCleanIronBtn.setDisable(true);
+                    showDryCleanBtn.setDisable(true);
+                    showIronBtn.setDisable(true);
+                }
+                 else if(order.getService().equals("ซักรีด")){
+                    showCleanIronService();
+                    showCleanBtn.setDisable(true);
+                    showCleanIronBtn.setDisable(true);
+                    showDryCleanBtn.setDisable(true);
+                    showIronBtn.setDisable(true);
+                }
+                else if(order.getService().equals("ซักแห้ง")){
+                    dryCleanService();
+                    showCleanBtn.setDisable(true);
+                    showCleanIronBtn.setDisable(true);
+                    showDryCleanBtn.setDisable(true);
+                    showIronBtn.setDisable(true);
+                }
+                else if(order.getService().equals("รีด")){
+                    showIronService();
+                    showCleanBtn.setDisable(true);
+                    showCleanIronBtn.setDisable(true);
+                    showDryCleanBtn.setDisable(true);
+                    showIronBtn.setDisable(true);
+                }
             }
         });
 
@@ -584,17 +612,31 @@ public class AddClothListAppController extends Navigator{
 
     public void addClothList() throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+
         if(cartClothList.size() <= 0){
             pushAlertWarning("กรุณาเพิ่มรายการผ้า", Alert.AlertType.WARNING);
         }
         else if(deliDatePicker.getValue()!=null && !timeCombo.getSelectionModel().isEmpty()){
-            if(OrderApiDataSource.addClothListApp(order,cartClothList,deliDatePicker.getValue().format(formatter),timeCombo.getSelectionModel().getSelectedItem().toString())){
-                pushAlertWarning("เพิ่มรายการผ้าสำเร็จ", Alert.AlertType.INFORMATION);
-                onMakeOrderComplete();
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("บันทึกรายการผ้า");
+            alert.setHeaderText("คุณต้องการยืนยันที่จะเพิ่มรายการผ้าหรือไม่?");
+            ButtonType cancel = new ButtonType("ยกเลิก");
+            alert.getButtonTypes().add(cancel);
+            Optional<ButtonType> option = alert.showAndWait();
+            if(option.get() == ButtonType.OK){
+                if(OrderApiDataSource.addClothListApp(order,cartClothList,deliDatePicker.getValue().format(formatter),timeCombo.getSelectionModel().getSelectedItem().toString())){
+                    pushAlertWarning("เพิ่มรายการผ้าสำเร็จ", Alert.AlertType.INFORMATION);
+                    onMakeOrderComplete();
+                }
+                else {
+                    pushAlertWarning("เพิ่มรายการผ้าไม่สำเร็จ", Alert.AlertType.ERROR);
+                }
             }
-            else {
-                pushAlertWarning("เพิ่มรายการผ้าไม่สำเร็จ", Alert.AlertType.ERROR);
+            else{
+
             }
+
         }
     }
 

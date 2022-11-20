@@ -84,7 +84,7 @@ public class ManageShopController extends Navigator  {
         TableColumn<Employee, String> nameCol = new TableColumn<Employee, String>("ชื่อ");
         TableColumn<Employee, String> roleCol = new TableColumn<Employee, String>("หน้าที่");
         TableColumn<Employee, String> telCol = new TableColumn<Employee, String>("เบอร์โทร");
-        TableColumn<Employee, String> emailCol = new TableColumn<Employee, String>("อีเมลล์");
+        TableColumn<Employee, String> emailCol = new TableColumn<Employee, String>("อีเมล");
         idCol.setCellValueFactory(new PropertyValueFactory<Employee,Integer>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<Employee,String>("name"));
         roleCol.setCellValueFactory(new PropertyValueFactory<Employee,String>("role"));

@@ -735,36 +735,24 @@ public class NewOrderController extends Navigator {
             pushAlertWarning("กรุณาเพิ่มรายการผ้า", Alert.AlertType.WARNING);
         }
         else {
-            String mainService = getMostService() ;
-            // Order With Member Ship
-            if(selectPayMethod.equals("สมาชิก")){
-                if(showCartQuantity() > selectCustomer.getMemCredit()){
-                    pushAlertWarning("ไม่สามารถทำรายการได้ เพราะจำนวนผ้ามีมากกว่าต้ามสมาชิก", Alert.AlertType.ERROR);
-                }
-                else{
-                    if(!deliCheck.isSelected()){
-                        if(OrderApiDataSource.payMember(selectCustomer.getId(),showCartQuantity())){
-                            orderId = OrderApiDataSource.addOrderWithNoDeli(selectCustomer.getPhone(),new Order(mainService,selectPayMethod,
-                                    "order in",1,1), cartClothList);
-                        }
-                        if(orderId != 0){
-                            pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
-                            onMakeOrderComplete();
-                            updateBalance();
-                            makeOrder = true ;
-                        }
-                        else{
-                            pushAlertWarning("ทำรายการไม่สำเร็จ", Alert.AlertType.ERROR);
-                        }
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("บันทึกรายการ");
+            alert.setHeaderText("คุณต้องการยืนยันที่จะบันทึกรายการหรือไม่?");
+            ButtonType cancel = new ButtonType("ยกเลิก");
+            alert.getButtonTypes().add(cancel);
+            Optional<ButtonType> option = alert.showAndWait();
+            if(option.get() == ButtonType.OK){
+                String mainService = getMostService() ;
+                // Order With Member Ship
+                if(selectPayMethod.equals("สมาชิก")){
+                    if(showCartQuantity() > selectCustomer.getMemCredit()){
+                        pushAlertWarning("ไม่สามารถทำรายการได้ เพราะจำนวนผ้ามีมากกว่าต้ามสมาชิก", Alert.AlertType.ERROR);
                     }
                     else{
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                        if(adsArea.getText() != null && deliDatePicker.getValue() != null && timeCombo.getSelectionModel() != null){
+                        if(!deliCheck.isSelected()){
                             if(OrderApiDataSource.payMember(selectCustomer.getId(),showCartQuantity())){
-                                orderId = OrderApiDataSource.addOrderWithDeli(selectCustomer.getPhone(),new Order(mainService,
-                                        deliDatePicker.getValue().format(formatter),timeCombo.getSelectionModel().getSelectedItem().toString(),
-                                        adsArea.getText(),1,payCombo.getSelectionModel().getSelectedItem().toString(),
-                                        1),cartClothList);
+                                orderId = OrderApiDataSource.addOrderWithNoDeli(selectCustomer.getPhone(),new Order(mainService,selectPayMethod,
+                                        "order in",1,1), cartClothList);
                             }
                             if(orderId != 0){
                                 pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
@@ -777,33 +765,36 @@ public class NewOrderController extends Navigator {
                             }
                         }
                         else{
-                            pushAlertWarning("กรุณากรอกข้อมูลให้ครบถ้วน", Alert.AlertType.WARNING);
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                            if(adsArea.getText() != null && deliDatePicker.getValue() != null && timeCombo.getSelectionModel() != null){
+                                if(OrderApiDataSource.payMember(selectCustomer.getId(),showCartQuantity())){
+                                    orderId = OrderApiDataSource.addOrderWithDeli(selectCustomer.getPhone(),new Order(mainService,
+                                            deliDatePicker.getValue().format(formatter),timeCombo.getSelectionModel().getSelectedItem().toString(),
+                                            adsArea.getText(),1,payCombo.getSelectionModel().getSelectedItem().toString(),
+                                            1),cartClothList);
+                                }
+                                if(orderId != 0){
+                                    pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
+                                    onMakeOrderComplete();
+                                    updateBalance();
+                                    makeOrder = true ;
+                                }
+                                else{
+                                    pushAlertWarning("ทำรายการไม่สำเร็จ", Alert.AlertType.ERROR);
+                                }
+                            }
+                            else{
+                                pushAlertWarning("กรุณากรอกข้อมูลให้ครบถ้วน", Alert.AlertType.WARNING);
+                            }
                         }
                     }
                 }
-            }
-            // Order no MemberShip
-            else{
-                // if deli
-                if(!deliCheck.isSelected()){
-                    orderId = OrderApiDataSource.addOrderWithNoDeli(selectCustomer.getPhone(),new Order(mainService,selectPayMethod,
-                            "order in",0,0), cartClothList);
-                    if(orderId != 0){
-                        pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
-                        onMakeOrderComplete();
-                        makeOrder = true ;
-                    }
-                    else{
-                        pushAlertWarning("ทำรายการไม่สำเร็จ", Alert.AlertType.ERROR);
-                    }
-                }
+                // Order no MemberShip
                 else{
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    if(!adsArea.getText().equals("") && deliDatePicker.getValue() != null && timeCombo.getSelectionModel().getSelectedItem() != null){
-                        orderId = OrderApiDataSource.addOrderWithDeli(selectCustomer.getPhone(),new Order(mainService,
-                                deliDatePicker.getValue().format(formatter),timeCombo.getSelectionModel().getSelectedItem().toString(),
-                                adsArea.getText(),0,payCombo.getSelectionModel().getSelectedItem().toString(),
-                                0),cartClothList);
+                    // if deli
+                    if(!deliCheck.isSelected()){
+                        orderId = OrderApiDataSource.addOrderWithNoDeli(selectCustomer.getPhone(),new Order(mainService,selectPayMethod,
+                                "order in",0,0), cartClothList);
                         if(orderId != 0){
                             pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
                             onMakeOrderComplete();
@@ -814,12 +805,28 @@ public class NewOrderController extends Navigator {
                         }
                     }
                     else{
-                        pushAlertWarning("กรุณากรอกข้อมูลให้ครบถ้วน", Alert.AlertType.WARNING);
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        if(!adsArea.getText().equals("") && deliDatePicker.getValue() != null && timeCombo.getSelectionModel().getSelectedItem() != null){
+                            orderId = OrderApiDataSource.addOrderWithDeli(selectCustomer.getPhone(),new Order(mainService,
+                                    deliDatePicker.getValue().format(formatter),timeCombo.getSelectionModel().getSelectedItem().toString(),
+                                    adsArea.getText(),0,payCombo.getSelectionModel().getSelectedItem().toString(),
+                                    0),cartClothList);
+                            if(orderId != 0){
+                                pushAlertWarning("ทำรายการสำเร็จ", Alert.AlertType.INFORMATION);
+                                onMakeOrderComplete();
+                                makeOrder = true ;
+                            }
+                            else{
+                                pushAlertWarning("ทำรายการไม่สำเร็จ", Alert.AlertType.ERROR);
+                            }
+                        }
+                        else{
+                            pushAlertWarning("กรุณากรอกข้อมูลให้ครบถ้วน", Alert.AlertType.WARNING);
+                        }
                     }
                 }
             }
         }
-
     }
 
     public void updateBalance(){

@@ -43,7 +43,7 @@
          </font>
       </TextField>
       <Text layoutX="254.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เบอร์โทรร้าน" />
-      <Text layoutX="253.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์" />
+      <Text layoutX="253.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมล" />
       <TextField fx:id="shopMailField" layoutX="298.0" layoutY="200.0" prefHeight="37.0" prefWidth="200.0">
          <font>
             <Font size="19.0" />

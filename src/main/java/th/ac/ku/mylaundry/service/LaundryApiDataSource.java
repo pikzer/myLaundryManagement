@@ -96,7 +96,7 @@ public class LaundryApiDataSource extends ApiCall {
         if(!email_pwd.isEmpty()){
             urlParameters += "&email_pwd=" +email_pwd;
         }
-        System.out.println(urlParameters);
+//        System.out.println(urlParameters);
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         try {
             URL url = new URL(baseURL+"laundry"+"/"+1);
@@ -113,7 +113,7 @@ public class LaundryApiDataSource extends ApiCall {
             }
             String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
             JSONObject jsonObject = new JSONObject(j);
-            System.out.println(jsonObject);
+//            System.out.println(jsonObject);
             return true ;
         } catch (IOException e) {
             throw new RuntimeException(e);

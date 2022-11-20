@@ -153,12 +153,12 @@ public class HomeController extends Navigator {
 
 
     public void onClickTable(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/orderListView.fxml"));
-//        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/newOrder.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+//        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/orderListView.fxml"));
+////        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/newOrder.fxml"));
+//        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+//        scene = new Scene(root);
+//        stage.setScene(scene);
+//        stage.show();
     }
 
 

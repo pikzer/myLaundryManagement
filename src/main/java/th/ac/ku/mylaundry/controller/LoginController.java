@@ -49,7 +49,7 @@ public class LoginController {
         if (emailTextField.getText().isEmpty() || pwdField.getText().isEmpty()){
             Alert a = new Alert(Alert.AlertType.NONE);
             a.setAlertType(Alert.AlertType.WARNING);
-            a.setContentText("กรุณากรอกอีเมลล์หรือรหัสผ่าน");
+            a.setContentText("กรุณากรอกอีเมลหรือรหัสผ่าน");
             a.show();
         }
         else{
@@ -71,7 +71,7 @@ public class LoginController {
             else if(login == 0){
                 Alert a = new Alert(Alert.AlertType.NONE);
                 a.setAlertType(Alert.AlertType.WARNING);
-                a.setContentText("อีเมลล์หรือรหัสไม่ถูกต้อง");
+                a.setContentText("อีเมลหรือรหัสไม่ถูกต้อง");
                 a.show();
             }
         }

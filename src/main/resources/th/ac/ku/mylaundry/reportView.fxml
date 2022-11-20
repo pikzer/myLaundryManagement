@@ -17,7 +17,7 @@
 
 <AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.ReportController">
    <children>
-      <Text layoutX="257.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายงาน">
+      <Text layoutX="257.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เอ็กพอร์ต รายงาน">
          <font>
             <Font size="46.0" />
          </font>
@@ -131,7 +131,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickReport" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="รายงาน">
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickReport" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="เอ็กพอร์ต รายการ">
                      <font>
                         <Font name="System Bold" size="21.0" />
                      </font>

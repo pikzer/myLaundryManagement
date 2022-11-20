@@ -14,7 +14,7 @@
       <AnchorPane layoutX="413.0" layoutY="191.0" prefHeight="458.0" prefWidth="640.0" style="-fx-background-color: B8E8FC;">
          <children>
             <TextField fx:id="emailTextField" layoutX="213.0" layoutY="211.0" prefHeight="39.0" prefWidth="225.0" />
-            <Text layoutX="166.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์" />
+            <Text layoutX="166.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมล" />
             <Text layoutX="163.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รหัสผ่าน" />
             <Button fx:id="loginBtn" layoutX="264.0" layoutY="378.0" mnemonicParsing="false" onAction="#onLoginBtn" text="เข้าสู่ระบบ">
                <font>

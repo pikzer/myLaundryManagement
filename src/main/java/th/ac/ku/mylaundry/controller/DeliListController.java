@@ -157,7 +157,9 @@ public class DeliListController extends Navigator {
         deliverCol.setCellValueFactory(new PropertyValueFactory<DeliveryTime,String >("deliver"));
         jobCol.setCellValueFactory(new PropertyValueFactory<DeliveryTime,String>("job"));
 
-        deliTable.getColumns().addAll(idCol,dateCol,timeCol,adsCol,deliverCol,orderCol,jobCol) ;
+//        deliTable.getColumns().addAll(idCol,dateCol,timeCol,adsCol,deliverCol,orderCol,jobCol) ;
+        deliTable.getColumns().addAll(idCol,orderCol,dateCol,timeCol,deliverCol,jobCol,adsCol) ;
+
         deliTable.setItems(sortedList);
     }
 

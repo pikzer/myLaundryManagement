@@ -22,7 +22,7 @@
                   <Font size="32.0" />
                </font>
             </Text>
-            <Text layoutX="124.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์" />
+            <Text layoutX="124.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมล" />
             <Text layoutX="140.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ที่อยู่" />
             <TextField fx:id="nameField" layoutX="171.0" layoutY="54.0">
                <font>
@@ -60,7 +60,7 @@
             <Text layoutX="80.0" layoutY="378.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เลขบัญชีธนาคาร" />
             <Text layoutX="124.0" layoutY="425.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ธนาคาร" wrappingWidth="43.671875" />
             <CheckBox fx:id="telCheck" layoutX="413.0" layoutY="110.0" mnemonicParsing="false" text="ใช้เบอร์โทรร้าน" />
-            <CheckBox fx:id="mailCheck" layoutX="413.0" layoutY="159.0" mnemonicParsing="false" text="ใช้อีเมลล์ร้าน" />
+            <CheckBox fx:id="mailCheck" layoutX="413.0" layoutY="159.0" mnemonicParsing="false" text="ใช้อีเมลร้าน" />
             <CheckBox fx:id="adsCheck" layoutX="419.0" layoutY="252.0" mnemonicParsing="false" text="ใช้ที่อยู่ร้าน" />
             <ComboBox fx:id="bankCombo" layoutX="173.0" layoutY="402.0" prefHeight="36.0" prefWidth="189.0" />
          </children>
@@ -76,9 +76,9 @@
             </TextField>
             <TextArea fx:id="adsTextArea" layoutX="142.0" layoutY="235.0" prefHeight="79.0" prefWidth="240.0" />
             <Text layoutX="95.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ที่อยู่ร้าน" />
-            <Text layoutX="37.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์" />
+            <Text layoutX="37.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมล" />
             <Text layoutX="287.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รหัสผ่าน" />
-            <PasswordField fx:id="mailPwdField" layoutX="346.0" layoutY="183.0" prefHeight="37.0" prefWidth="189.0" promptText="รหัสผ่านเข้าใช้อีเมลล์" />
+            <PasswordField fx:id="mailPwdField" layoutX="346.0" layoutY="183.0" prefHeight="37.0" prefWidth="189.0" promptText="รหัสผ่านเข้าใช้อีเมล" />
          </children>
       </Pane>
       <Pane layoutX="-1.0" layoutY="1.0" prefHeight="79.0" prefWidth="1366.0" style="-fx-background-color: lightskyblue lightskyblue;" />

@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -20,42 +19,37 @@
 
 <AnchorPane onMouseClicked="#onClickAnchor" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: BBE8FC BBE8FC BBE8FC BBE8FC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="th.ac.ku.mylaundry.controller.CustomerListController">
    <children>
-      <TableView fx:id="cusTable" layoutX="241.0" layoutY="118.0" prefHeight="618.0" prefWidth="563.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
-      </TableView>
-      <Text layoutX="239.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายการลูกค้า">
+      <TableView fx:id="cusTable" layoutX="241.0" layoutY="118.0" prefHeight="618.0" prefWidth="563.0" />
+      <Text layoutX="241.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="รายการลูกค้า">
          <font>
             <Font size="37.0" />
          </font>
       </Text>
-      <Text layoutX="946.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ชื่อ">
+      <Text layoutX="959.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ชื่อ">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="nameField" layoutX="983.0" layoutY="137.0" prefHeight="30.0" prefWidth="241.0" />
-      <Text layoutX="916.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เบอร์โทร">
+      <TextField fx:id="nameField" layoutX="983.0" layoutY="129.0" prefHeight="30.0" prefWidth="241.0" />
+      <Text layoutX="920.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เบอร์โทร">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="telField" layoutX="983.0" layoutY="174.0" prefHeight="30.0" prefWidth="241.0" />
-      <Text layoutX="951.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ที่อยู่">
+      <TextField fx:id="telField" layoutX="983.0" layoutY="172.0" prefHeight="30.0" prefWidth="241.0" />
+      <Text layoutX="951.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ที่อยู่">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <TextArea fx:id="adsTextArea" layoutX="983.0" layoutY="256.0" prefHeight="90.0" prefWidth="284.0" />
-      <Text layoutX="933.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์">
+      <TextArea fx:id="adsTextArea" layoutX="982.0" layoutY="256.0" prefHeight="90.0" prefWidth="288.0" />
+      <Text layoutX="941.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมล">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="emailField" layoutX="983.0" layoutY="218.0" prefHeight="30.0" prefWidth="241.0" />
-      <Button fx:id="addEditBtn" layoutX="1041.0" layoutY="354.0" mnemonicParsing="false" onAction="#onClickAddEditCus" prefHeight="25.0" prefWidth="130.0" text="บันทึกข้อมูล">
+      <TextField fx:id="emailField" layoutX="982.0" layoutY="214.0" prefHeight="30.0" prefWidth="241.0" />
+      <Button fx:id="addEditBtn" layoutX="1034.0" layoutY="365.0" mnemonicParsing="false" onAction="#onClickAddEditCus" prefHeight="44.0" prefWidth="137.0" text="บันทึกข้อมูล">
          <font>
             <Font size="16.0" />
          </font>
@@ -69,13 +63,13 @@
       <CheckBox fx:id="memCheck" layoutX="329.0" layoutY="86.0" mnemonicParsing="false" text="สมาชิก" />
       <ComboBox fx:id="serviceTypeCombo" layoutX="457.0" layoutY="80.0" prefHeight="30.0" prefWidth="150.0" />
       <Text layoutX="406.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ประเภท" />
-      <Text layoutX="833.0" layoutY="446.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เพิ่มและแก้ไขสมาชิก">
+      <Text layoutX="834.0" layoutY="486.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เพิ่มและแก้ไขสมาชิก">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <ComboBox fx:id="serviceAddCombo" layoutX="1053.0" layoutY="477.0" prefHeight="30.0" prefWidth="186.0" />
-      <Text layoutX="941.0" layoutY="497.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ประเภทบริการ">
+      <ComboBox fx:id="serviceAddCombo" layoutX="1053.0" layoutY="510.0" prefHeight="30.0" prefWidth="186.0" />
+      <Text layoutX="949.0" layoutY="530.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ประเภทบริการ">
          <font>
             <Font size="16.0" />
          </font>
@@ -85,26 +79,26 @@
             <Font size="21.0" />
          </font>
       </Text>
-      <Separator layoutX="836.0" layoutY="405.0" prefHeight="3.0" prefWidth="472.0" style="-fx-background-color: black;" />
-      <Text layoutX="967.0" layoutY="563.0" strokeType="OUTSIDE" strokeWidth="0.0" text="จำนวนชิ้น">
+      <Separator layoutX="864.0" layoutY="438.0" prefHeight="3.0" prefWidth="472.0" style="-fx-background-color: black;" />
+      <Text layoutX="979.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" text="จำนวนชิ้น">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <ComboBox fx:id="piecesCombo" layoutX="1053.0" layoutY="542.0" prefHeight="30.0" prefWidth="150.0" />
-      <Text layoutX="965.0" layoutY="619.0" strokeType="OUTSIDE" strokeWidth="0.0" text="จำนวนเงิน">
+      <ComboBox fx:id="piecesCombo" layoutX="1054.0" layoutY="564.0" prefHeight="30.0" prefWidth="150.0" />
+      <Text layoutX="977.0" layoutY="640.0" strokeType="OUTSIDE" strokeWidth="0.0" text="จำนวนเงิน">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <Label fx:id="totalLabel" layoutX="1057.0" layoutY="601.0" text="\%Total%">
+      <Label fx:id="totalLabel" layoutX="1055.0" layoutY="622.0" text="\%Total%">
          <font>
             <Font size="19.0" />
          </font>
       </Label>
-      <Button fx:id="addMemBtn" layoutX="1028.0" layoutY="656.0" mnemonicParsing="false" onAction="#onClickAddMem" prefHeight="44.0" prefWidth="130.0" text="เพิ่ม">
+      <Button fx:id="addMemBtn" layoutX="1058.0" layoutY="679.0" mnemonicParsing="false" onAction="#onClickAddMem" prefHeight="44.0" prefWidth="130.0" text="เพิ่ม">
          <font>
-            <Font size="16.0" />
+            <Font size="20.0" />
          </font>
       </Button>
       <AnchorPane prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
@@ -201,7 +195,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickReport" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="รายงาน">
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickReport" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="เอ็กพอร์ต รายการ">
                      <font>
                         <Font name="System Bold" size="21.0" />
                      </font>
@@ -255,5 +249,6 @@
             </Label>
          </children>
       </AnchorPane>
+      <VBox layoutX="816.0" layoutY="165.0" prefHeight="200.0" prefWidth="100.0" />
    </children>
 </AnchorPane>

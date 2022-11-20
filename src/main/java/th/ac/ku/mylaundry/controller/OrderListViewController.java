@@ -56,7 +56,7 @@ public class OrderListViewController extends Navigator {
     @FXML
     Label nameLabel, phoneLabel, serviceLabel, statusLabel, payMethodLabel, payStatusLabel;
     @FXML
-    Button acceptBtn, cancelBtn, showQrBtn, invBtn, receiptBtn, tagBtn, makePayBtn,makePaperBtn,addDeliverBtn, addClothListBtn ;
+    Button acceptBtn, cancelBtn, showQrBtn, invBtn, receiptBtn, tagBtn, makePayBtn,makePaperBtn,addDeliverBtn, addClothListBtn,changeStatusBtn ;
 
 
     String statusList[] = {"ทั้งหมด","เพิ่มรายการ", "กำลังดำเนินการ", "ส่งผ้า" , "เพิ่มการนัดหมาย", "ยืนยันการนัดหมาย", "รับผ้า",
@@ -92,7 +92,7 @@ public class OrderListViewController extends Navigator {
         invBtn.setDisable(true);
         showQrBtn.setDisable(true);
         receiptBtn.setDisable(true);
-        tagBtn.setDisable(true);
+//        tagBtn.setDisable(true);
         makePayBtn.setDisable(true);
         addDeliverBtn.setDisable(true);
         makePaperBtn.setDisable(true);
@@ -435,8 +435,10 @@ public class OrderListViewController extends Navigator {
         serviceLabel.setText(order.getService());
         statusLabel.setText(order.getStatus());
         payMethodLabel.setText(order.getPayMethod());
-        tagBtn.setDisable(false);
+//        tagBtn.setDisable(false);
         makePaperBtn.setDisable(false);
+        statusOrderCombo.setDisable(false);
+        changeStatusBtn.setDisable(false);
 
         statusOrderCombo.getSelectionModel().select(order.getStatus());
 
@@ -470,23 +472,26 @@ public class OrderListViewController extends Navigator {
         }
         //order
         if(order.getResponder().equals("ยังไม่ลงทะเบียน") && order.getStatus().equals("เพิ่มการนัดหมาย")){
-//            updateBtn.setDisable(true);
+            statusOrderCombo.setDisable(true);
+            changeStatusBtn.setDisable(true);
             addDeliverBtn.setDisable(true);
             acceptBtn.setDisable(false);
             cancelBtn.setDisable(false);
             makePayBtn.setDisable(true);
             makePaperBtn.setDisable(true);
-            tagBtn.setDisable(true);
+//            tagBtn.setDisable(true);
             invBtn.setDisable(true);
         }
-        else if(order.getStatus().equals("ยืนยันนัดหมาย")){
+        else if(order.getStatus().equals("ยืนยันการนัดหมาย")){
 //            updateBtn.setDisable(false);
+//            statusOrderCombo.setDisable(true);
+//            changeStatusBtn.setDisable(true);
             addDeliverBtn.setDisable(true);
             acceptBtn.setDisable(true);
             cancelBtn.setDisable(true);
             makePayBtn.setDisable(true);
             makePaperBtn.setDisable(true);
-            tagBtn.setDisable(true);
+//            tagBtn.setDisable(true);
             invBtn.setDisable(true);
         }
         else if(order.getStatus().equals("รับผ้า")){
@@ -497,21 +502,26 @@ public class OrderListViewController extends Navigator {
             addClothListBtn.setDisable(false);
             makePayBtn.setDisable(true);
             makePaperBtn.setDisable(true);
-            tagBtn.setDisable(true);
+//            tagBtn.setDisable(true);
             invBtn.setDisable(true);
         }
-        else if(order.getStatus().equals("เสร็จสิ้น")){
+        else if(order.getStatus().equals("เสร็จสิ้น") ||order.getStatus().equals("ยกเลิก") ){
 //            updateBtn.setDisable(true);
             addDeliverBtn.setDisable(true);
+            statusOrderCombo.setDisable(true);
+            changeStatusBtn.setDisable(true);
             acceptBtn.setDisable(true);
             cancelBtn.setDisable(true);
             addClothListBtn.setDisable(true);
             makePayBtn.setDisable(true);
             makePaperBtn.setDisable(true);
-            tagBtn.setDisable(true);
+//            tagBtn.setDisable(true);
             invBtn.setDisable(true);
             receiptBtn.setDisable(false);
             makePayBtn.setDisable(true);
+            if(order.getStatus().equals("ยกเลิก")){
+                receiptBtn.setDisable(true);
+            }
         }
         else{
 //            updateBtn.setDisable(false);
@@ -525,7 +535,7 @@ public class OrderListViewController extends Navigator {
             cancelBtn.setDisable(true);
             addClothListBtn.setDisable(false);
             makePaperBtn.setDisable(false);
-            tagBtn.setDisable(false);
+//            tagBtn.setDisable(false);
         }
 
 
@@ -584,11 +594,9 @@ public class OrderListViewController extends Navigator {
 
     public void onClickCancel(ActionEvent event) throws IOException {
         if(selectedOrder != null){
-
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("ยกเลิกรายการ");
             alert.setHeaderText("คุณแน่ใจที่จะยกเลิกรายการ?");
-
             ButtonType cancel = new ButtonType("ยกเลิก");
             alert.getButtonTypes().add(cancel);
             Optional<ButtonType> option = alert.showAndWait();
@@ -596,7 +604,7 @@ public class OrderListViewController extends Navigator {
 
             }
             else if (option.get() == ButtonType.OK) {
-                if(selectedOrder.getStatus().equals("order add")){
+                if(selectedOrder.getStatus().equals("เพิ่มการนัดหมาย")){
                     if(OrderApiDataSource.cancelOrder(selectedOrder.getId())){
                         pushAlert("ยกเลิกรายการสำเร็จ", Alert.AlertType.INFORMATION);
                         root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/OrderListView.fxml"));
@@ -662,24 +670,53 @@ public class OrderListViewController extends Navigator {
 
     public void onClickChangeStatus(ActionEvent event) throws IOException {
         if(selectedOrder != null && statusOrderCombo.getSelectionModel() != null){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("เปลี่ยนสถานะรายการ");
-            alert.setHeaderText("คุณยืนยันที่จะเปลี่ยนสถานะจาก "+selectedOrder.getStatus() + " เป็น " + statusOrderCombo.getSelectionModel().getSelectedItem().toString() + " หรือไม่?");
-            ButtonType cancel = new ButtonType("ยกเลิก");
-            alert.getButtonTypes().add(cancel);
-            Optional<ButtonType> option = alert.showAndWait();
-            if(option.get() == ButtonType.OK){
-                if(OrderApiDataSource.updateOrderStatus(selectedOrder.getId(),
-                        statusOrderCombo.getSelectionModel().getSelectedItem().toString())){
-                    pushAlertWarning("แก้ไขสถานะสำเร็จ", Alert.AlertType.INFORMATION);
-                    root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/OrderListView.fxml"));
-                    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
+            if(statusOrderCombo.getSelectionModel().getSelectedItem().equals("เสร็จสิ้น")){
+                if(selectedOrder.getPayStatus() == 0){
+                    pushAlertWarning("ไม่สามารถเสร็จสิ้นรายการได้เนื่องจากรายการยังไม่ชำระเงิน", Alert.AlertType.WARNING);
                 }
                 else{
-                    pushAlertWarning("แก้ไขสถานะไม่สำเร็จ", Alert.AlertType.ERROR);
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("เปลี่ยนสถานะรายการ");
+                    alert.setHeaderText("คุณยืนยันที่จะเปลี่ยนสถานะจาก "+ selectedOrder.getStatus() + " เป็น " + statusOrderCombo.getSelectionModel().getSelectedItem().toString() + " หรือไม่?");
+                    ButtonType cancel = new ButtonType("ยกเลิก");
+                    alert.getButtonTypes().add(cancel);
+                    Optional<ButtonType> option = alert.showAndWait();
+                    if(option.get() == ButtonType.OK){
+                        if(OrderApiDataSource.updateOrderStatus(selectedOrder.getId(),
+                                statusOrderCombo.getSelectionModel().getSelectedItem().toString())){
+                            pushAlertWarning("แก้ไขสถานะเป็น " + statusOrderCombo.getSelectionModel().getSelectedItem().toString()+" สำเร็จ", Alert.AlertType.INFORMATION);
+                            root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/OrderListView.fxml"));
+                            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                            scene = new Scene(root);
+                            stage.setScene(scene);
+                            stage.show();
+                        }
+                        else{
+                            pushAlertWarning("แก้ไขสถานะไม่สำเร็จ", Alert.AlertType.ERROR);
+                        }
+                    }
+                }
+            }
+            else{
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("เปลี่ยนสถานะรายการ");
+                alert.setHeaderText("คุณยืนยันที่จะเปลี่ยนสถานะจาก "+ selectedOrder.getStatus() + " เป็น " + statusOrderCombo.getSelectionModel().getSelectedItem().toString() + " หรือไม่?");
+                ButtonType cancel = new ButtonType("ยกเลิก");
+                alert.getButtonTypes().add(cancel);
+                Optional<ButtonType> option = alert.showAndWait();
+                if(option.get() == ButtonType.OK){
+                    if(OrderApiDataSource.updateOrderStatus(selectedOrder.getId(),
+                            statusOrderCombo.getSelectionModel().getSelectedItem().toString())){
+                        pushAlertWarning("แก้ไขสถานะเป็น " + statusOrderCombo.getSelectionModel().getSelectedItem().toString()+" สำเร็จ", Alert.AlertType.INFORMATION);
+                        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/OrderListView.fxml"));
+                        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    }
+                    else{
+                        pushAlertWarning("แก้ไขสถานะไม่สำเร็จ", Alert.AlertType.ERROR);
+                    }
                 }
             }
         }
@@ -688,8 +725,7 @@ public class OrderListViewController extends Navigator {
     public void addClothList(ActionEvent event) throws IOException {
         if(selectedOrder == null){
         }
-
-        else if(selectedOrder != null && selectedOrder.getStatus().equals("รับผ้า")){
+        else if(selectedOrder.getStatus().equals("รับผ้า")){
             Button b = (Button) event.getSource();
             Stage stage = (Stage) b.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/th/ac/ku/mylaundry/AddClothListAppView.fxml"));
@@ -699,15 +735,25 @@ public class OrderListViewController extends Navigator {
             stage.show();
         }
 
-        else {
-            Button b = (Button) event.getSource();
-            Stage stage = (Stage) b.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/th/ac/ku/mylaundry/editOrderView.fxml"));
-            stage.setScene(new Scene(loader.load(), 1366, 768));
-            EditOrderController editOrderController = loader.getController();
-            editOrderController.setOrder(selectedOrder);
-            stage.show();
-        }
+//        else if(selectedOrder != null && selectedOrder.getStatus().equals("รับผ้า")){
+//            Button b = (Button) event.getSource();
+//            Stage stage = (Stage) b.getScene().getWindow();
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/th/ac/ku/mylaundry/AddClothListAppView.fxml"));
+//            stage.setScene(new Scene(loader.load(), 1366, 768));
+//            AddClothListAppController addClothListAppController = loader.getController();
+//            addClothListAppController.setOrder(selectedOrder);
+//            stage.show();
+//        }
+
+//        else {
+//            Button b = (Button) event.getSource();
+//            Stage stage = (Stage) b.getScene().getWindow();
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/th/ac/ku/mylaundry/editOrderView.fxml"));
+//            stage.setScene(new Scene(loader.load(), 1366, 768));
+//            EditOrderController editOrderController = loader.getController();
+//            editOrderController.setOrder(selectedOrder);
+//            stage.show();
+//        }
 
     }
 
@@ -750,6 +796,14 @@ public class OrderListViewController extends Navigator {
         a.setAlertType(alertType);
         a.setContentText(message);
         a.show();
+    }
+
+    public void onClickRefresh(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/OrderListView.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
 }

@@ -178,7 +178,7 @@ public class CustomerListController extends Navigator {
         TableColumn idCol = new TableColumn("ไอดี");
         TableColumn<Customer, String> nameCol = new TableColumn<Customer, String>("ชื่อ");
         TableColumn<Customer, String> phoneCol = new TableColumn<Customer, String>("เบอร์โทร");
-        TableColumn<Customer, String> emailCol = new TableColumn<Customer, String>("อีเมลล์");
+        TableColumn<Customer, String> emailCol = new TableColumn<Customer, String>("อีเมล");
         TableColumn<Customer, Integer> isMemberCol = new TableColumn<Customer, Integer>("สถานะสมาชิก");
         TableColumn<Customer, String> memServiceCol = new TableColumn<Customer, String>("ประเภท");
         TableColumn<Customer, Integer> memCreditCol = new TableColumn<Customer, Integer>("คงเหลือ");
@@ -342,7 +342,7 @@ public class CustomerListController extends Navigator {
                 cusTable.refresh();
                 pushAlert("เพิ่มสมาชิกสำเร็จ", Alert.AlertType.INFORMATION);
                 onClickAnchor();
-                getReceipt(selectedCus,new MemberPackage(0,serviceAddCombo.getSelectionModel().getSelectedItem().toString(),piecesCombo.getSelectionModel().getSelectedItem(),Double.parseDouble(totalLabel.getText())));
+                getReceipt(selectedCus,new MemberPackage(0,serviceAddCombo.getSelectionModel().getSelectedItem(),piecesCombo.getSelectionModel().getSelectedItem(),Double.parseDouble(totalLabel.getText())));
             }
             else if(selectedCus.getMemCredit() != 0){
                 if(selectedCus.getMemService().equals(serviceAddCombo.getSelectionModel().getSelectedItem())){
@@ -355,25 +355,37 @@ public class CustomerListController extends Navigator {
                 }
                 else{
                     Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("แทนที่สมาชิกแบบเหมาเก่า");
-                    alert.setHeaderText("คุณแน่ใจที่จะทำการแทนที่สมาชิกแบบเหมาเก่า?");
-                    Optional<ButtonType> option = alert.showAndWait();
+                    alert.setTitle("สมาชิกทับซ้อน");
+                    alert.setHeaderText("คุณต้องการที่จะแทนที่สมาชิกแบบเหมาเดิม " + selectedCus.getMemService() + " เป็น " + serviceAddCombo.getSelectionModel().getSelectedItem() + " หรือไม่?");
                     ButtonType cancel = new ButtonType("ยกเลิก");
                     alert.getButtonTypes().add(cancel);
-                    if(option.get() == null){
-
-                    }
-                    else if (option.get() == ButtonType.OK) {
+                    Optional<ButtonType> option = alert.showAndWait();
+                    if(option.get() == ButtonType.OK){
                         selectedCus.setMemCredit(piecesCombo.getSelectionModel().getSelectedItem());
                         selectedCus.setMemService(serviceAddCombo.getSelectionModel().getSelectedItem());
                         CustomerApiDataSource.addMembership(selectedCus.getId(),selectedCus.getMemService(),selectedCus.getMemCredit());
                         pushAlert("เพิ่มสมาชิกสำเร็จ", Alert.AlertType.INFORMATION);
                         getReceipt(selectedCus,new MemberPackage(0,serviceAddCombo.getSelectionModel().getSelectedItem().toString(),piecesCombo.getSelectionModel().getSelectedItem(),Double.parseDouble(totalLabel.getText())));
                         cusTable.refresh();
-//                        onClickAnchor();
-                    } else if (option.get() == ButtonType.CANCEL) {
-                    } else {
+////                        onClickAnchor();
                     }
+                    else{
+
+                    }
+//                    Alert alert = new Alert(Alert.AlertType.WARNING);
+//                    alert.setTitle("แทนที่สมาชิกแบบเหมาเก่า");
+//                    alert.setHeaderText("คุณแน่ใจที่จะทำการแทนที่สมาชิกแบบเหมาเก่า?");
+//                    Optional<ButtonType> option = alert.showAndWait();
+//                    ButtonType cancel = new ButtonType("ยกเลิก");
+//                    alert.getButtonTypes().add(cancel);
+//                    if(option.get() == null){
+//
+//                    }
+//                    else if (option.get() == ButtonType.OK) {
+//
+//                    } else if (option.get() == ButtonType.CANCEL) {
+//                    } else {
+//                    }
                 }
             }
         }

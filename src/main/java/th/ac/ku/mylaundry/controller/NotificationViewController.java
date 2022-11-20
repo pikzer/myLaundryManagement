@@ -54,7 +54,7 @@ public class NotificationViewController extends Navigator {
         TableColumn idCol = new TableColumn("ไอดี");
         TableColumn<Customer, String> nameCol = new TableColumn<Customer, String>("ชื่อ");
         TableColumn<Customer, String> phoneCol = new TableColumn<Customer, String>("เบอร์โทร");
-        TableColumn<Customer, String> emailCol = new TableColumn<Customer, String>("อีเมลล์");
+        TableColumn<Customer, String> emailCol = new TableColumn<Customer, String>("อีเมล");
 
         idCol.setCellValueFactory(new PropertyValueFactory<Customer,Integer>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<Customer,String>("name"));
@@ -88,7 +88,7 @@ public class NotificationViewController extends Navigator {
         if(!cusCombo.getSelectionModel().isEmpty()){
             Customer customer = CustomerApiDataSource.searchCustomer(cusCombo.getSelectionModel().getSelectedItem().toString());
             if(customer.getEmail().equals("null")){
-                pushAlert("ลูกค้าไม่มีข้อมูลที่อยู่อีเมลล์", Alert.AlertType.WARNING);
+                pushAlert("ลูกค้าไม่มีข้อมูลที่อยู่อีเมล", Alert.AlertType.WARNING);
                 cusCombo.getSelectionModel().clearSelection();
                 cusCombo.getEditor().clear();
                 return;

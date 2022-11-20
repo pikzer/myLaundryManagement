@@ -60,7 +60,7 @@
          </font>
       </Text>
       <ComboBox fx:id="roleCombo" layoutX="1079.0" layoutY="320.0" prefHeight="33.0" prefWidth="148.0" />
-      <Text layoutX="1014.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมลล์">
+      <Text layoutX="1022.0" layoutY="282.0" strokeType="OUTSIDE" strokeWidth="0.0" text="อีเมล">
          <font>
             <Font size="16.0" />
          </font>
@@ -202,7 +202,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickReport" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="รายงาน">
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickReport" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="เอ็กพอร์ต รายการ">
                      <font>
                         <Font name="System Bold" size="21.0" />
                      </font>

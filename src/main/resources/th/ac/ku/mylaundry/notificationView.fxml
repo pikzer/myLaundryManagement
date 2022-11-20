@@ -31,14 +31,14 @@
             <Text layoutX="40.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="หัวข้อ" />
             <TextArea fx:id="textArea" layoutX="110.0" layoutY="241.0" prefHeight="200.0" prefWidth="489.0" />
             <Text layoutX="30.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เนื้อความ" />
-            <Text layoutX="21.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ผ่านอีเมลล์">
+            <Text layoutX="21.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ผ่านอีเมล">
                <font>
                   <Font size="39.0" />
                </font>
             </Text>
             <TextField fx:id="subjectMailField" layoutX="110.0" layoutY="173.0" prefHeight="32.0" prefWidth="252.0" />
             <ComboBox fx:id="cusCombo" editable="true" layoutX="110.0" layoutY="104.0" prefHeight="32.0" prefWidth="194.0" />
-            <Button layoutX="506.0" layoutY="468.0" mnemonicParsing="false" onAction="#onSendEmail" text="ส่งอีเมลล์">
+            <Button layoutX="506.0" layoutY="468.0" mnemonicParsing="false" onAction="#onSendEmail" text="ส่งอีเมล">
                <font>
                   <Font size="19.0" />
                </font>

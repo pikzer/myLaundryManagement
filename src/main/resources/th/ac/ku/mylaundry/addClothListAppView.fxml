@@ -199,7 +199,7 @@
             <Separator layoutX="219.0" layoutY="93.0" orientation="VERTICAL" prefHeight="69.0" prefWidth="6.0" style="-fx-background-color: black;" />
             <Label fx:id="serviceTypeLabel" layoutX="306.0" layoutY="111.0" text="-" />
             <Label fx:id="memBalanceLabel" layoutX="306.0" layoutY="141.0" text="-" />
-            <Button fx:id="makePayBtn" layoutX="325.0" layoutY="733.0" mnemonicParsing="false" onAction="#payMoney" text="ชำระเงิน">
+            <Button fx:id="makePayBtn" layoutX="237.0" layoutY="733.0" mnemonicParsing="false" onAction="#payMoney" prefHeight="28.0" prefWidth="154.0" text="ชำระเงิน">
                <font>
                   <Font size="14.0" />
                </font>
@@ -217,11 +217,6 @@
             <Button fx:id="makeOrderBtn" layoutX="235.0" layoutY="683.0" mnemonicParsing="false" onAction="#addClothList" prefHeight="36.0" prefWidth="154.0" text="เพิ่มรายการผ้า">
                <font>
                   <Font size="19.0" />
-               </font>
-            </Button>
-            <Button fx:id="makeTagBtn" layoutX="236.0" layoutY="733.0" mnemonicParsing="false" onAction="#printTag" text="พิมพ์แทรค">
-               <font>
-                  <Font size="14.0" />
                </font>
             </Button>
             <Text layoutX="26.0" layoutY="696.0" strokeType="OUTSIDE" strokeWidth="0.0" text="จำนวนรายการ" />
@@ -338,7 +333,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickReport" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="รายงาน">
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onClickReport" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: B1AFFF; -fx-background-insets: 1; -fx-text-fill: white; -fx-border-color: gray;" text="เอ็กพอร์ต รายการ">
                      <font>
                         <Font name="System Bold" size="21.0" />
                      </font>
