@@ -117,7 +117,7 @@ public class NewOrderController extends Navigator {
         showQrBtn.setDisable(true);
         timeCombo.setDisable(true);
         makeReceiptBtn.setDisable(true);
-        makeTagBtn.setDisable(true);
+//        makeTagBtn.setDisable(true);
         makePayBtn.setDisable(true);
         quantitySpinner.setDisable(true);
         payCombo.getItems().addAll(payMethodList);
@@ -836,12 +836,12 @@ public class NewOrderController extends Navigator {
 
     public void onMakeOrderComplete(){
         makePayBtn.setDisable(false);
-        makeTagBtn.setDisable(false);
+//        makeTagBtn.setDisable(false);
         makeInvBtn.setDisable(false);
         makeReceiptBtn.setDisable(false);
         if(OrderApiDataSource.getOrder(orderId).getIsMemOrder() == 1){
             makePayBtn.setDisable(true);
-            makeTagBtn.setDisable(true);
+//            makeTagBtn.setDisable(true);
             makeInvBtn.setDisable(true);
             makeReceiptBtn.setDisable(true);
         }

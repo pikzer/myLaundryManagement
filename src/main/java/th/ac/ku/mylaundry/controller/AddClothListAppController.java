@@ -117,7 +117,7 @@ public class AddClothListAppController extends Navigator{
                 makeInvBtn.setDisable(true);
                 timeCombo.setDisable(false);
                 makeReceiptBtn.setDisable(true);
-                makeTagBtn.setDisable(true);
+//                makeTagBtn.setDisable(true);
                 makePayBtn.setDisable(true);
                 quantitySpinner.setDisable(true);
                 initClothList();
@@ -643,7 +643,7 @@ public class AddClothListAppController extends Navigator{
     public void onMakeOrderComplete(){
         makeOrder = true;
         makePayBtn.setDisable(false);
-        makeTagBtn.setDisable(false);
+//        makeTagBtn.setDisable(false);
         makeInvBtn.setDisable(false);
         makeReceiptBtn.setDisable(false);
         deliDatePicker.setDisable(true);
