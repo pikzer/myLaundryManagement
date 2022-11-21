@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import th.ac.ku.mylaundry.model.Address;
 import th.ac.ku.mylaundry.model.Customer;
 import th.ac.ku.mylaundry.model.MemberPackage;
 import th.ac.ku.mylaundry.service.*;
@@ -200,12 +201,24 @@ public class CustomerListController extends Navigator {
         emailField.clear();
         nameField.setText(newValue.getName());
         telField.setText(newValue.getPhone());
-        if(!newValue.getEmail().equals("null")){
-            emailField.setText(newValue.getEmail());
+        if (newValue != null){
+            if(newValue.getEmail().equals("null")){
+                emailField.setText("");
+            }
+            else{
+                emailField.setText(newValue.getEmail());
+            }
+            Address address = CustomerApiDataSource.getCustomerAddress(newValue.getId());
+            if(address != null){
+                adsTextArea.setText(address.getuCode());
+            }
         }
-        if(CustomerApiDataSource.getCustomerAddress(newValue.getId()) != null){
-            adsTextArea.setText(CustomerApiDataSource.getCustomerAddress(newValue.getId()).getuCode());
-        }
+//        if(!newValue.getEmail().equals("null")){
+//            emailField.setText(newValue.getEmail());
+//        }
+//        if(CustomerApiDataSource.getCustomerAddress(newValue.getId()) != null){
+//            adsTextArea.setText(CustomerApiDataSource.getCustomerAddress(newValue.getId()).getuCode());
+//        }
         piecesCombo.setDisable(false);
         serviceAddCombo.setDisable(false);
         addMemBtn.setDisable(false);

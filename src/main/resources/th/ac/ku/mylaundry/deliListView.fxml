@@ -65,20 +65,23 @@
          </font>
       </Label>
       <DatePicker fx:id="deliDatePicker" layoutX="1084.0" layoutY="225.0" prefHeight="34.0" prefWidth="213.0" />
-      <Text layoutX="1014.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="วันที่รับ" />
+      <Text layoutX="1014.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="วันที่" />
       <ComboBox fx:id="timeCombo" layoutX="1084.0" layoutY="287.0" prefHeight="34.0" prefWidth="213.0" />
-      <Text layoutX="1014.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เวลารับ" />
+      <Text layoutX="1014.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="เวลา" />
       <Button fx:id="assignBtn" layoutX="1104.0" layoutY="646.0" mnemonicParsing="false" onAction="#onClickAssign" prefHeight="45.0" prefWidth="146.0" text="มอบหมาย">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="editBtn" layoutX="1172.0" layoutY="363.0" mnemonicParsing="false" onAction="#onClickEdit" prefHeight="45.0" prefWidth="146.0" text="แก้ไข">
+      <Button fx:id="editBtn" layoutX="1177.0" layoutY="365.0" mnemonicParsing="false" onAction="#onClickEdit" prefHeight="45.0" prefWidth="146.0" text="แก้ไข">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="cancelBtn" layoutX="999.0" layoutY="365.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="45.0" prefWidth="130.0" text="ยกเลิก" />
+      <Button fx:id="cancelBtn" layoutX="1014.0" layoutY="365.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="45.0" prefWidth="130.0" text="ยกเลิก">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
       <AnchorPane layoutY="3.0" prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
          <children>
             <VBox layoutX="1.0" layoutY="104.0" prefHeight="645.0" prefWidth="227.0">

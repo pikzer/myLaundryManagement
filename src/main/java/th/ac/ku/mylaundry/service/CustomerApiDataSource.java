@@ -130,11 +130,8 @@ public class CustomerApiDataSource extends ApiCall {
         }
     }
 
-    public static boolean updateCustomer(int id,String name, String phone, String email,String address){
-        Integer adsId  = getCustomerAddress(id).getId();
-        if(!updateAddress(adsId,address)){
-            return false ;
-        }
+    public static boolean updateCustomer(int id,String name, String phone, String email,String address) throws IOException {
+
         var urlParameters = "name="+name+"&"+"phone="+phone+"&"+"email="+email;
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         try {
@@ -152,9 +149,47 @@ public class CustomerApiDataSource extends ApiCall {
             String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
             JSONObject jsonObject = new JSONObject(j);
             System.out.println(jsonObject);
-            return true;
         } catch (Exception e) {
             System.out.println(e);
+            return false;
+        }
+
+        if(getCustomerAddress(id) != null){
+            Integer adsId  = getCustomerAddress(id).getId();
+            if(!updateAddress(adsId,address)){
+                return false ;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            if(addNewAddress(address,phone)){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    }
+
+    public static boolean addNewAddress(String ucode, String phone) throws IOException {
+        try {
+            var urlParameters = "u_code="+ucode+"&"+"cus_phone="+phone;
+            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+            URL url = new URL(baseURL+"address");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("User-Agent", "Java client");
+            conn.setRequestProperty("Authorization","Bearer "+ token);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            try (var wr = new DataOutputStream(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            return true;
+        } catch (Exception e) {
             return false;
         }
     }
@@ -213,11 +248,16 @@ public class CustomerApiDataSource extends ApiCall {
             conn.setRequestProperty("Content-Type","application/json");
             conn.setRequestMethod("GET");
             String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
-            if(j.equals("[]")){
+            JSONObject jsonObject ;
+            if(j.equals("")){
                 return null;
             }
-            JSONArray jsonArray = new JSONArray(j) ;
-            return new Address(jsonArray.getJSONObject(0).getInt("id"),jsonArray.getJSONObject(0).getString("u_code"));
+            else{
+                jsonObject = new JSONObject(j);
+                return new Address(jsonObject.getInt("id"),jsonObject.getString("u_code"));
+            }
+
+//            return new Address(jsonArray.getJSONObject(0).getInt("id"),jsonArray.getJSONObject(0).getString("u_code"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

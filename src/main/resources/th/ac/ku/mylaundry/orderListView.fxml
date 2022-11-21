@@ -47,12 +47,12 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="receiptBtn" layoutX="1236.0" layoutY="680.0" mnemonicParsing="false" onAction="#onClickReceipt" prefHeight="28.0" prefWidth="103.0" text="พิมพ์ใบเสร็จ">
+      <Button fx:id="receiptBtn" layoutX="1112.0" layoutY="719.0" mnemonicParsing="false" onAction="#onClickReceipt" prefHeight="28.0" prefWidth="228.0" text="พิมพ์ใบเสร็จ">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="invBtn" layoutX="1116.0" layoutY="680.0" mnemonicParsing="false" onAction="#onClickInv" text="พิมพ์ใบแจ้งหนี้">
+      <Button fx:id="invBtn" layoutX="1112.0" layoutY="680.0" mnemonicParsing="false" onAction="#onClickInv" prefHeight="28.0" prefWidth="227.0" text="พิมพ์ใบแจ้งหนี้">
          <font>
             <Font size="14.0" />
          </font>
@@ -89,7 +89,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button fx:id="addClothListBtn" layoutX="388.0" layoutY="737.0" mnemonicParsing="false" onAction="#addClothList" text="เพิ่ม/แก้ไขรายการผ้า" />
+      <Button fx:id="addClothListBtn" layoutX="416.0" layoutY="738.0" mnemonicParsing="false" onAction="#addClothList" text="เพิ่มรายการผ้า" />
       <Text layoutX="539.0" layoutY="541.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ข้อมูล">
          <font>
             <Font size="17.0" />
@@ -114,11 +114,6 @@
       <TextField fx:id="deliField" layoutX="777.0" layoutY="682.0" prefHeight="25.0" prefWidth="95.0" />
       <TextField fx:id="vatField" layoutX="617.0" layoutY="721.0" prefHeight="25.0" prefWidth="95.0" />
       <TextField fx:id="totalField" layoutX="777.0" layoutY="721.0" prefHeight="25.0" prefWidth="95.0" />
-      <Button fx:id="makePaperBtn" layoutX="1113.0" layoutY="719.0" mnemonicParsing="false" onAction="#onClickPaper" prefHeight="28.0" prefWidth="227.0" text="พิมพ์ใบรับส่งผ้า">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
       <Button fx:id="addDeliverBtn" layoutX="895.0" layoutY="679.0" mnemonicParsing="false" onAction="#onClickAddDeliver" prefHeight="28.0" prefWidth="172.0" text="เพิ่มผู้รับส่งผ้า" />
       <Text layoutX="693.0" layoutY="676.0" strokeType="OUTSIDE" strokeWidth="0.0" text="สถานะการชำระ" />
       <Text layoutX="746.0" layoutY="649.0" strokeType="OUTSIDE" strokeWidth="0.0" text="สถานะ" />

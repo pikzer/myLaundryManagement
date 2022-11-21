@@ -60,7 +60,7 @@ public class Navigator {
         if(ApiCall.role.equals("EMPLOYEE")){
             pushAlert("คุณไม่มีสิทธฺิในการเข้าถึงฟังชั่นดังกล่าว", Alert.AlertType.WARNING);
         }
-        if (LaundryApiDataSource.getStatusShop()==1){
+        else if (LaundryApiDataSource.getStatusShop()==1){
             pushAlert("ไม่สามารถเพิ่มหรือแก้ไขในขณะที่ร้านเปิดอยู่", Alert.AlertType.WARNING);
 
         } else {
@@ -128,6 +128,15 @@ public class Navigator {
                 }
             }
             dir = new File("report");
+            if(dir.exists()){
+                for (File file: dir.listFiles()) {
+                    if(!file.isDirectory()){
+                        file.delete();
+                    }
+                }
+            }
+
+            dir = new File("delivery");
             if(dir.exists()){
                 for (File file: dir.listFiles()) {
                     if(!file.isDirectory()){

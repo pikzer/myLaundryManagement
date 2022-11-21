@@ -19,6 +19,7 @@ import th.ac.ku.mylaundry.service.Validator;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class EmployeeController extends Navigator{
 
@@ -158,8 +159,33 @@ public class EmployeeController extends Navigator{
     }
 
     public void onClickDel(ActionEvent event) throws IOException {
-        EmployeeApiDataSource.delEmployee(selectedEmployee.getId());
-        initialize();
+//        EmployeeApiDataSource.delEmployee(selectedEmployee.getId());
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("ลบพนักงาน");
+        alert.setHeaderText("คุณต้องการยืนยันที่จะลบข้อมูลพนักงาน?");
+        ButtonType cancel = new ButtonType("ยกเลิก");
+        alert.getButtonTypes().add(cancel);
+        Optional<ButtonType> option = alert.showAndWait();
+        if(option.get() == ButtonType.OK) {
+            if(EmployeeApiDataSource.delEmployee(selectedEmployee.getId())){
+                pushAlert("ลบพนักงานสำเร็จ", Alert.AlertType.INFORMATION);
+                root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/employeeView.fxml"));
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            }
+            else{
+                pushAlert("ลบพนักงานไม่สำเร็จ", Alert.AlertType.ERROR);
+                root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/employeeView.fxml"));
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            }
+        }
+
+
     }
     public void onClickAddOrEdit() throws IOException {
         if(selectedEmployee == null){
@@ -175,7 +201,9 @@ public class EmployeeController extends Navigator{
             else if(!Validator.isEmail(emailField.getText())){
                 pushAlertWarning("อีเมลไม่ถูกต้อง");
             }
-
+            else if(idCardField.getText().length() != 13){
+                pushAlertWarning("เลขบัตรประจำตัวประชาชนไม่ถูกต้อง");
+            }
             // other Validation
             else if(bankNumField.getText().length() < 10 || bankNumField.getText().length() > 15){
                 pushAlertWarning("หมายเลขบัญชีไม่ถูกต้อง");

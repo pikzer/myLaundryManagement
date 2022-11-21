@@ -625,7 +625,7 @@ public class WriterPDF {
             paragraph = new Paragraph("ที่อยู่: "+mornDeli.get(i).getU_code(),font2);
             document.add(paragraph) ;
             font2 = new Font(customfont,12,Font.NORMAL);
-            paragraph = new Paragraph("",font2);
+            paragraph = new Paragraph("ผู้รับผิดชอบ: " + mornDeli.get(i).getDeliver(),font2);
             document.add(paragraph) ;
         }
 
@@ -644,7 +644,7 @@ public class WriterPDF {
             paragraph = new Paragraph("ที่อยู่: "+afterDeli.get(i).getU_code(),font2);
             document.add(paragraph) ;
             font2 = new Font(customfont,12,Font.NORMAL);
-            paragraph = new Paragraph("",font2);
+            paragraph = new Paragraph("ผู้รับผิดชอบ: " +afterDeli.get(i).getDeliver(),font2);
             document.add(paragraph) ;
         }
 
@@ -662,7 +662,7 @@ public class WriterPDF {
             paragraph = new Paragraph("ที่อยู่: "+evenDeli.get(i).getU_code(),font2);
             document.add(paragraph) ;
             font2 = new Font(customfont,12,Font.NORMAL);
-            paragraph = new Paragraph("",font2);
+            paragraph = new Paragraph("ผู้รับผิดชอบ: " +evenDeli.get(i).getDeliver(),font2);
             document.add(paragraph) ;
         }
 

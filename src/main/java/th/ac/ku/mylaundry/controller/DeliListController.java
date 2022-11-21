@@ -234,7 +234,7 @@ public class DeliListController extends Navigator {
 //        stage.show();
     }
 
-    public void onClickCancel(){
+    public void onClickCancel(ActionEvent event) throws IOException {
 //        DeliveryTimeApiDataSource.cancelDelivery(selectDeliveryTime.getId());
 
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -248,6 +248,12 @@ public class DeliListController extends Navigator {
         }
         else if (option.get() == ButtonType.OK) {
             DeliveryTimeApiDataSource.cancelDelivery(selectDeliveryTime.getId());
+            pushAlertWarning("ยกเลิกรายการรับส่งสำเร็จ", Alert.AlertType.INFORMATION);
+            root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/deliListView.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         } else if (option.get() == cancel) {
 
         } else {

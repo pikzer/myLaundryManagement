@@ -59,7 +59,7 @@ public class OrderListViewController extends Navigator {
     Button acceptBtn, cancelBtn, showQrBtn, invBtn, receiptBtn, tagBtn, makePayBtn,makePaperBtn,addDeliverBtn, addClothListBtn,changeStatusBtn ;
 
 
-    String statusList[] = {"ทั้งหมด","เพิ่มรายการ", "กำลังดำเนินการ", "ส่งผ้า" , "เพิ่มการนัดหมาย", "ยืนยันการนัดหมาย", "รับผ้า",
+    String statusList[] = {"เพิ่มรายการ", "กำลังดำเนินการ", "ส่งผ้า" , "เพิ่มการนัดหมาย", "ยืนยันการนัดหมาย", "รับผ้า",
             "เสร็จสิ้น"};
     String serviceList[] = {"ทั้งหมด","ซักอบ","ซักรีด","ซักแห้ง","รีด"};
     String serviceTypeList [] = {"ทั้งหมด","หน้าร้าน","แอป"} ;
@@ -95,7 +95,7 @@ public class OrderListViewController extends Navigator {
 //        tagBtn.setDisable(true);
         makePayBtn.setDisable(true);
         addDeliverBtn.setDisable(true);
-        makePaperBtn.setDisable(true);
+//        makePaperBtn.setDisable(true);
 
         rangeCombo.setOnAction(event -> {
             if(rangeCombo.getSelectionModel().getSelectedIndex()==0){
@@ -436,7 +436,7 @@ public class OrderListViewController extends Navigator {
         statusLabel.setText(order.getStatus());
         payMethodLabel.setText(order.getPayMethod());
 //        tagBtn.setDisable(false);
-        makePaperBtn.setDisable(false);
+//        makePaperBtn.setDisable(false);
         statusOrderCombo.setDisable(false);
         changeStatusBtn.setDisable(false);
 
@@ -478,7 +478,7 @@ public class OrderListViewController extends Navigator {
             acceptBtn.setDisable(false);
             cancelBtn.setDisable(false);
             makePayBtn.setDisable(true);
-            makePaperBtn.setDisable(true);
+//            makePaperBtn.setDisable(true);
 //            tagBtn.setDisable(true);
             invBtn.setDisable(true);
         }
@@ -490,7 +490,7 @@ public class OrderListViewController extends Navigator {
             acceptBtn.setDisable(true);
             cancelBtn.setDisable(true);
             makePayBtn.setDisable(true);
-            makePaperBtn.setDisable(true);
+//            makePaperBtn.setDisable(true);
 //            tagBtn.setDisable(true);
             invBtn.setDisable(true);
         }
@@ -501,7 +501,7 @@ public class OrderListViewController extends Navigator {
             cancelBtn.setDisable(true);
             addClothListBtn.setDisable(false);
             makePayBtn.setDisable(true);
-            makePaperBtn.setDisable(true);
+//            makePaperBtn.setDisable(true);
 //            tagBtn.setDisable(true);
             invBtn.setDisable(true);
         }
@@ -514,7 +514,7 @@ public class OrderListViewController extends Navigator {
             cancelBtn.setDisable(true);
             addClothListBtn.setDisable(true);
             makePayBtn.setDisable(true);
-            makePaperBtn.setDisable(true);
+//            makePaperBtn.setDisable(true);
 //            tagBtn.setDisable(true);
             invBtn.setDisable(true);
             receiptBtn.setDisable(false);
@@ -534,7 +534,7 @@ public class OrderListViewController extends Navigator {
             acceptBtn.setDisable(true);
             cancelBtn.setDisable(true);
             addClothListBtn.setDisable(false);
-            makePaperBtn.setDisable(false);
+//            makePaperBtn.setDisable(false);
 //            tagBtn.setDisable(false);
         }
 
@@ -778,6 +778,7 @@ public class OrderListViewController extends Navigator {
             }
             else if (option.get() == ButtonType.OK) {
                 OrderApiDataSource.payMoney(selectedOrder.getId());
+                pushAlertWarning("ชำระเงินสำเร็จ", Alert.AlertType.CONFIRMATION);
                 root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/OrderListView.fxml"));
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 scene = new Scene(root);

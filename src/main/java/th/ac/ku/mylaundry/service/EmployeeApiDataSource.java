@@ -152,6 +152,9 @@ public class EmployeeApiDataSource extends ApiCall {
             try (var wr = new DataOutputStream(conn.getOutputStream())) {
                 wr.write(postData);
             }
+            String j = decodeRespond(new InputStreamReader(conn.getInputStream()));
+            JSONObject jsonObject = new JSONObject(j);
+            System.out.println(jsonObject);
             return true;
         } catch (IOException e) {
             System.out.println(e);
