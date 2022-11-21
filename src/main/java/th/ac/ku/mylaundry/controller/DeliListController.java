@@ -234,9 +234,41 @@ public class DeliListController extends Navigator {
 //        stage.show();
     }
 
-    public void onClickCancel(ActionEvent event) throws IOException {
-//        DeliveryTimeApiDataSource.cancelDelivery(selectDeliveryTime.getId());
 
+//    public void onClickCancel(ActionEvent event) throws IOException {
+////        DeliveryTimeApiDataSource.cancelDelivery(selectDeliveryTime.getId());
+//
+//        Alert alert = new Alert(Alert.AlertType.WARNING);
+//        alert.setTitle("ยกเลิกรายการ");
+//        alert.setHeaderText("คุณแน่จะที่จะทำการยกเลิกรายการหรือไม่");
+//        ButtonType cancel = new ButtonType("ยกเลิก");
+//        alert.getButtonTypes().add(cancel);
+//        Optional<ButtonType> option = alert.showAndWait();
+//        if(option.get() == null){
+//
+//        }
+//        else if (option.get() == ButtonType.OK) {
+//            DeliveryTimeApiDataSource.cancelDelivery(selectDeliveryTime.getId());
+//            pushAlertWarning("ยกเลิกรายการรับส่งสำเร็จ", Alert.AlertType.INFORMATION);
+//            root = FXMLLoader.load(getClass().getResource("/th/ac/ku/mylaundry/deliListView.fxml"));
+//            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+//            scene = new Scene(root);
+//            stage.setScene(scene);
+//            stage.show();
+//        } else if (option.get() == cancel) {
+//
+//        } else {
+//        }
+//    }
+
+    public void pushAlertWarning(String message, Alert.AlertType alertType){
+        Alert a = new Alert(Alert.AlertType.NONE);
+        a.setAlertType(alertType);
+        a.setContentText(message);
+        a.show();
+    }
+
+    public void onClickCancel(javafx.event.ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("ยกเลิกรายการ");
         alert.setHeaderText("คุณแน่จะที่จะทำการยกเลิกรายการหรือไม่");
@@ -258,12 +290,5 @@ public class DeliListController extends Navigator {
 
         } else {
         }
-    }
-
-    public void pushAlertWarning(String message, Alert.AlertType alertType){
-        Alert a = new Alert(Alert.AlertType.NONE);
-        a.setAlertType(alertType);
-        a.setContentText(message);
-        a.show();
     }
 }

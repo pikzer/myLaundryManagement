@@ -78,10 +78,6 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="cancelBtn" layoutX="1014.0" layoutY="365.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="45.0" prefWidth="130.0" text="ยกเลิก">
-         <font>
-            <Font size="16.0" />
-         </font></Button>
       <AnchorPane layoutY="3.0" prefHeight="768.0" prefWidth="225.0" style="-fx-background-color: lightskyblue;">
          <children>
             <VBox layoutX="1.0" layoutY="104.0" prefHeight="645.0" prefWidth="227.0">
@@ -231,6 +227,11 @@
          </children>
       </AnchorPane>
       <Separator layoutX="1020.0" layoutY="443.0" prefHeight="3.0" prefWidth="304.0" style="-fx-background-color: black;" />
-      <Button layoutX="813.0" layoutY="732.0" mnemonicParsing="false" onAction="#onClickPrintTodayDeliList" prefHeight="25.0" prefWidth="146.0" text="พิมพ์รายการรับส่งผ้า" />
+      <Button layoutX="781.0" layoutY="732.0" mnemonicParsing="false" onAction="#onClickPrintTodayDeliList" prefHeight="25.0" prefWidth="178.0" text="พิมพ์รายการรับส่งผ้าวันนี้" />
+      <Button fx:id="cancelBtn" layoutX="1020.0" layoutY="365.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="45.0" prefWidth="146.0" text="ลบ">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
